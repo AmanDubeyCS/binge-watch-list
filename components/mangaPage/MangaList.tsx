@@ -77,7 +77,7 @@ interface MangaItem {
 interface MangaResponse {
   result: string
   response: string
-  data: MangaItem[] // Define the shape of the `data` array
+  data: MangaItem[]
   limit: number
   offset: number
   total: number

@@ -7,7 +7,7 @@ import {
   singleMangaInfo,
 } from "@/quries/mangaDex/mangaFetch"
 
-import { MangaInfoPage } from "@/components/MangaInfoPage"
+import { MangaInfoPage } from "@/components/mangaPage/MangaInfoPage"
 
 export default function page({ params }: any) {
   const [error, setError] = useState<string | null>(null)

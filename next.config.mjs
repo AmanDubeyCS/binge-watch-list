@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["mangadex.org"],
+    domains: ["mangadex.org", "cdn.myanimelist.net"],
   },
 };
 
