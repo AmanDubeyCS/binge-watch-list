@@ -9,7 +9,9 @@ interface Props {
 
 export const mangaFetch = async ({ limit, offset, title }: Props) => {
   try {
-    const response = await axios.get(config.getMangaList({ limit, offset, title }))
+    const response = await axios.get(
+      config.getMangaList({ limit, offset, title })
+    )
     // console.log(response.data);
     return response.data
   } catch (error) {
@@ -54,7 +56,6 @@ export const singleMangaInfo = async ({ mangaID }: any) => {
 }
 
 export const getChapter = async ({ mangaID }: any) => {
-
   try {
     const response = await axios.get(config.getMangaChapters({ mangaID }))
     // console.log(response.data);
@@ -65,7 +66,6 @@ export const getChapter = async ({ mangaID }: any) => {
 }
 
 export const getMangaStatistics = async ({ mangaID }: any) => {
-
   try {
     const response = await axios.get(config.getMangaStatistics({ mangaID }))
     // console.log(response.data);

@@ -121,7 +121,6 @@ interface AnimeResponse {
 export function AnimeList() {
   const router = useRouter()
   const [animeData, setAnimeData] = useState<AnimeData[]>([])
-  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -134,14 +133,14 @@ export function AnimeList() {
         if (response && response.data) {
           setAnimeData(response.data)
         } else {
-          setError("Failed to fetch anime data.")
+          console.log("error fetching data")
         }
       } catch (error) {
         console.log("error fetching data", error)
       }
     }
     fetchData()
-  }, [])
+  })
 
   const handleClick = (animeID: any) => {
     router.push(`anime/${animeID}`)
@@ -149,7 +148,7 @@ export function AnimeList() {
   return (
     <div className="flex flex-wrap justify-center gap-4">
       {animeData &&
-        animeData.map((anime, index) => (
+        animeData.map((anime) => (
           <div
             key={anime.mal_id}
             className="w-[250px]"

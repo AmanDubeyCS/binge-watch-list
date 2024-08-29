@@ -7,7 +7,6 @@ import { ImageLoader } from "./MangaList"
 export default function SearchManga() {
   const [search, setSearch] = useState("")
   const [searchedData, setSearchedData] = useState<any[]>([])
-  const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
   useEffect(() => {
@@ -22,10 +21,10 @@ export default function SearchManga() {
         if (response && response.data) {
           setSearchedData(response.data) // Set the manga items array
         } else {
-          setError("Failed to fetch manga data.")
+          console.log("Failed to fetch manga data")
         }
       } catch (err) {
-        setError(`Error fetching data: ${err}`)
+        console.log(`Error fetching data: ${err}`)
       }
     }
 

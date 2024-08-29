@@ -9,7 +9,7 @@ import {
 
 import { MangaInfoPage } from "@/components/mangaPage/MangaInfoPage"
 
-export default function page({ params }: any) {
+export default function Page({ params }: any) {
   const [error, setError] = useState<string | null>(null)
   const [mangaInfo, setMangaInfo] = useState<any>(null)
   const [chapter, setChapter] = useState<any>(null)
@@ -49,15 +49,15 @@ export default function page({ params }: any) {
       }
     }
     fetchData()
-  }, [])
- 
+  })
+
   if (error) {
     return <div>Error: {error}</div>
   }
-  
+
   return (
     <>
-    {loading && (<div>Loading...</div>)}
+      {loading && <div>Loading...</div>}
       {chapter && mangaInfo && statistic && (
         <MangaInfoPage
           mangaInfo={mangaInfo}

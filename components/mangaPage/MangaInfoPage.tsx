@@ -7,7 +7,7 @@ export function MangaInfoPage({ mangaInfo, chapters, statistics }: any) {
   )
   const mangaId = Object.keys(statistics.statistics)[0]
   const ratingData = statistics.statistics[mangaId]?.rating
-//  console.log(mangaInfo.attributes.description.en)
+  //  console.log(mangaInfo.attributes.description.en)
   const volumes = chapters.volumes
   return (
     <div className="flex flex-col gap-4">
@@ -22,18 +22,18 @@ export function MangaInfoPage({ mangaInfo, chapters, statistics }: any) {
       <p>{mangaInfo.attributes.title.en}</p>
       <p>{mangaInfo.attributes.description.en}</p>
       <div>
-      {mangaInfo.attributes.tags?.map((tag: any) => (
-        <p key={tag.id}>{tag.attributes.name.en}</p>
-      ))}
+        {mangaInfo.attributes.tags?.map((tag: any) => (
+          <p key={tag.id}>{tag.attributes.name.en}</p>
+        ))}
       </div>
-      <p>{ratingData.bayesian.toFixed(2) || 'N/A'}</p>
+      <p>{ratingData.bayesian.toFixed(2) || "N/A"}</p>
       {true && (
         <ul>
           {Object.entries(ratingData.distribution).map(([score, count]) => (
-          <li key={score}>
-            {String(score)} stars: {String(count)} votes
-          </li>
-        ))}
+            <li key={score}>
+              {String(score)} stars: {String(count)} votes
+            </li>
+          ))}
         </ul>
       )}
       {volumes && (

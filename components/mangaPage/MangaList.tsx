@@ -1,10 +1,10 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
-import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { mangaFetch, singleMangaInfo } from "@/quries/mangaDex/mangaFetch"
+import { mangaFetch } from "@/quries/mangaDex/mangaFetch"
 import SearchManga from "./SearchManga"
+import Image from "next/image"
 
 interface MangaTag {
   id: string
@@ -87,7 +87,6 @@ export function MangaList() {
   const router = useRouter()
   const [mangaData, setMangaList] = useState<MangaItem[]>([])
   const [error, setError] = useState<string | null>(null)
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -116,7 +115,7 @@ export function MangaList() {
   }
 
   const handleClick = (mangaID: any) => {
-    router.push(`dashboard/${mangaID}`)
+    router.push(`manga/${mangaID}`)
   }
 
   return (
@@ -139,7 +138,11 @@ export function MangaList() {
                     <ImageLoader
                       src={`https://mangadex.org/covers/${manga.id}/${image[0].attributes.fileName}`}
                       alt="image"
-                      fallback={<div className="aspect-[5/7] h-auto w-[256px] bg-white text-black justify-center items-center text-center flex"><p>Image not available</p></div>} // Optional fallback content
+                      fallback={
+                        <div className="flex aspect-[5/7] h-auto w-[256px] items-center justify-center bg-white text-center text-black">
+                          <p>Image not available</p>
+                        </div>
+                      } // Optional fallback content
                     />
                     <p className="line-clamp-2 text-base">
                       {manga.attributes?.title.en}
@@ -163,7 +166,11 @@ interface ImageLoaderProps {
   fallback?: JSX.Element // Optional fallback element if the image fails to load
 }
 
-export const ImageLoader: React.FC<ImageLoaderProps> = ({ src, alt, fallback }) => {
+export const ImageLoader: React.FC<ImageLoaderProps> = ({
+  src,
+  alt,
+  fallback,
+}) => {
   const [isLoaded, setIsLoaded] = useState(true)
 
   const handleError = () => {
@@ -171,7 +178,7 @@ export const ImageLoader: React.FC<ImageLoaderProps> = ({ src, alt, fallback }) 
   }
 
   return isLoaded ? (
-    <img
+    <Image
       src={src}
       alt={alt}
       onError={handleError}
