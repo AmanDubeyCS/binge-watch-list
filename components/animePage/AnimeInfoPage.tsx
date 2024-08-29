@@ -1,8 +1,8 @@
-import Image from "next/image"
 import React from "react"
+import Image from "next/image"
 
 export function AnimeInfoPage({ animdInfo }: any) {
-    console.log(animdInfo)
+  console.log(animdInfo)
   return (
     <div>
       <Image

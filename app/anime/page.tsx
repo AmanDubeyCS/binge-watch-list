@@ -1,8 +1,7 @@
-import { AnimeList } from '@/components/animePage/AnimeList'
-import React from 'react'
+import React from "react"
 
-export default function page() {
-  return (
-    <AnimeList />
-  )
+import { AnimeList } from "@/components/animePage/AnimeList"
+
+export default function Page() {
+  return <AnimeList />
 }

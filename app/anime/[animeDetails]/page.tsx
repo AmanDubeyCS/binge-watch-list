@@ -1,9 +1,11 @@
-'use client'
+"use client"
+
 import React, { useEffect, useState } from "react"
 import { singleAnimeInfo } from "@/quries/jikan/animefetch"
+
 import { AnimeInfoPage } from "@/components/animePage/AnimeInfoPage"
 
-export default function page({ params }: any) {
+export default function Page({ params }: any) {
   const [animeInfo, setAnimeInfo] = useState([])
   const [error, setError] = useState("")
   const animeID = params.animeDetails
@@ -23,11 +25,9 @@ export default function page({ params }: any) {
       }
     }
     fetchData()
-  }, [])
-  console.log(animeInfo)
-  return (
-    <>
-    {animeInfo && <AnimeInfoPage animdInfo={animeInfo}/>}
-    </>
-  )
+  })
+  if(error){
+    return <div>faild to load the page</div>
+  }
+  return <>{animeInfo && <AnimeInfoPage animdInfo={animeInfo} />}</>
 }
