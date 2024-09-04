@@ -9,15 +9,28 @@ interface Props {
 
 export const mangaFetch = async ({ limit, offset, title }: Props) => {
   try {
-    const response = await axios.get(
-      config.getMangaList({ limit, offset, title })
-    )
-    // console.log(response.data);
+    const response = await axios.get("/api/proxy", {
+      params: {
+        url: config.getMangaList({ limit, offset, title }),
+      },
+    })
     return response.data
   } catch (error) {
     console.error("Error fetching manga:", error)
   }
 }
+
+// export const mangaFetch = async ({ limit, offset, title }: Props) => {
+//   try {
+//     const response = await axios.get(
+//       config.getMangaList({ limit, offset, title })
+//     )
+//     // console.log(response.data);
+//     return response.data
+//   } catch (error) {
+//     console.error("Error fetching manga:", error)
+//   }
+// }
 
 export const singleMangaInfo = async ({ mangaID }: any) => {
   try {
