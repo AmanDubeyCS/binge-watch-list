@@ -25,8 +25,9 @@ export default function Page({ params }: any) {
       }
     }
     fetchData()
-  })
-  if(error){
+  }, [animeID])
+
+  if (error) {
     return <div>faild to load the page</div>
   }
   return <>{animeInfo && <AnimeInfoPage animdInfo={animeInfo} />}</>

@@ -19,32 +19,6 @@ export const mangaFetch = async ({ limit, offset, title }: Props) => {
   }
 }
 
-// export const mangaCovers = async ({ mangaIDs }: any) => {
-//   const params = new URLSearchParams()
-
-//   // Add manga IDs as multiple `manga[]` parameters
-//   mangaIDs.forEach((id: string) => params.append("manga[]", id))
-//   try {
-//     const response = await axios.get(config.getCovers({ mangaIDs: params }))
-//     // console.log(response.data);
-//     return response.data
-//   } catch (error) {
-//     console.error("Error fetching manga:", error)
-//   }
-// }
-
-// export const mangaCover = async ({ mangaIDs }: any) => {
-//   const params = new URLSearchParams()
-//   params.append("manga[]", mangaIDs)
-//   try {
-//     const response = await axios.get(config.getCovers({ mangaIDs: params }))
-//     // console.log(response.data);
-//     return response.data
-//   } catch (error) {
-//     console.error("Error fetching manga:", error)
-//   }
-// }
-
 export const singleMangaInfo = async ({ mangaID }: any) => {
   try {
     const response = await axios.get(config.getSingleManga({ mangaID }))

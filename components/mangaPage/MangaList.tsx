@@ -1,10 +1,11 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { mangaFetch } from "@/quries/mangaDex/mangaFetch"
+
 import SearchManga from "./SearchManga"
-import Image from "next/image"
 
 interface MangaTag {
   id: string

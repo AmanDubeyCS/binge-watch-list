@@ -49,7 +49,7 @@ export default function Page({ params }: any) {
       }
     }
     fetchData()
-  })
+  }, [mangaID])
 
   if (error) {
     return <div>Error: {error}</div>
