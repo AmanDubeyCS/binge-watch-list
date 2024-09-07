@@ -1,34 +1,24 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
-import { singleAnimeInfo } from "@/quries/jikan/animefetch"
+import React, { useEffect } from "react"
+import { useSingleAnimeInfo } from "@/quries/jikan/animefetch"
+import useAnimeStore from "@/store/animeIdStore"
 
 import { AnimeInfoPage } from "@/components/animePage/AnimeInfoPage"
 
 export default function Page({ params }: any) {
-  const [animeInfo, setAnimeInfo] = useState([])
-  const [error, setError] = useState("")
+  const { setAnimeID } = useAnimeStore()
   const animeID = params.animeDetails
+  const { data, error, isLoading } = useSingleAnimeInfo(animeID)
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await singleAnimeInfo({ animeID })
-
-        if (response && response.data) {
-          setAnimeInfo(response.data)
-        } else {
-          setError("Failed to fetch manga data.")
-        }
-      } catch (err) {
-        setError(`Error fetching data: ${err}`)
-      }
+    if (data) {
+      setAnimeID(data.mal_id)
     }
-    fetchData()
-  }, [animeID])
+  }, [data, setAnimeID])
 
   if (error) {
     return <div>faild to load the page</div>
   }
-  return <>{animeInfo && <AnimeInfoPage animdInfo={animeInfo} />}</>
+  return <>{!isLoading && <AnimeInfoPage animdInfo={data} />}</>
 }

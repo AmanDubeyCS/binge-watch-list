@@ -1,14 +1,22 @@
+"use client"
+
 import React from "react"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 export function MangaInfoPage({ mangaInfo, chapters, statistics }: any) {
+  const router = useRouter()
   const image = mangaInfo.relationships.filter(
     (data: any) => data.type === "cover_art"
   )
   const mangaId = Object.keys(statistics.statistics)[0]
   const ratingData = statistics.statistics[mangaId]?.rating
-  //  console.log(mangaInfo.attributes.description.en)
   const volumes = chapters.volumes
+
+  const handleChapter = (chapterID: any) => {
+    router.push(`/manga/${mangaId}/${chapterID}`)
+  }
+
   return (
     <div className="flex flex-col gap-4">
       {image && (
@@ -43,12 +51,19 @@ export function MangaInfoPage({ mangaInfo, chapters, statistics }: any) {
             return (
               <div key={volumeKey}>
                 <h2>Volume {volume.volume}</h2>
-                {/* <ul>
+                <ul>
                   {Object.keys(volume.chapters).map((chapterKey) => {
                     const chapter = volume.chapters[chapterKey]
-                    return <li key={chapter.id}>Chapter {chapter.chapter}</li>
+                    return (
+                      <li
+                        key={chapter.id}
+                        onClick={() => handleChapter(chapter.id)}
+                      >
+                        Chapter {chapter.chapter}
+                      </li>
+                    )
                   })}
-                </ul> */}
+                </ul>
               </div>
             )
           })}
