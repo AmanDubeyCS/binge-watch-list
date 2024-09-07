@@ -18,12 +18,10 @@ export const config = {
     `${BASE_URL}/manga/${mangaID}/aggregate`,
   getMangaStatistics: ({ mangaID }: any) =>
     `${BASE_URL}/statistics/manga/${mangaID}`,
-  getChapterData: (chapterID: any) =>
-    `${BASE_URL}/at-home/server/${chapterID}`,
+  getChapterData: (chapterID: any) => `${BASE_URL}/at-home/server/${chapterID}`,
 
   getAnimeList: () => `${BASE_URL_ANIME}/top/anime?type=tv&filter=airing`,
-  getSingleAnime: (animeID: number ) =>
-    `${BASE_URL_ANIME}/anime/${animeID}`,
+  getSingleAnime: (animeID: number) => `${BASE_URL_ANIME}/anime/${animeID}`,
   getSearchedAnime: (title: string) =>
     `${BASE_URL_ANIME}/anime?q=${title}&limit=7&type=tv`,
   getAnimeEpisodes: (animeID: number) =>
@@ -38,8 +36,10 @@ export const configTMDB = {
     `${BASE_URL_TMDB}/movie/${movieID}?language=en-US`,
 
   getTvList: () => `${BASE_URL_TMDB}/trending/tv/week?language=en-US`,
-  getSingleTv: ({ tvID }: any) => `${BASE_URL_TMDB}/tv/${tvID}?append_to_response=credits%2Cseasons&language=en-US`,
+  getSingleTv: ({ tvID }: any) =>
+    `${BASE_URL_TMDB}/tv/${tvID}?append_to_response=credits%2Cseasons&language=en-US`,
 
-  getPersonDetails: (personID: number) => `${BASE_URL_TMDB}/person/${personID}?append_to_response=combined_credits&language=en-US`,
-  getPopularPersons: () => `${BASE_URL_TMDB}/person/popular`
+  getPersonDetails: (personID: number) =>
+    `${BASE_URL_TMDB}/person/${personID}?append_to_response=combined_credits&language=en-US`,
+  getPopularPersons: () => `${BASE_URL_TMDB}/person/popular`,
 }

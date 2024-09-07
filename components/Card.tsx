@@ -31,7 +31,7 @@ export default function Card({
           }
         />
         {publication && (
-          <div className="absolute right-1 top-1 bg-[#9353D3] rounded-full px-2 py-1">
+          <div className="absolute right-1 top-1 rounded-full bg-[#9353D3] px-2 py-1">
             <p className="text-[11px] font-bold text-white">{publication}</p>
           </div>
         )}

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useAnimeSerch } from "@/quries/jikan/animefetch"
-import Image from "next/image"
+
 import { AnimeData } from "@/types/anime/animeTypes"
 
 export default function SearchAnime() {

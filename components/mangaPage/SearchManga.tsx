@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation"
 import { useMangaFetch } from "@/quries/mangaDex/mangaFetch"
 
 import { MangaItem } from "@/types/manga/mangaTypes"
+
 import { ImageLoader } from "../Card"
 
 export default function SearchManga() {
@@ -33,7 +34,7 @@ export default function SearchManga() {
   if (error) return <p>Error: {error.message}</p>
   return (
     <>
-      <div className="p-3 overflow-hidden w-[40px] h-[40px] hover:w-[270px]  shadow-[2px_2px_20px_rgba(0,0,0,0.08)] hover:bg-[#4070f4] rounded-full flex group items-center hover:duration-300 duration-300">
+      <div className="group flex size-[40px] items-center overflow-hidden rounded-full p-3 shadow-[2px_2px_20px_rgba(0,0,0,0.08)] duration-300 hover:w-[270px] hover:bg-[#4070f4] hover:duration-300">
         <div className="flex items-center justify-center fill-white">
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -1,8 +1,8 @@
 import { config } from "@/apiConfig"
-import { AnimeResponse } from "@/types/anime/animeTypes"
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 
+import { AnimeResponse } from "@/types/anime/animeTypes"
 
 export const useAnimeFetch = () => {
   return useQuery({

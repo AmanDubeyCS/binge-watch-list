@@ -1,13 +1,10 @@
-'use client'
-import { useGetPopularPersons } from '@/quries/TMDB/getPersonData'
-import React from 'react'
+"use client"
+
+import React from "react"
+import { useGetPopularPersons } from "@/quries/TMDB/getPersonData"
 
 export default function PersoneData({}) {
-  const {data, error, isLoading} = useGetPopularPersons()
+  const { data } = useGetPopularPersons()
   console.log(data)
-  return (
-    <div>
-      
-    </div>
-  )
+  return <div></div>
 }

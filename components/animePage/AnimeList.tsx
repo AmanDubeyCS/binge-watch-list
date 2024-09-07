@@ -1,17 +1,17 @@
 "use client"
 
-import React, { useState } from "react"
-import Image from "next/image"
+import React from "react"
 import { useRouter } from "next/navigation"
 import { useAnimeFetch } from "@/quries/jikan/animefetch"
 
-import SearchAnime from "./SearchAnime"
 import { AnimeData } from "@/types/anime/animeTypes"
+
 import Card from "../Card"
+import SearchAnime from "./SearchAnime"
 
 export function AnimeList() {
   const router = useRouter()
-  const { data, error, isLoading } = useAnimeFetch()
+  const { data } = useAnimeFetch()
 
   const handleClick = (animeID: any) => {
     router.push(`anime/${animeID}`)
@@ -23,11 +23,13 @@ export function AnimeList() {
       <div className="flex flex-wrap justify-center gap-4">
         {data &&
           data.map((anime: AnimeData) => (
-            <div
-              key={anime.mal_id}
-              onClick={() => handleClick(anime.mal_id)}
-            >
-              <Card title_en={anime.title_english} image={anime.images.webp.image_url} rating={anime.score*10} publication={anime.demographics[0]?.name}/>
+            <div key={anime.mal_id} onClick={() => handleClick(anime.mal_id)}>
+              <Card
+                title_en={anime.title_english}
+                image={anime.images.webp.image_url}
+                rating={anime.score * 10}
+                publication={anime.demographics[0]?.name}
+              />
               {/* <Image
                 src={anime.images.webp.image_url}
                 alt="image"

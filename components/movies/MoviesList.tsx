@@ -1,8 +1,8 @@
 "use client"
 
 import React from "react"
-import Image from "next/image"
 import { useRouter } from "next/navigation"
+
 import Card from "../Card"
 
 export default function MoviesList({ moviesData }: any) {
@@ -30,7 +30,12 @@ export default function MoviesList({ moviesData }: any) {
           key={movies.id}
           onClick={() => handleClick(movies.id)}
         >
-          <Card title_en={movies.title} image={movies.coverImage} rating={movies.vote_average*10} publication={formatDate(movies.release_date)}/>
+          <Card
+            title_en={movies.title}
+            image={movies.coverImage}
+            rating={movies.vote_average * 10}
+            publication={formatDate(movies.release_date)}
+          />
         </div>
       ))}
     </div>

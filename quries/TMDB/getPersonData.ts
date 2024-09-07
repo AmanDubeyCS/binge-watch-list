@@ -12,7 +12,6 @@ const options = {
 }
 
 export const useGetPersonData = (personID: number) => {
- 
   return useQuery({
     queryKey: ["getPersonData", personID],
     queryFn: async () => {
@@ -20,21 +19,18 @@ export const useGetPersonData = (personID: number) => {
         configTMDB.getPersonDetails(personID),
         options
       )
-      
+
       return response.data
     },
   })
 }
 
 export const useGetPopularPersons = () => {
-    return useQuery({
-      queryKey: ["popularPersons"],
-      queryFn: async () => {
-        const response = await axios.get(
-          configTMDB.getPopularPersons(),
-          options
-        )
-        return response.data
-      },
-    })
-  }
+  return useQuery({
+    queryKey: ["popularPersons"],
+    queryFn: async () => {
+      const response = await axios.get(configTMDB.getPopularPersons(), options)
+      return response.data
+    },
+  })
+}

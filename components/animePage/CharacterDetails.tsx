@@ -2,11 +2,9 @@ import React from "react"
 import Image from "next/image"
 import { useAnimeCharacters } from "@/quries/jikan/animefetch"
 
-
-export function CharacterDetails({animeID}: {animeID: number}) {
-  
-  const { data, error, isLoading } = useAnimeCharacters(animeID)
-  console.log(data)
+export function CharacterDetails({ animeID }: { animeID: number }) {
+  const { data, isLoading } = useAnimeCharacters(animeID)
+  // console.log(data)
   return (
     <div className="flex flex-wrap gap-2">
       {!isLoading &&

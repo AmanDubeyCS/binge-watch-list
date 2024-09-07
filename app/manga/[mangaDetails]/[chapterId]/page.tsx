@@ -1,6 +1,6 @@
 import React from "react"
-
 import { getChapterData } from "@/quries/mangaDex/mangaFetch"
+
 import { MangaReadPage } from "@/components/mangaPage/MangaReadPage"
 
 export default async function ChapterPage({ params }: any) {
@@ -15,7 +15,7 @@ export default async function ChapterPage({ params }: any) {
 
     const chapterData = response
 
-    return <MangaReadPage data={chapterData}/>
+    return <MangaReadPage data={chapterData} />
   } catch (error) {
     console.error("Error fetching chapter pages:", error)
     return <div>Error: Failed to fetch movies data.</div>

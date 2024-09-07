@@ -1,11 +1,11 @@
 import React from "react"
 import Image from "next/image"
 import useAnimeStore from "@/store/animeIdStore"
-import { EpisodesDetails } from "./EpisodesDetails"
+
 import { CharacterDetails } from "./CharacterDetails"
+import { EpisodesDetails } from "./EpisodesDetails"
 
 export function AnimeInfoPage({ animdInfo }: any) {
-
   const animeID = useAnimeStore((state) => state.animeID)
   return (
     <div>
@@ -20,8 +20,8 @@ export function AnimeInfoPage({ animdInfo }: any) {
         />
       )}
       <p>{animdInfo.title_english}</p>
-      {animeID && <EpisodesDetails animeID={animeID}/>}
-      {animeID && <CharacterDetails animeID={animeID}/>}
+      {animeID && <EpisodesDetails animeID={animeID} />}
+      {animeID && <CharacterDetails animeID={animeID} />}
     </div>
   )
 }

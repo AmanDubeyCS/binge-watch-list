@@ -1,4 +1,5 @@
-'use client'
+"use client"
+
 import React from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
@@ -15,7 +16,7 @@ export function MangaInfoPage({ mangaInfo, chapters, statistics }: any) {
   const handleChapter = (chapterID: any) => {
     router.push(`/manga/${mangaId}/${chapterID}`)
   }
-  
+
   return (
     <div className="flex flex-col gap-4">
       {image && (
