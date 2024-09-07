@@ -9,10 +9,22 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'URL is required' }, { status: 400 });
   }
 
-  const targetUrl = new URL(url);
+  // Extract headers and query params from the request
+  const token = searchParams.get('token'); // Authorization token
+  const params: Record<string, string> = {};
+  searchParams.forEach((value, key) => {
+    if (key !== 'url' && key !== 'token') {
+      params[key] = value;
+    }
+  });
 
   try {
-    const response = await axios.get(targetUrl.toString());
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : '', // Include Authorization header if token is provided
+      },
+      params, // Pass all query parameters except 'url' and 'token'
+    });
     return NextResponse.json(response.data);
   } catch (error) {
     return NextResponse.json(
@@ -21,4 +33,5 @@ export async function GET(request: Request) {
     );
   }
 }
+
 

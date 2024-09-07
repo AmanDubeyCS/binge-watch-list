@@ -1,4 +1,5 @@
 import { config } from "@/apiConfig"
+import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 
 interface Props {
@@ -7,11 +8,93 @@ interface Props {
   title: string
 }
 
-export const mangaFetch = async ({ limit, offset, title }: Props) => {
+interface MangaId {
+  mangaID: string
+}
+
+export const useMangaFetch = ({ limit, offset, title }: Props) => {
+  return useQuery({
+    queryKey: ["mangaList", limit, offset, title],
+    queryFn: async () => {
+      const response = await axios.get("/api/proxy", {
+        params: {
+          url: config.getMangaList({ limit, offset, title }),
+        },
+      })
+      const data = response.data.data
+      return data
+    },
+  })
+}
+
+export const useMangaData = (mangaID: string) => {
+  // Fetch manga info
+  const mangaInfoQuery = useQuery({
+    queryKey: ["mangaInfo", mangaID],
+    queryFn: async () => {
+      const data = await singleMangaInfo({ mangaID })
+      return data
+    },
+    enabled: !!mangaID, // Only fetch if mangaID is valid
+  })
+
+  // Fetch chapter data after manga info is fetched
+  const chapterQuery = useQuery({
+    queryKey: ["chapter", mangaID],
+    queryFn: async () => {
+      if (mangaInfoQuery.data?.data.id) {
+        const data = await getChapter({ mangaID: mangaInfoQuery.data.data.id })
+        return data
+      }
+      return null
+    },
+    enabled: !!mangaInfoQuery.data?.data.id, // Fetch only if manga info is fetched
+  })
+
+  // Fetch statistics data after manga info is fetched
+  const statisticsQuery = useQuery({
+    queryKey: ["statistics", mangaID],
+    queryFn: async () => {
+      if (mangaInfoQuery.data?.data.id) {
+        const data = await getMangaStatistics({
+          mangaID: mangaInfoQuery.data.data.id,
+        })
+        return data
+      }
+      return null
+    },
+    enabled: !!mangaInfoQuery.data?.data.id, // Fetch only if manga info is fetched
+  })
+
+  return {
+    mangaInfo: mangaInfoQuery.data,
+    chapter: chapterQuery.data,
+    statistics: statisticsQuery.data,
+    isLoading:
+      mangaInfoQuery.isLoading ||
+      chapterQuery.isLoading ||
+      statisticsQuery.isLoading,
+    error: mangaInfoQuery.error || chapterQuery.error || statisticsQuery.error,
+  }
+}
+
+export const singleMangaInfo = async ({ mangaID }: MangaId) => {
   try {
     const response = await axios.get("/api/proxy", {
       params: {
-        url: config.getMangaList({ limit, offset, title }),
+        url: config.getSingleManga({ mangaID }),
+      },
+    })
+    return response.data
+  } catch (error) {
+    console.error("Error fetching manga:", error)
+  }
+}
+export const getChapter = async ({ mangaID }: MangaId) => {
+  try {
+    const response = await axios.get("/api/proxy", {
+      params: {
+        url: config.getMangaChapters({ mangaID }),
       },
     })
     return response.data
@@ -20,44 +103,33 @@ export const mangaFetch = async ({ limit, offset, title }: Props) => {
   }
 }
 
-// export const mangaFetch = async ({ limit, offset, title }: Props) => {
-//   try {
-//     const response = await axios.get(
-//       config.getMangaList({ limit, offset, title })
-//     )
-//     // console.log(response.data);
-//     return response.data
-//   } catch (error) {
-//     console.error("Error fetching manga:", error)
-//   }
-// }
-
-export const singleMangaInfo = async ({ mangaID }: any) => {
+export const getMangaStatistics = async ({ mangaID }: MangaId) => {
   try {
-    const response = await axios.get(config.getSingleManga({ mangaID }))
-    // console.log(response.data);
+    const response = await axios.get("/api/proxy", {
+      params: {
+        url: config.getMangaStatistics({ mangaID }),
+      },
+    })
     return response.data
   } catch (error) {
     console.error("Error fetching manga:", error)
   }
 }
 
-export const getChapter = async ({ mangaID }: any) => {
-  try {
-    const response = await axios.get(config.getMangaChapters({ mangaID }))
-    // console.log(response.data);
-    return response.data
-  } catch (error) {
-    console.error("Error fetching manga:", error)
-  }
+export const useGetChapterPages = (chapterID: string) => {
+  return useQuery({
+    queryKey: ["getChapterPages", chapterID],
+    queryFn: async () => {
+      const response = await axios.get(config.getChapterData(chapterID))
+      return response.data.data
+    },
+  })
 }
-
-export const getMangaStatistics = async ({ mangaID }: any) => {
+export const getChapterData = async (chapterID: string) => {
   try {
-    const response = await axios.get(config.getMangaStatistics({ mangaID }))
-    // console.log(response.data);
+    const response = await axios.get(config.getChapterData(chapterID))
     return response.data
   } catch (error) {
-    console.error("Error fetching manga:", error)
+    console.log("error fetching chapter")
   }
 }

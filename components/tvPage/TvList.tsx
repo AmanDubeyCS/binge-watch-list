@@ -3,14 +3,17 @@
 import React from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
+import Card from "../Card"
 
 export default function TvList({ tvData }: any) {
   const router = useRouter()
-  //   console.log(moviesData)
+    console.log(tvData)
 
   const handleClick = (tvID: any) => {
     router.push(`tv/${tvID}`)
   }
+
+
   return (
     <div className="flex flex-wrap justify-center gap-2">
       {tvData.map((tv: any) => (
@@ -19,9 +22,7 @@ export default function TvList({ tvData }: any) {
           key={tv.id}
           onClick={() => handleClick(tv.id)}
         >
-          <Image src={tv.coverImage} alt="cover" width={250} height={200} />
-          <p>{tv.title}</p>
-          {/* <p>{movies.overview}</p> */}
+          <Card title_en={tv.name} image={tv.coverImage} rating={tv.vote_average*10}/>
         </div>
       ))}
     </div>
