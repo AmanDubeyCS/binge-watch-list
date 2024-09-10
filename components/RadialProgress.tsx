@@ -18,7 +18,7 @@ export default function RadialProgress({
           cx="50"
           cy="50"
           r="45"
-          stroke="var(--neutrals-200)" // bg-white
+          stroke="#343a40" // bg-white
           strokeWidth="10"
         />
         <circle
