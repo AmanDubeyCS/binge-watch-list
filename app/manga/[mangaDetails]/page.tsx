@@ -16,7 +16,7 @@ export default function Page({ params }: any) {
   }
 
   return (
-    <>
+    <div className="">
       {isLoading && <div>Loading...</div>}
       {chapter && mangaInfo && statistics && (
         <MangaInfoPage
@@ -25,6 +25,6 @@ export default function Page({ params }: any) {
           statistics={statistics}
         />
       )}
-    </>
+    </div>
   )
 }

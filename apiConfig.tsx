@@ -10,10 +10,10 @@ const BASE_URL_TMDB = "https://api.themoviedb.org/3"
 
 export const config = {
   getMangaList: ({ limit, offset, title }: any) =>
-    `${BASE_URL}/manga?title=${title}&limit=${limit}&offset=${offset}&includes%5B%5D=cover_art&contentRating%5B%5D=safe`,
+    `${BASE_URL}/manga?title=${title}&limit=${limit}&offset=${offset}&includes%5B%5D=cover_art`,
 
   getSingleManga: ({ mangaID }: any) =>
-    `${BASE_URL}/manga/${mangaID}?includes%5B%5D=cover_art`,
+    `${BASE_URL}/manga/${mangaID}?includes%5B%5D=cover_art&includes%5B%5D=artist&&includes%5B%5D=author&includes%5B%5D=creator`,
   getMangaChapters: ({ mangaID }: any) =>
     `${BASE_URL}/manga/${mangaID}/aggregate`,
   getMangaStatistics: ({ mangaID }: any) =>
