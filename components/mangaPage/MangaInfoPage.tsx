@@ -67,13 +67,13 @@ export function MangaInfoPage({
   return (
     <div className="flex flex-col gap-4">
       <div
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, rgba(10.5, 31.5, 73.5, 1) calc((50vw - 170px) - 340px), rgba(10.5, 31.5, 73.5, 0.84) 50%, rgba(10.5, 31.5, 73.5, 0.84) 100%)",
-        }}
+        // style={{
+        //   backgroundImage:
+        //     "linear-gradient(to right, rgba(10.5, 31.5, 73.5, 1) calc((50vw - 170px) - 340px), rgba(10.5, 31.5, 73.5, 0.84) 50%, rgba(10.5, 31.5, 73.5, 0.84) 100%)",
+        // }}
         className="relative flex gap-[40px] overflow-hidden px-[40px] py-[30px]"
       >
-        {image && (
+        {/* {image && (
           <Image
             src={`https://mangadex.org/covers/${mangaInfo.id}/${image[0]?.attributes?.fileName}`}
             alt="image"
@@ -81,9 +81,9 @@ export function MangaInfoPage({
             height={1000}
             className="absolute -z-30 w-full"
           />
-        )}
+        )} */}
 
-        <div className="mx-auto flex max-w-[1400px] gap-16">
+        <div className="mx-auto flex max-w-[1400px] gap-16 rounded-[16px] p-2 shadow-[0px_0px_50px_15px_#00000024]">
           <div className="flex w-fit overflow-hidden rounded-md">
             {image && (
               <Image
@@ -132,7 +132,7 @@ export function MangaInfoPage({
                 </p>
               </div>
 
-              <div className="flex max-w-[600px] justify-between">
+              <div className="flex justify-between">
                 {authors.map((author) => (
                   <div key={author.id}>
                     <p className="text-base font-medium">
@@ -164,11 +164,11 @@ export function MangaInfoPage({
         </div>
       </div>
 
-      <div className="mx-auto flex max-w-[1400px] gap-4">
-        <div className="flex h-fit flex-col gap-5 rounded-md px-4 py-2 shadow-[0px_0px_50px_15px_#00000024]">
+      <div className="mx-auto flex w-full max-w-[1400px] gap-4">
+        <div className="flex h-fit max-w-[300px] flex-col gap-5 rounded-md px-4 py-2 shadow-[0px_0px_50px_15px_#00000024]">
           <div className="flex flex-col gap-2">
             <p className="text-base font-bold">Genres</p>
-            <div className="flex gap-1">
+            <div className="flex flex-wrap gap-1">
               {genres.map((genre: any) => (
                 <p
                   key={genre.id}
@@ -181,7 +181,7 @@ export function MangaInfoPage({
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-base font-bold">Themes</p>
-            <div className="flex gap-1">
+            <div className="flex flex-wrap gap-1">
               {themes.map((themes: any) => (
                 <p
                   key={themes.id}
@@ -194,7 +194,7 @@ export function MangaInfoPage({
           </div>
           <div className="flex flex-col gap-2">
             <p className="text-base font-bold">Format</p>
-            <div className="flex gap-1">
+            <div className="flex flex-wrap gap-1">
               {formats.map((format: any) => (
                 <p
                   key={format.id}
@@ -247,19 +247,20 @@ export function MangaInfoPage({
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-1 flex-col gap-4">
           <div className="flex h-10 items-center justify-center gap-3 rounded-md shadow-[0px_0px_50px_15px_#00000024]">
-            <div className="rounded-[4px] bg-[#343a40] px-2 py-1 text-[18px] leading-[normal]">
+            {/* <ChipTabs /> */}
+            {/* <div className="rounded-[4px] bg-[#343a40] px-2 py-1 text-[18px] leading-[normal] flex-1">
               <p>chapters</p>
             </div>
-            <div className="rounded-[4px] bg-[#343a40] px-2 py-1 text-[18px] leading-[normal]">
+            <div className="rounded-[4px] bg-[#343a40] px-2 py-1 text-[18px] leading-[normal] flex-1">
               <p>Comments</p>
             </div>
-            <div className="rounded-[4px] bg-[#343a40] px-2 py-1 text-[18px] leading-[normal]">
+            <div className="rounded-[4px] bg-[#343a40] px-2 py-1 text-[18px] leading-[normal] flex-1">
               <p>Art</p>
-            </div>
+            </div> */}
           </div>
-          <div className="flex-1 rounded-md shadow-[0px_0px_50px_15px_#00000024]">
+          <div className="flex-1 rounded-md px-4 py-2 shadow-[0px_0px_50px_15px_#00000024]">
             {volumes && (
               <div className="flex flex-col gap-3">
                 {Object.keys(volumes).map((volumeKey) => {

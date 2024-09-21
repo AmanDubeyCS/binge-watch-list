@@ -21,13 +21,24 @@ export const config = {
   getChapterData: (chapterID: any) => `${BASE_URL}/at-home/server/${chapterID}`,
 
   getAnimeList: () => `${BASE_URL_ANIME}/top/anime?type=tv&filter=airing`,
-  getSingleAnime: (animeID: number) => `${BASE_URL_ANIME}/anime/${animeID}`,
+  getSingleAnime: (animeID: number) =>
+    `${BASE_URL_ANIME}/anime/${animeID}/full`,
   getSearchedAnime: (title: string) =>
     `${BASE_URL_ANIME}/anime?q=${title}&limit=7&type=tv`,
   getAnimeEpisodes: (animeID: number) =>
     `${BASE_URL_ANIME}/anime/${animeID}/episodes`,
+  getAnimeEpisodeVideo: (animeID: number) =>
+    `https://api.jikan.moe/v4/anime/${animeID}/videos/episodes`,
   getCharactersDetail: (animeID: number) =>
     `${BASE_URL_ANIME}/anime/${animeID}/characters`,
+  getAnimeStatistics: (animeID: number) =>
+    `${BASE_URL_ANIME}/anime/${animeID}/statistics`,
+  getAnimeReviews: (animeID: number) =>
+    `${BASE_URL_ANIME}/anime/${animeID}/reviews`,
+  getAnimePictures: (animeID: number) =>
+    `${BASE_URL_ANIME}/anime/${animeID}/pictures`,
+  getAnimerecommendations: (animeID: number) =>
+    `${BASE_URL_ANIME}/anime/${animeID}/recommendations`,
 }
 
 export const configTMDB = {

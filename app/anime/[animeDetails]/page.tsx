@@ -20,5 +20,5 @@ export default function Page({ params }: any) {
   if (error) {
     return <div>faild to load the page</div>
   }
-  return <>{!isLoading && <AnimeInfoPage animdInfo={data} />}</>
+  return <>{!isLoading && <AnimeInfoPage animaInfo={data} />}</>
 }
