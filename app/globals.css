@@ -26,3 +26,13 @@ body {
     text-wrap: balance;
   }
 }
+
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* For WebKit browsers */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, and Opera */
+}

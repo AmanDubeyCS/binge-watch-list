@@ -8,7 +8,7 @@ export const useAnimeFetch = () => {
   return useQuery({
     queryKey: ["animeFetch"],
     queryFn: async () => {
-      const response = await axios.get(config.getAnimeList())
+      const response = await axios.get(config.getAnimeList)
       const data: AnimeResponse = response.data
       return data.data
     },

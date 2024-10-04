@@ -1,3 +1,4 @@
+'use client'
 import React, { useState } from "react"
 import Image from "next/image"
 import useAnimeStore from "@/store/animeIdStore"
@@ -13,6 +14,17 @@ import Overview from "./Overview"
 import { Pictures } from "./Pictures"
 import { Recommendations } from "./Recommendations"
 
+export const formatDate = (dateString: string) => {
+  const date = new Date(dateString)
+  return date
+    .toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    })
+    .replace(/\//g, "/")
+}
+
 export function AnimeInfoPage({ animaInfo }: { animaInfo: Anime }) {
   const animeID = useAnimeStore((state) => state.animeID)
   const tabs = [
@@ -24,17 +36,8 @@ export function AnimeInfoPage({ animaInfo }: { animaInfo: Anime }) {
     "pictures",
   ]
   const [activeTab, setActiveTab] = useState("overview")
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return date
-      .toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      })
-      .replace(/\//g, "/")
-  }
-  // console.log(animaInfo)
+  
+  console.log(animaInfo)
 
   const renderContent = () => {
     switch (activeTab) {
@@ -72,7 +75,7 @@ export function AnimeInfoPage({ animaInfo }: { animaInfo: Anime }) {
           className="absolute -z-30 h-auto w-full pl-72"
         />
 
-        <div className="mx-auto flex h-full max-w-[1400px] items-center justify-center px-10 py-8">
+        <div className="mx-auto flex h-full max-w-[1600px] items-center justify-center px-10 py-8">
           <div className="flex w-fit shrink-0 justify-center">
             <Image
               src={animaInfo.images?.webp.large_image_url}
@@ -153,119 +156,7 @@ export function AnimeInfoPage({ animaInfo }: { animaInfo: Anime }) {
         }}
         className=""
       >
-        <div className="mx-auto flex max-w-[1400px] gap-4 p-10">
-          {/* <div className="max-w-[350px] h-fit space-y-4 overflow-y-auto rounded-lg border p-4 text-black">
-            <div>
-              <h3 className="mb-1 text-lg font-semibold text-purple-700">
-                Genre
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {animaInfo.genres.map((genre: any) => (
-                  <p
-                    key={genre.mal_id}
-                    className="rounded-full border px-3 py-1 text-sm"
-                  >
-                    {genre.name}
-                  </p>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h3 className="mb-1 text-lg font-semibold text-purple-700">
-                Broadcast
-              </h3>
-              <div className="flex items-center gap-2 text-sm">
-                <Calendar className="h-4 w-4 text-indigo-400" />
-                <span>{animaInfo.broadcast.string}</span>
-              </div>
-              <div className="mt-1 flex items-center gap-2 text-sm">
-                <Clock className="h-4 w-4 text-indigo-400" />
-                <span>{animaInfo.duration}</span>
-              </div>
-            </div>
-            <div>
-              <h3 className="mb-1 text-lg font-semibold text-purple-700">
-                Other Titles
-              </h3>
-              <p className="0 text-sm">
-                <span className="font-semibold text-indigo-400">Japanese:</span>{" "}
-                {animaInfo.title_japanese}
-              </p>
-              <p className="text-sm">
-                <span className="font-semibold text-indigo-400">Synonyms:</span>
-                {animaInfo.title_synonyms.map((title: string, index: number) => (
-                  <span key={index}>{title}</span>
-                ))}
-              </p>
-              <p>
-                <span className="font-semibold text-indigo-400">Other:</span>{" "}
-                {animaInfo.titles.map((title: any) => (
-                  <span key={title.type}>{title.title},</span>
-                ))}
-              </p>
-            </div>
-            <div>
-              <h3 className="mb-1 text-lg font-semibold text-purple-700">
-                Information
-              </h3>
-              <p className="text-sm">
-                <span className="font-semibold text-indigo-400">Type:</span>{" "}
-                {animaInfo.type}
-              </p>
-              <p className="text-sm">
-                <span className="font-semibold text-indigo-400">Episodes:</span>{" "}
-                {animaInfo.episodes}
-              </p>
-              <p className="text-sm">
-                <span className="font-semibold text-indigo-400">Status:</span>{" "}
-                {animaInfo.status}
-              </p>
-              <p className="text-sm">
-                <span className="font-semibold text-indigo-400">Aired:</span>{" "}
-                {animaInfo.aired.string}
-              </p>
-              <p className="flex flex-wrap text-sm">
-                <span className="font-semibold text-indigo-400">
-                  Producers:
-                </span>{" "}
-                {animaInfo.producers.map((producer) => (
-                    <span key={producer.mal_id}>{producer.name},</span>
-                ))}
-              </p>
-              <p className="flex flex-wrap text-sm">
-                <span className="font-semibold text-indigo-400">
-                  Licensors:
-                </span>{" "}
-                {animaInfo.licensors.map((licensor) => (
-                  <span key={licensor.mal_id}>{licensor.name}</span>
-                ))}
-              </p>
-              <p className="text-sm">
-                <span className="font-semibold text-indigo-400">Studios:</span>{" "}
-                {animaInfo.studios.map((studio) => (
-                  <span key={studio.mal_id}>{studio.name}</span>
-                ))}
-              </p>
-              <p className="text-sm">
-                <span className="font-semibold text-indigo-400">Source:</span>{" "}
-                {animaInfo.source}
-              </p>
-              <p className="text-sm">
-                <span className="font-semibold text-indigo-400">Theme:</span>{" "}
-                {animaInfo.themes.map((theam) => (
-                  <span key={theam.mal_id}>{theam.name},</span>
-                ))}
-              </p>
-              <p className="text-sm">
-                <span className="font-semibold text-indigo-400">
-                  Demographic:
-                </span>{" "}
-                {animaInfo.demographics.map((demographic) => (
-                  <span key={demographic.mal_id}>{demographic.name}</span>
-                ))}
-              </p>
-            </div>
-          </div> */}
+        <div className="mx-auto flex max-w-[1600px] gap-4 p-10">
           <SideBarDetails animeInfo={animaInfo} />
           <div className="flex w-full flex-col gap-4">
             <div className="h-[50px] rounded-lg border">

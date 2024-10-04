@@ -20,7 +20,11 @@ export const config = {
     `${BASE_URL}/statistics/manga/${mangaID}`,
   getChapterData: (chapterID: any) => `${BASE_URL}/at-home/server/${chapterID}`,
 
-  getAnimeList: () => `${BASE_URL_ANIME}/top/anime?type=tv&filter=airing`,
+  getBannerAnime: `https://api.jikan.moe/v4/anime?status=airing&order_by=score&sort=desc&start_date=2024-01-01&limit=6`,
+  getAnimeList: `${BASE_URL_ANIME}/top/anime?type=tv&filter=airing&limit=15`,
+  getLatestpromos: `${BASE_URL_ANIME}/watch/promos`,
+  getUpcomongAnimes: `${BASE_URL_ANIME}/seasons/upcoming?limit=15`,
+  getPopularStudios: `${BASE_URL_ANIME}/producers?order_by=favorites&sort=desc&limit=15`,
   getSingleAnime: (animeID: number) =>
     `${BASE_URL_ANIME}/anime/${animeID}/full`,
   getSearchedAnime: (title: string) =>

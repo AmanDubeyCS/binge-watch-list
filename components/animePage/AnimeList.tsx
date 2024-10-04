@@ -16,7 +16,7 @@ export function AnimeList() {
   const handleClick = (animeID: any) => {
     router.push(`anime/${animeID}`)
   }
-  // console.log(data)
+  console.log(data)
   return (
     <div className="flex flex-col flex-wrap gap-2">
       <SearchAnime />

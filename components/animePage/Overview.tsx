@@ -11,7 +11,7 @@ export default function Overview({ animeInfo }: { animeInfo: Anime }) {
           <div className="aspect-w-16 aspect-h-9">
             <iframe
               src={animeInfo.trailer.embed_url}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
               className="aspect-video size-full rounded-lg"
             ></iframe>
@@ -63,32 +63,36 @@ export default function Overview({ animeInfo }: { animeInfo: Anime }) {
               ))}
             </div>
           </div>
-          <div>
-            <h3 className="text-lg font-semibold">Themes:</h3>
-            <div className="mt-1 flex flex-wrap gap-2">
-              {animeInfo.themes.map((theme, index) => (
-                <span
-                  key={index}
-                  className="rounded-full bg-green-100 px-2 py-1 text-sm text-green-800"
-                >
-                  {theme.name}
-                </span>
-              ))}
+          {animeInfo.themes.length > 0 && (
+            <div>
+              <h3 className="text-lg font-semibold">Themes:</h3>
+              <div className="mt-1 flex flex-wrap gap-2">
+                {animeInfo.themes.map((theme, index) => (
+                  <span
+                    key={index}
+                    className="rounded-full bg-green-100 px-2 py-1 text-sm text-green-800"
+                  >
+                    {theme.name}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold">Demographics:</h3>
-            <div className="mt-1 flex flex-wrap gap-2">
-              {animeInfo.demographics.map((demo, index) => (
-                <span
-                  key={index}
-                  className="rounded-full bg-purple-100 px-2 py-1 text-sm text-purple-800"
-                >
-                  {demo.name}
-                </span>
-              ))}
+          )}
+          {animeInfo.demographics.length > 0 && (
+            <div>
+              <h3 className="text-lg font-semibold">Demographics:</h3>
+              <div className="mt-1 flex flex-wrap gap-2">
+                {animeInfo.demographics.map((demo, index) => (
+                  <span
+                    key={index}
+                    className="rounded-full bg-purple-100 px-2 py-1 text-sm text-purple-800"
+                  >
+                    {demo.name}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
 

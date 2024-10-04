@@ -20,7 +20,9 @@ export default function SideBarDetails({ animeInfo }: { animeInfo: Anime }) {
         <h2 className="mb-4 text-2xl font-bold">Ratings</h2>
         <div className="mb-2 flex items-center">
           <Star className="mr-2 size-6 text-yellow-400" />
-          <span className="text-3xl font-bold">{animeInfo.score}</span>
+          <span className="text-3xl font-bold">
+            {animeInfo.score ? animeInfo.score : "N/A"}
+          </span>
         </div>
         <p className="text-gray-600">Scored by {animeInfo.scored_by} users</p>
         <div className="mt-4">
@@ -45,7 +47,7 @@ export default function SideBarDetails({ animeInfo }: { animeInfo: Anime }) {
         <p className="flex items-center text-gray-700">
           <Film className="mr-2 size-4 text-blue-500" />
           <span className="mr-1 font-semibold">Episodes:</span>{" "}
-          {animeInfo.episodes}
+          {animeInfo.episodes || "N/A"}
         </p>
         <p className="flex items-center text-gray-700">
           <Info className="mr-2 size-4 text-blue-500" />
@@ -57,7 +59,7 @@ export default function SideBarDetails({ animeInfo }: { animeInfo: Anime }) {
         </p>
         <p className="flex items-center text-gray-700">
           <Tag className="mr-2 size-4 text-blue-500" />
-          <span className="mr-1 font-semibold">Rating:</span> {animeInfo.rating}
+          <span className="mr-1 font-semibold ">Rating:</span> <span className="line-clamp-1">{animeInfo.rating}</span>
         </p>
       </section>
       {/* 
@@ -88,22 +90,24 @@ export default function SideBarDetails({ animeInfo }: { animeInfo: Anime }) {
         </ul>
       </section>
 
-      <section className="rounded-lg bg-white p-6 shadow-md">
-        <h2 className="mb-4 text-2xl font-bold">Streaming Platforms</h2>
-        <ul className="space-y-2">
-          {animeInfo.streaming.map((platform, index) => (
-            <li key={index}>
-              <a
-                href={platform.url}
-                className="flex items-center text-blue-500 hover:underline"
-              >
-                <Play className="mr-2 size-4" />
-                {platform.name}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </section>
+      {animeInfo.streaming.length > 0 && (
+        <section className="rounded-lg bg-white p-6 shadow-md">
+          <h2 className="mb-4 text-2xl font-bold">Streaming Platforms</h2>
+          <ul className="space-y-2">
+            {animeInfo.streaming.map((platform, index) => (
+              <li key={index}>
+                <a
+                  href={platform.url}
+                  className="flex items-center text-blue-500 hover:underline"
+                >
+                  <Play className="mr-2 size-4" />
+                  {platform.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   )
 }

@@ -5,6 +5,14 @@ import { Calendar, Star } from "lucide-react"
 export function EpisodesDetails({ animeID }: { animeID: number }) {
   const { data } = useEpisodeDetails(animeID)
 
+  if (data && data.length === 0) {
+    return (
+      <div className="flex w-full justify-center text-[24px] text-black">
+        N/A
+      </div>
+    )
+  }
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
     return date

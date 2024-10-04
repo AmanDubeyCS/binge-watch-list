@@ -28,7 +28,14 @@ interface AnimeRecommendation {
 export function Recommendations({ animeID }: { animeID: number }) {
   const router = useRouter()
   const { data } = useAnimeRecommendations(animeID)
-  // console.log(data)
+
+  if (data && data.length === 0) {
+    return (
+      <div className="flex w-full justify-center text-[24px] text-black">
+        N/A
+      </div>
+    )
+  }
 
   const handleClick = (animeID: any) => {
     router.push(`${animeID}`)
