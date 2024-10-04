@@ -37,8 +37,8 @@ interface CharacterDetails {
 
 export function CharacterDetails({ animeID }: { animeID: number }) {
   const { data, isLoading } = useAnimeCharacters(animeID)
-  if(!isLoading && !data) {
-   <div className="flex w-full justify-center text-[24px]">N/A</div>
+  if (!isLoading && !data) {
+    ;<div className="flex w-full justify-center text-[24px]">N/A</div>
   }
   return (
     <div className="flex flex-wrap items-center justify-center gap-2 py-4">

@@ -59,7 +59,8 @@ export default function SideBarDetails({ animeInfo }: { animeInfo: Anime }) {
         </p>
         <p className="flex items-center text-gray-700">
           <Tag className="mr-2 size-4 text-blue-500" />
-          <span className="mr-1 font-semibold ">Rating:</span> <span className="line-clamp-1">{animeInfo.rating}</span>
+          <span className="mr-1 font-semibold">Rating:</span>{" "}
+          <span className="line-clamp-1">{animeInfo.rating}</span>
         </p>
       </section>
       {/* 

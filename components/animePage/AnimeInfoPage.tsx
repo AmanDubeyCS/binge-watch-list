@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import React, { useState } from "react"
 import Image from "next/image"
 import useAnimeStore from "@/store/animeIdStore"
@@ -36,7 +36,7 @@ export function AnimeInfoPage({ animaInfo }: { animaInfo: Anime }) {
     "pictures",
   ]
   const [activeTab, setActiveTab] = useState("overview")
-  
+
   console.log(animaInfo)
 
   const renderContent = () => {

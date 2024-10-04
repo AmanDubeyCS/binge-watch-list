@@ -41,13 +41,13 @@ export function Crouselcard({
         <h1 className="mb-2 text-4xl font-bold leading-tight">{title}</h1>
         <div className="mb-4 flex items-center space-x-4">
           <span className="flex items-center">
-            <Tv className="mr-1 h-4 w-4" /> {type}
+            <Tv className="mr-1 size-4" /> {type}
           </span>
           <span className="flex items-center">
-            <Clock className="mr-1 h-4 w-4" /> {duration}
+            <Clock className="mr-1 size-4" /> {duration}
           </span>
           <span className="flex items-center">
-            <Calendar className="mr-1 h-4 w-4" /> {formatDate(year)}
+            <Calendar className="mr-1 size-4" /> {formatDate(year)}
           </span>
         </div>
         <p className="mb-6 line-clamp-5 max-w-2xl text-gray-300">{synopsis}</p>
@@ -65,7 +65,7 @@ export function Crouselcard({
         <img
           src={image}
           alt="Anime characters"
-          className="h-full w-full object-cover object-right"
+          className="size-full object-cover object-right"
         />
       </div>
     </div>

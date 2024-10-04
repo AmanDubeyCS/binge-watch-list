@@ -3,7 +3,7 @@ import React from "react"
 
 export default function Header() {
   return (
-    <div className="mx-auto flex px-10 h-[72px] max-w-[1600px] items-center justify-between text-black">
+    <div className="mx-auto flex h-[72px] max-w-[1600px] items-center justify-between px-10 text-black">
       <div>LOGO</div>
       <div className="flex gap-3">
         <Link

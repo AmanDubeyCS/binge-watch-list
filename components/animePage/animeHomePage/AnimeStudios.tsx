@@ -10,11 +10,11 @@ export function AnimeStudios({ studios }: any) {
         {studios &&
           studios.map((studio: any) => (
             <div key={studio.mal_id} className="text-center">
-              <div className="mb-2 flex h-24 w-24 items-center justify-center rounded-full bg-white shadow-md hover:scale-105 duration-300 cursor-pointer">
+              <div className="mb-2 flex size-24 cursor-pointer items-center justify-center rounded-full bg-white shadow-md duration-300 hover:scale-105">
                 <img
                   src={studio.images.jpg.image_url}
                   alt={studio.name}
-                  className="h-16 w-16 object-contain hover:scale-110 duration-300"
+                  className="size-16 object-contain duration-300 hover:scale-110"
                 />
               </div>
               <p className="text-sm font-medium text-gray-900">

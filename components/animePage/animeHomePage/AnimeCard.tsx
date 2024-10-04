@@ -1,9 +1,8 @@
 "use client"
 import React, { useState } from "react"
 import Image from "next/image"
-import RadialProgress from "@/components/RadialProgress"
 import { useRouter } from "next/navigation"
-import { Badge, Star } from "lucide-react"
+import { Star } from "lucide-react"
 
 interface Props {
   image: string
@@ -61,7 +60,7 @@ export default function Animecard({
           </h3>
           {rating && (
             <div className="mb-2 flex items-center">
-              <Star className="mr-1 h-5 w-5 fill-current text-yellow-500" />
+              <Star className="mr-1 size-5 fill-current text-yellow-500" />
               <span className="mr-2 text-lg font-semibold text-gray-800">
                 {rating || "N/A"}
               </span>

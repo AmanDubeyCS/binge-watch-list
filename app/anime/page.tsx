@@ -1,6 +1,5 @@
 import React from "react"
 
-import { AnimeList } from "@/components/animePage/AnimeList"
 import { config } from "@/apiConfig"
 import { CurrentlyAiring } from "@/components/animePage/animeHomePage/CurrentlyAiring"
 import { AnimeVideos } from "@/components/animePage/animeHomePage/AnimeVideos"
@@ -34,13 +33,13 @@ export default async function Page() {
 
   // console.log(upcomingRes)
   return (
-    <main className="max-w-[1600px] mx-auto flex flex-col gap-10 pb-10 px-8">
-      {bannerAnime && <BannerCarousel anime={bannerAnime.data}/>}
+    <main className="mx-auto flex max-w-[1600px] flex-col gap-10 px-8 pb-10">
+      {bannerAnime && <BannerCarousel anime={bannerAnime.data} />}
       {trendingAnime && (
         <CurrentlyAiring currentlyAiring={trendingAnime.data} />
       )}
       {latestPromo && <AnimeVideos animeVideos={latestPromo.data} />}
-      {popularStudios && <AnimeStudios studios={popularStudios.data}/>}
+      {popularStudios && <AnimeStudios studios={popularStudios.data} />}
       {upcomingRes && <UpcomingAnime upcomingAnime={upcomingRes.data} />}
     </main>
   )
