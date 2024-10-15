@@ -37,8 +37,6 @@ export function AnimeInfoPage({ animaInfo }: { animaInfo: Anime }) {
   ]
   const [activeTab, setActiveTab] = useState("overview")
 
-  console.log(animaInfo)
-
   const renderContent = () => {
     switch (activeTab) {
       case "overview":

@@ -9,7 +9,6 @@ interface Props {
   rating: number
   title_en: string
   title?: string
-  publication?: string
   animeID: number
   genres: any
   ranking: number
@@ -22,7 +21,6 @@ export default function Animecard({
   rating,
   title_en,
   title,
-  publication,
   animeID,
   genres,
   ranking,
@@ -94,40 +92,6 @@ export default function Animecard({
         </div>
       </div>
     </div>
-    // <div onClick={handleClick} className="flex h-auto w-fit cursor-pointer flex-col gap-1 bg-white rounded-lg border p-3 shadow-md duration-300 hover:scale-105">
-    //   <div className="relative max-h-[315px] w-fit overflow-hidden rounded-[8px]">
-    //     <ImageLoader
-    //       src={image}
-    //       alt=""
-    //       fallback={
-    //         <div className="flex h-auto w-[225px] items-center justify-center bg-white text-center text-black">
-    //           <p>Image not available</p>
-    //         </div>
-    //       }
-    //     />
-    //     {publication && (
-    //       <div className="absolute right-1 top-1 rounded-full bg-[#9353D3] px-2 py-1">
-    //         <p className="text-[11px] font-bold text-white">{publication}</p>
-    //       </div>
-    //     )}
-    //     {rating && (
-    //       <div className="absolute bottom-1 right-1">
-    //         <div className="relative size-[36px] shrink-0 rounded-full bg-[#343a40]">
-    //           <RadialProgress percentage={Math.floor(rating)} />
-    //           <span className="text-neutrals-800 absolute left-1/2 top-1/2 flex min-h-[22px] min-w-[22px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-[12px] font-[800]">
-    //             {Math.floor(rating)}
-    //           </span>
-    //         </div>
-    //       </div>
-    //     )}
-    //   </div>
-
-    //   <div className="flex max-w-[225px] flex-col rounded-[8px]">
-    //     <p className="line-clamp-3 text-wrap text-base font-bold text-black">
-    //       {title_en || title}
-    //     </p>
-    //   </div>
-    // </div>
   )
 }
 

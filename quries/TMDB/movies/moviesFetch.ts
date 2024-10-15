@@ -14,7 +14,7 @@ const options = {
 
 export const trendingMoviesFetch = async () => {
   try {
-    const response = await axios.get(configTMDB.getMoviesList(), options)
+    const response = await axios.get(configTMDB.getMoviesList, options)
     if (response.status === 200) {
       const movies = response.data.results
 
@@ -27,8 +27,6 @@ export const trendingMoviesFetch = async () => {
       console.error(`API request failed with status ${response.status}`)
       return null
     }
-    // console.log(response.data);
-    // return response.data
   } catch (error) {
     console.error("Error fetching manga:", error)
   }

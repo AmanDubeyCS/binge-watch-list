@@ -1,5 +1,5 @@
 const isProd = true
-
+const tvdb = "14923218-bcc2-4cdb-ab1a-1983494b21ed"
 export const BASE_URL = isProd
   ? "https://api.mangadex.org"
   : "https://api.mangadex.dev"
@@ -46,15 +46,32 @@ export const config = {
 }
 
 export const configTMDB = {
-  getMoviesList: () => `${BASE_URL_TMDB}/trending/movie/week?language=en-US`,
+  getMoviesList: `${BASE_URL_TMDB}/trending/movie/week?language=en-US`,
+  getPopularMovie: `${BASE_URL_TMDB}/discover/movie?air_date.lte=2025-04-07&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=IN&with_runtime.gte=0&with_runtime.lte=400&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&without_keywords=210024`,
   getSingleMovie: ({ movieID }: any) =>
     `${BASE_URL_TMDB}/movie/${movieID}?language=en-US`,
 
-  getTvList: () => `${BASE_URL_TMDB}/trending/tv/week?language=en-US`,
+  getTvList: `${BASE_URL_TMDB}/trending/tv/day?language=en-US`,
+  getTvPopular: `${BASE_URL_TMDB}/discover/tv?air_date.lte=2025-04-07&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=IN&with_runtime.gte=0&with_runtime.lte=400&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&without_keywords=210024`,
+  getTvProviders: `${BASE_URL_TMDB}/watch/providers/tv?language=en-US&watch_region=IN`,
+  getTvGenres: `${BASE_URL_TMDB}/genre/tv/list`,
+  getTvByProvider: (tvProviderId: number) =>
+    `${BASE_URL_TMDB}/discover/tv?air_date.lte=2025-04-07&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=IN&with_runtime.gte=0&with_runtime.lte=400&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&with_watch_providers=${tvProviderId}`,
+  getTvByGenres: (genresID: number) =>
+    `${BASE_URL_TMDB}/discover/tv?air_date.lte=2025-04-07&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=IN&with_runtime.gte=0&with_runtime.lte=400&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&with_genres=${genresID}&without_keywords=210024`,
   getSingleTv: ({ tvID }: any) =>
-    `${BASE_URL_TMDB}/tv/${tvID}?append_to_response=credits%2Cseasons&language=en-US`,
+    `${BASE_URL_TMDB}/tv/${tvID}?append_to_response=external_ids%2Cvideos%2Cwatch%2Fproviders&language=en-US`,
+  getSingleTvCast: (seriesId: number) =>
+    `${BASE_URL_TMDB}/tv/${seriesId}/aggregate_credits?language=en-US`,
+  getTvRecommendations: (seriesId: number) =>
+    `${BASE_URL_TMDB}/tv/${seriesId}/recommendations?language=en-US&page=1`,
+  getTvReviews: (seriesId: number) =>
+    `${BASE_URL_TMDB}/tv/${seriesId}/reviews?language=en-US&page=1`,
+  getTvImages: (seriesId: number) => `${BASE_URL_TMDB}/tv/${seriesId}/images`,
+  getSeasonEpisodes: (seriesId: number, seasonId: number) =>
+    `${BASE_URL_TMDB}/tv/${seriesId}/season/${seasonId}?language=en-US`,
 
   getPersonDetails: (personID: number) =>
     `${BASE_URL_TMDB}/person/${personID}?append_to_response=combined_credits&language=en-US`,
-  getPopularPersons: () => `${BASE_URL_TMDB}/person/popular`,
+  getPopularPersons: `${BASE_URL_TMDB}/person/popular`,
 }

@@ -29,7 +29,7 @@ export const useGetPopularPersons = () => {
   return useQuery({
     queryKey: ["popularPersons"],
     queryFn: async () => {
-      const response = await axios.get(configTMDB.getPopularPersons(), options)
+      const response = await axios.get(configTMDB.getPopularPersons, options)
       return response.data
     },
   })

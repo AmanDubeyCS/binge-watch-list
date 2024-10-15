@@ -27,7 +27,6 @@ export function CurrentlyAiring({
               ranking={anime.rank}
               scoredBy={anime.scored_by}
               status={anime.status}
-              publication={anime.demographics[0]?.name}
             />
           ))}
         </div>
