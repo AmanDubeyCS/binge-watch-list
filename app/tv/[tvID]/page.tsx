@@ -14,7 +14,7 @@ export default async function SingleTvPage({ params }: any) {
 
     const tvData = response
 
-    return <TvInfoPage tvInfo={tvData} />
+    return <TvInfoPage tvInfo={tvData} tvID={tvID} />
   } catch (error) {
     console.error("Error fetching movies data:", error)
     return <div>Error: Failed to fetch movies data.</div>

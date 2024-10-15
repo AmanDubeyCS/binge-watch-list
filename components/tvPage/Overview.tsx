@@ -1,0 +1,25 @@
+import React from "react"
+
+export function Overview({ trailer }: any) {
+  const trailerData = trailer.filter((trailer: any) =>
+    trailer.name.includes("Trailer" || "Official")
+  )
+
+  return (
+    <div className="space-y-6 text-black md:col-span-2">
+      {trailer.length > 0 && (
+        <section className="rounded-lg bg-white p-6 shadow-md">
+          <h2 className="mb-4 text-2xl font-bold">Trailer</h2>
+          <div className="aspect-w-16 aspect-h-9">
+            <iframe
+              src={`https://www.youtube.com/embed/${trailerData[0]?.key}`}
+              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="aspect-video size-full rounded-lg"
+            ></iframe>
+          </div>
+        </section>
+      )}
+    </div>
+  )
+}

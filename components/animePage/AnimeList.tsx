@@ -25,19 +25,11 @@ export function AnimeList() {
           data.map((anime: AnimeData) => (
             <div key={anime.mal_id} onClick={() => handleClick(anime.mal_id)}>
               <Card
-                title_en={anime.title_english}
+                title_en={anime.title_english || anime.title}
                 image={anime.images.webp.image_url}
                 rating={anime.score * 10}
                 publication={anime.demographics[0]?.name}
               />
-              {/* <Image
-                src={anime.images.webp.image_url}
-                alt="image"
-                width={256}
-                height={200}
-                className="aspect-[5/7] h-auto w-[256px]"
-              />
-              <p className="line-clamp-2 text-wrap">{anime.title_english}</p> */}
             </div>
           ))}
       </div>

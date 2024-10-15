@@ -48,7 +48,7 @@ export default function Card({
       </div>
 
       <div className="flex flex-col rounded-[8px]">
-        <p className="line-clamp-3 text-base font-bold text-white">
+        <p className="line-clamp-3 text-base font-bold text-black">
           {title_en || title}
         </p>
       </div>

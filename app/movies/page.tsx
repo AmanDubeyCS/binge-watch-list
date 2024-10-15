@@ -1,20 +1,19 @@
 import React from "react"
 import { trendingMoviesFetch } from "@/quries/TMDB/movies/moviesFetch"
 
-import MoviesList from "@/components/movies/MoviesList"
+import { CurrentlyTrending } from "@/components/tvPage/tvHomePage/CurrentlyTrending"
 
 export default async function MoviesPage() {
-  try {
-    const response = await trendingMoviesFetch()
+  const trendingMovies = await trendingMoviesFetch()
 
-    if (!response) {
-      throw new Error("No data received")
-    }
-
-    const moviesData = response
-    return <MoviesList moviesData={moviesData} />
-  } catch (error) {
-    console.error("Error fetching movies data:", error)
-    return <div>Error: Failed to fetch movies data.</div>
-  }
+  return (
+    <main className="mx-auto flex max-w-[1600px] flex-col gap-10 px-8 pb-10">
+      {trendingMovies && (
+        <CurrentlyTrending
+          movieData={trendingMovies}
+          title="Currently Trending"
+        />
+      )}
+    </main>
+  )
 }

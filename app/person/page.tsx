@@ -5,6 +5,6 @@ import { useGetPopularPersons } from "@/quries/TMDB/getPersonData"
 
 export default function PersoneData({}) {
   const { data } = useGetPopularPersons()
-  console.log(data)
+  // console.log(data)
   return <div></div>
 }

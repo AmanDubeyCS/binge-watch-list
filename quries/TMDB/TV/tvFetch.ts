@@ -1,4 +1,5 @@
 import { configTMDB } from "@/apiConfig"
+import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 
 export const TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/"
@@ -14,7 +15,7 @@ const options = {
 
 export const trendingTvFetch = async () => {
   try {
-    const response = await axios.get(configTMDB.getTvList(), options)
+    const response = await axios.get(configTMDB.getTvList, options)
     if (response.status === 200) {
       const tv = response.data.results
 
@@ -52,4 +53,69 @@ export const singleTvFetch = async ({ tvID }: any) => {
   } catch (error) {
     console.error("Error fetching movie:", error)
   }
+}
+
+export const useTvCast = (seriesId: number) => {
+  return useQuery({
+    queryKey: ["TvCharacter", seriesId],
+    queryFn: async () => {
+      const response = await axios.get(
+        configTMDB.getSingleTvCast(seriesId),
+        options
+      )
+      return response.data
+    },
+  })
+}
+
+export const useTvRecommendations = (seriesId: number) => {
+  return useQuery({
+    queryKey: ["TvRecommendations", seriesId],
+    queryFn: async () => {
+      const response = await axios.get(
+        configTMDB.getTvRecommendations(seriesId),
+        options
+      )
+      return response.data
+    },
+  })
+}
+
+export const useTvReviews = (seriesId: number) => {
+  return useQuery({
+    queryKey: ["TvReviews", seriesId],
+    queryFn: async () => {
+      const response = await axios.get(
+        configTMDB.getTvReviews(seriesId),
+        options
+      )
+      return response.data
+    },
+  })
+}
+
+export const useTvImages = (seriesId: number) => {
+  return useQuery({
+    queryKey: ["TvImages", seriesId],
+    queryFn: async () => {
+      const response = await axios.get(
+        configTMDB.getTvImages(seriesId),
+        options
+      )
+      return response.data
+    },
+  })
+}
+
+export const useSeasonEpisodes = (seriesId: number, seasonId: number) => {
+  return useQuery({
+    queryKey: ["SeasonEpisodes", seriesId, seasonId],
+    queryFn: async () => {
+      const response = await axios.get(
+        configTMDB.getSeasonEpisodes(seriesId, seasonId),
+        options
+      )
+      return response.data
+    },
+  })
 }
