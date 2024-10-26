@@ -1,4 +1,4 @@
-import { BarChart2, Book, Film, Info, Star, Tag, Tv } from "lucide-react"
+import { BarChart2, Film, Info, Star, Tag, Tv, CircleDollarSign, Hourglass, Languages } from "lucide-react"
 import React from "react"
 
 const tmdbLanguageMap = {
@@ -83,6 +83,7 @@ interface Provider {
 interface CountryStreamingInfo {
   link: string
   flatrate?: Provider[]
+  buy?: Provider[]
   ads?: Provider[]
 }
 
@@ -94,13 +95,16 @@ interface Props {
   rating: number
   voteCount: number
   popularity: number
-  type: string
-  numberOfSeasons: number
-  numberOfEpisodes: number
-  language: string
-  network: Network[]
+  type?: string
+  numberOfSeasons?: number
+  numberOfEpisodes?: number
+  language?: string
+  network?: Network[]
   externalIds: ExternalIds
   watchProvider: StreamingAvailability
+  revenue?: number
+  runTime?:  number
+  budget?: number
 }
 
 export function SideBarDetails({
@@ -114,6 +118,10 @@ export function SideBarDetails({
   network,
   externalIds,
   watchProvider,
+  revenue,
+  runTime,
+  budget
+
 }: Props) {
   const platforms = [
     {
@@ -147,6 +155,21 @@ export function SideBarDetails({
       url: `https://twitter.com/${externalIds.twitter_id}`,
     },
   ]
+  function formatNumber(num: number) {
+    if (num >= 1_000_000_000) {
+      return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + ' billion';
+    } else if (num >= 1_000_000) {
+      return (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + ' million';
+    } else if (num >= 1_000) {
+      return (num / 1_000).toFixed(1).replace(/\.0$/, '') + ' thousand';
+    }
+    return num.toString();
+  }
+  function convertMinutesToHoursAndMinutes(minutes: number) {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return `${hours}h ${remainingMinutes}min`;
+  }
   return (
     <div className="w-[450px] space-y-6 text-black">
       <section className="rounded-lg bg-white p-6 shadow-md">
@@ -173,22 +196,48 @@ export function SideBarDetails({
           <Tv className="mr-2 size-4 text-blue-500" />
           <span className="mr-1 font-semibold">Type:</span> {type}
         </p>
-        <p className="flex items-center text-gray-700">
+        {numberOfSeasons && (
+          <p className="flex items-center text-gray-700">
           <Film className="mr-2 size-4 text-blue-500" />
           <span className="mr-1 font-semibold">Seasons:</span>{" "}
           {numberOfSeasons || "N/A"}
         </p>
-        <p className="flex items-center text-gray-700">
+        )}
+        {budget && (
+          <p className="flex items-center text-gray-700">
+          <CircleDollarSign className="mr-2 size-4 text-blue-500" />
+          <span className="mr-1 font-semibold">Budget:</span>{" "}
+          ${formatNumber(budget) || "N/A"}
+        </p>
+        )}
+        {revenue && (
+          <p className="flex items-center text-gray-700">
+          <CircleDollarSign className="mr-2 size-4 text-blue-500" />
+          <span className="mr-1 font-semibold">Revenue:</span>{" "}
+          ${formatNumber(revenue) || "N/A"}
+        </p>
+        )}
+        {runTime && (
+          <p className="flex items-center text-gray-700">
+          <Hourglass className="mr-2 size-4 text-blue-500" />
+          <span className="mr-1 font-semibold">Run time:</span>{" "}
+          {convertMinutesToHoursAndMinutes(runTime) || "N/A"}
+        </p>
+        )}
+        {numberOfEpisodes && (
+          <p className="flex items-center text-gray-700">
           <Info className="mr-2 size-4 text-blue-500" />
           <span className="mr-1 font-semibold">Episodes:</span>{" "}
           {numberOfEpisodes}
         </p>
+        )}
         <p className="flex items-center text-gray-700">
-          <Book className="mr-2 size-4 text-blue-500" />
+          <Languages className="mr-2 size-4 text-blue-500" />
           <span className="mr-1 font-semibold">Language:</span>{" "}
           {tmdbLanguageMap[language as keyof typeof tmdbLanguageMap]}
         </p>
-        <p className="flex items-center text-gray-700">
+        {network && network.length > 0 && (
+          <p className="flex items-center text-gray-700">
           <Tag className="mr-2 size-4 text-blue-500" />
           <span className="mr-1 font-semibold">Network:</span>{" "}
           <span className="line-clamp-1">
@@ -197,6 +246,7 @@ export function SideBarDetails({
             ))}
           </span>
         </p>
+        )}
       </section>
 
       <section className="rounded-lg bg-white p-6 shadow-md">
@@ -234,6 +284,27 @@ export function SideBarDetails({
           <h2 className="mb-4 text-2xl font-bold">Streaming Platforms</h2>
           <ul className="flex gap-4">
             {watchProvider["IN"]?.flatrate?.map((provider) => (
+              <li
+                key={provider.provider_id}
+                className="flex items-center gap-2"
+              >
+                <img
+                  src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
+                  alt={provider.provider_name}
+                  className="size-[50px] rounded-xl border border-black"
+                />
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : (
+        <></>
+      )}
+      {watchProvider["IN"]?.buy?.length ? (
+        <section className="rounded-lg bg-white p-6 shadow-md">
+          <h2 className="mb-4 text-2xl font-bold">Streaming Platforms</h2>
+          <ul className="flex gap-4">
+            {watchProvider["IN"]?.buy?.map((provider) => (
               <li
                 key={provider.provider_id}
                 className="flex items-center gap-2"

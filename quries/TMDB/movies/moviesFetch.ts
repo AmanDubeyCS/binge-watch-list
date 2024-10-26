@@ -1,4 +1,5 @@
 import { configTMDB } from "@/apiConfig"
+import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 
 const TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/"
@@ -8,7 +9,7 @@ const options = {
   headers: {
     accept: "application/json",
     Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyZTViMTQ1YTcwMDk1N2YwMjFmNjEzYjY3MjU5OTcwYyIsIm5iZiI6MTcyNTAwNTE3MS4yMjkwOTYsInN1YiI6IjY2ZDBhMWE3MDUwODQ5ZmQzMDAxOTdkNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Pg36xW8hMzVn3rhMTRptM3bzDeMWVcbr_SPppLNbSWs",
+      `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_KEY}`,
   },
 }
 
@@ -56,4 +57,72 @@ export const singleMovieFetch = async ({ movieID }: any) => {
   } catch (error) {
     console.error("Error fetching movie:", error)
   }
+}
+
+export const useMovieCast = (movieId: number) => {
+  return useQuery({
+    queryKey: ["MovieCast", movieId],
+    queryFn: async () => {
+      const response = await axios.get(
+        configTMDB.getSingleMovieCast(movieId),
+        options
+      )
+      return response.data
+    },
+  })
+}
+
+export const useMovieCollection = (movieId: number | null) => {
+  if(movieId === null){
+    return
+  }
+  return useQuery({
+    queryKey: ["MovieCollection", movieId],
+    queryFn: async () => {
+      const response = await axios.get(
+        configTMDB.getSingleMovieCollection(movieId),
+        options
+      )
+      return response.data
+    },
+  })
+}
+
+export const useMovieReviews = (movieId: number) => {
+  return useQuery({
+    queryKey: ["MovieReviews", movieId],
+    queryFn: async () => {
+      const response = await axios.get(
+        configTMDB.getMovieReviews(movieId),
+        options
+      )
+      return response.data
+    },
+  })
+}
+
+export const useMovieRecommendations = (movieId: number) => {
+  return useQuery({
+    queryKey: ["MovieRecommendations", movieId],
+    queryFn: async () => {
+      const response = await axios.get(
+        configTMDB.getMovieRecommendations(movieId),
+        options
+      )
+      return response.data
+    },
+  })
+}
+
+export const useMovieImages = (movieId: number) => {
+  return useQuery({
+    queryKey: ["MovieImages", movieId],
+    queryFn: async () => {
+      const response = await axios.get(
+        configTMDB.getMovieImages(movieId),
+        options
+      )
+      return response.data
+    },
+  })
 }

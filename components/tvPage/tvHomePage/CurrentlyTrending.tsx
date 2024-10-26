@@ -3,7 +3,7 @@ import TVShowCard from "./TvShowCard"
 import { Tv } from "lucide-react"
 
 export function CurrentlyTrending({ tvData, movieData, title }: any) {
-  console.log(movieData)
+  // console.log(movieData)
   return (
     <section>
       <h2 className="mb-4 flex items-center text-2xl font-semibold text-gray-900">
@@ -27,6 +27,7 @@ export function CurrentlyTrending({ tvData, movieData, title }: any) {
                 voteAverage={tv.vote_average}
                 voteCount={tv.vote_count}
                 genreIds={tv.genre_ids}
+                popularity={tv.popularity}
               />
             ))}
           </div>
@@ -47,6 +48,7 @@ export function CurrentlyTrending({ tvData, movieData, title }: any) {
                 voteAverage={movie.vote_average}
                 voteCount={movie.vote_count}
                 genreIds={movie.genre_ids}
+                popularity={movie.popularity}
               />
             ))}
           </div>

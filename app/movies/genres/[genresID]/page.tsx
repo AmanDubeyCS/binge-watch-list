@@ -4,11 +4,12 @@ import { Calendar, Star } from "lucide-react"
 import React from "react"
 
 export default async function page({ params }: any) {
-  const tvByprovider = await fetchFromTMDB(configTMDB.getTvByGenres(params.genresID))
+  const movieByprovider = await fetchFromTMDB(configTMDB.getMovieByGenres(params.genresID))
+
   return (
     <div className="container mx-auto px-4 py-8 text-black">
       <div className="flex flex-wrap justify-center gap-6">
-        {tvByprovider?.results?.map((show: any) => (
+        {movieByprovider?.results?.map((show: any) => (
           <div
             key={show.id}
             className="w-[260px] overflow-hidden rounded-lg bg-white shadow-md"
@@ -20,7 +21,7 @@ export default async function page({ params }: any) {
             />
             <div className="p-4">
               <h2 className="mb-2 flex h-[56px] items-center text-xl font-semibold">
-                {show.name}
+                {show.name || show.title}
               </h2>
               <p className="mb-2 line-clamp-3 text-sm text-gray-600">
                 {show.overview}
@@ -37,7 +38,7 @@ export default async function page({ params }: any) {
               <div className="mb-2 flex items-center">
                 <Calendar className="mr-1 size-5 text-gray-400" />
                 <span className="text-sm text-gray-600">
-                  {show.first_air_date}
+                  {show.first_air_date || show.release_date}
                 </span>
               </div>
               {/* <div className="flex flex-wrap gap-2">

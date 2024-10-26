@@ -89,7 +89,6 @@ export const useAnimeCharacters = (animeID: number) => {
   return useQuery({
     queryKey: ["AnimeCharacters", animeID],
     queryFn: async () => {
-      console.log("Fetching from server...")
       const response = await axios.get(config.getCharactersDetail(animeID))
       return response.data.data
     },

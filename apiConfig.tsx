@@ -48,15 +48,30 @@ export const config = {
 export const configTMDB = {
   getMoviesList: `${BASE_URL_TMDB}/trending/movie/week?language=en-US`,
   getPopularMovie: `${BASE_URL_TMDB}/discover/movie?air_date.lte=2025-04-07&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=IN&with_runtime.gte=0&with_runtime.lte=400&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&without_keywords=210024`,
+  getMovieProviders: `${BASE_URL_TMDB}/watch/providers/movie?language=en-US&watch_region=IN`,
+  getMovieGenres: `${BASE_URL_TMDB}/genre/movie/list`,
+  getMovieByGenres: (genresID: number) =>
+    `${BASE_URL_TMDB}/discover/movie?air_date.lte=2025-04-07&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=IN&with_runtime.gte=0&with_runtime.lte=400&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&with_genres=${genresID}&without_keywords=210024`,
+  getMovieByProvider: (tvProviderId: number) =>
+    `${BASE_URL_TMDB}/discover/movie?air_date.lte=2025-04-07&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=IN&with_runtime.gte=0&with_runtime.lte=400&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&with_watch_providers=${tvProviderId}&without_keywords=210024`,
   getSingleMovie: ({ movieID }: any) =>
-    `${BASE_URL_TMDB}/movie/${movieID}?language=en-US`,
+    `${BASE_URL_TMDB}/movie/${movieID}?append_to_response=external_ids%2Cvideos%2Cwatch%2Fproviders&language=en-US`,
+  getSingleMovieCast: (movieId: number) =>
+    `${BASE_URL_TMDB}/movie/${movieId}/credits?language=en-US`,
+  getSingleMovieCollection: (movieId: number) =>
+    `https://api.themoviedb.org/3/collection/${movieId}?language=en-US`,
+  getMovieReviews: (movieId: number) =>
+    `${BASE_URL_TMDB}/movie/${movieId}/reviews?language=en-US&page=1`,
+  getMovieRecommendations: (movieId: number) =>
+    `${BASE_URL_TMDB}/movie/${movieId}/recommendations?language=en-US&page=1`,
+  getMovieImages: (movieId: number) => `${BASE_URL_TMDB}/movie/${movieId}/images`,
 
   getTvList: `${BASE_URL_TMDB}/trending/tv/day?language=en-US`,
   getTvPopular: `${BASE_URL_TMDB}/discover/tv?air_date.lte=2025-04-07&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=IN&with_runtime.gte=0&with_runtime.lte=400&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&without_keywords=210024`,
   getTvProviders: `${BASE_URL_TMDB}/watch/providers/tv?language=en-US&watch_region=IN`,
   getTvGenres: `${BASE_URL_TMDB}/genre/tv/list`,
   getTvByProvider: (tvProviderId: number) =>
-    `${BASE_URL_TMDB}/discover/tv?air_date.lte=2025-04-07&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=IN&with_runtime.gte=0&with_runtime.lte=400&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&with_watch_providers=${tvProviderId}`,
+    `${BASE_URL_TMDB}/discover/tv?air_date.lte=2025-04-07&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=IN&with_runtime.gte=0&with_runtime.lte=400&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&with_watch_providers=${tvProviderId}&without_keywords=210024`,
   getTvByGenres: (genresID: number) =>
     `${BASE_URL_TMDB}/discover/tv?air_date.lte=2025-04-07&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=IN&with_runtime.gte=0&with_runtime.lte=400&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&with_genres=${genresID}&without_keywords=210024`,
   getSingleTv: ({ tvID }: any) =>

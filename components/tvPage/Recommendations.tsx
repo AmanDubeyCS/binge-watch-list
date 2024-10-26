@@ -34,7 +34,6 @@ const genreMap: { [key: number]: string } = {
 
 export function Recommendations({ seriesId }: { seriesId: number }) {
   const { data } = useTvRecommendations(seriesId)
-  console.log(data)
   return (
     <div className="container mx-auto px-4 py-8 text-black">
       <div className="flex flex-wrap justify-center gap-6">
