@@ -34,7 +34,9 @@ const genreMap: { [key: number]: string } = {
 }
 
 export default async function page({ params }: any) {
-  const movieByprovider = await fetchFromTMDB(configTMDB.getMovieByProvider(params.providerId))
+  const movieByprovider = await fetchFromTMDB(
+    configTMDB.getMovieByProvider(params.providerId)
+  )
   return (
     <div className="container mx-auto px-4 py-8 text-black">
       <div className="flex flex-wrap justify-center gap-6">

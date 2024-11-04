@@ -1,6 +1,6 @@
 const isProd = true
 const tvdb = "14923218-bcc2-4cdb-ab1a-1983494b21ed"
-export const BASE_URL = isProd
+export const BASE_URL_MANGADEX = isProd
   ? "https://api.mangadex.org"
   : "https://api.mangadex.dev"
 
@@ -10,15 +10,23 @@ const BASE_URL_TMDB = "https://api.themoviedb.org/3"
 
 export const config = {
   getMangaList: ({ limit, offset, title }: any) =>
-    `${BASE_URL}/manga?title=${title}&limit=${limit}&offset=${offset}&includes%5B%5D=cover_art`,
+    `${BASE_URL_MANGADEX}/manga?title=${title}&limit=${limit}&offset=${offset}&includes%5B%5D=cover_art`,
+  getTopManhwa: ({ limit, offset }: any) =>
+    `${BASE_URL_MANGADEX}/manga?limit=${limit}&offset=${offset}&includes[]=cover_art&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&originalLanguage[]=ko&order[rating]=desc&includedTagsMode=AND&excludedTagsMode=OR`,
 
+  getTopManhua: `${BASE_URL_MANGADEX}/manga?limit=16&offset=0&includes[]=cover_art&contentRating[]=suggestive&contentRating[]=safe&originalLanguage[]=zh&order[rating]=desc&includedTags[]=799c202e-7daa-44eb-9cf7-8a3c0441531e&includedTagsMode=AND&excludedTagsMode=OR`,
+
+  getPopularManga: `${BASE_URL_MANGADEX}/manga?limit=16&offset=0&includes[]=cover_art&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&originalLanguage[]=ja&order[followedCount]=desc&includedTagsMode=AND&excludedTagsMode=OR`,
   getSingleManga: ({ mangaID }: any) =>
-    `${BASE_URL}/manga/${mangaID}?includes%5B%5D=cover_art&includes%5B%5D=artist&&includes%5B%5D=author&includes%5B%5D=creator`,
+    `${BASE_URL_MANGADEX}/manga/${mangaID}?includes%5B%5D=cover_art&includes%5B%5D=artist&&includes%5B%5D=author&includes%5B%5D=creator`,
   getMangaChapters: ({ mangaID }: any) =>
-    `${BASE_URL}/manga/${mangaID}/aggregate`,
+    `${BASE_URL_MANGADEX}/manga/${mangaID}/aggregate`,
   getMangaStatistics: ({ mangaID }: any) =>
-    `${BASE_URL}/statistics/manga/${mangaID}`,
-  getChapterData: (chapterID: any) => `${BASE_URL}/at-home/server/${chapterID}`,
+    `${BASE_URL_MANGADEX}/statistics/manga/${mangaID}`,
+  getChapterData: (chapterID: any) =>
+    `${BASE_URL_MANGADEX}/at-home/server/${chapterID}`,
+  getMangaArt: (mangaId: string) =>
+    `${BASE_URL_MANGADEX}/cover?order[volume]=asc&manga[]=${mangaId}&limit=15&offset=0`,
 
   getBannerAnime: `https://api.jikan.moe/v4/anime?status=airing&order_by=score&sort=desc&start_date=2024-01-01&limit=6`,
   getAnimeList: `${BASE_URL_ANIME}/top/anime?type=tv&filter=airing&limit=15`,
@@ -64,7 +72,8 @@ export const configTMDB = {
     `${BASE_URL_TMDB}/movie/${movieId}/reviews?language=en-US&page=1`,
   getMovieRecommendations: (movieId: number) =>
     `${BASE_URL_TMDB}/movie/${movieId}/recommendations?language=en-US&page=1`,
-  getMovieImages: (movieId: number) => `${BASE_URL_TMDB}/movie/${movieId}/images`,
+  getMovieImages: (movieId: number) =>
+    `${BASE_URL_TMDB}/movie/${movieId}/images`,
 
   getTvList: `${BASE_URL_TMDB}/trending/tv/day?language=en-US`,
   getTvPopular: `${BASE_URL_TMDB}/discover/tv?air_date.lte=2025-04-07&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=IN&with_runtime.gte=0&with_runtime.lte=400&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&without_keywords=210024`,

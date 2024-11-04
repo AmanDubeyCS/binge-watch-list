@@ -7,9 +7,13 @@ interface Props {
   name: string
 }
 
-
-
-export function TvGenresList({ categorys, genraImage }: { categorys: Props[], genraImage?: any }) {
+export function TvGenresList({
+  categorys,
+  genraImage,
+}: {
+  categorys: Props[]
+  genraImage?: any
+}) {
   const router = useRouter()
   const pathname = usePathname()
 
@@ -20,7 +24,7 @@ export function TvGenresList({ categorys, genraImage }: { categorys: Props[], ge
     <section className="py-12 text-black">
       <div className="container mx-auto px-4">
         <h2 className="mb-6 text-3xl font-bold">Popular Categories</h2>
-        <div className="overflow-x-scroll hide-scrollbar ">
+        <div className="hide-scrollbar overflow-x-scroll">
           <div className="flex w-[2700px] flex-wrap gap-5">
             {categorys.map((genre) => (
               <div

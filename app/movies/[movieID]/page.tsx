@@ -14,7 +14,7 @@ export default async function SingleMoviePage({ params }: any) {
 
     const moviesData = response
 
-    return <MovieInfoPage movieInfo={moviesData} movieId={movieID}/>
+    return <MovieInfoPage movieInfo={moviesData} movieId={movieID} />
   } catch (error) {
     console.error("Error fetching movies data:", error)
     return <div>Error: Failed to fetch movies data.</div>

@@ -1,4 +1,4 @@
-interface MangaTag {
+export interface MangaTag {
   id: string
   type: string
   attributes: {
@@ -29,6 +29,7 @@ interface Manga {
   title: {
     en: string
     ja: string
+    "ja-ro": string
   }
   altTitles: Array<{
     [key: string]: string
@@ -65,6 +66,19 @@ export interface MangaItem {
     related: string
     attributes: Record<string, unknown>
   }>
+  rating: MangaStatistics
+}
+
+interface MangaStatistics {
+  comments: {
+    threadId: number
+    repliesCount: number
+  }
+  follows: number
+  rating: {
+    average: number
+    bayesian: number
+  }
 }
 
 export interface MangaResponse {

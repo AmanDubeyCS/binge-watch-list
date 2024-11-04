@@ -16,8 +16,13 @@ export const formatDate = (dateString: string) => {
     .replace(/\//g, "/")
 }
 
-export function AnimeInfoPage({ animaInfo, animeID }: { animaInfo: Anime, animeID: number }) {
-
+export function AnimeInfoPage({
+  animaInfo,
+  animeID,
+}: {
+  animaInfo: Anime
+  animeID: number
+}) {
   return (
     <>
       <div
@@ -118,7 +123,7 @@ export function AnimeInfoPage({ animaInfo, animeID }: { animaInfo: Anime, animeI
       >
         <div className="mx-auto flex max-w-[1600px] gap-4 p-10">
           <SideBarDetails animeInfo={animaInfo} />
-          <MainContent animaInfo={animaInfo} animeID={animeID}/>
+          <MainContent animaInfo={animaInfo} animeID={animeID} />
         </div>
       </div>
     </>

@@ -14,9 +14,16 @@ export interface Manga {
     isLocked: boolean
     links: {
       al: string
-      ap: string
-      mu: string
       nu: string
+      amz: string
+      ap: string
+      bw: string
+      cdj: string
+      ebj: string
+      engtl: string
+      kt: string
+      mal: string
+      mu: string
       raw: string
     }
     originalLanguage: string
@@ -80,4 +87,48 @@ interface Relationship {
     username?: string
     roles?: string[]
   }
+}
+
+interface Chapter {
+  chapter: string
+  id: string
+  others: string[]
+  count: number
+}
+
+export interface Volume {
+  volume: string
+  count: number
+  chapters: Record<string, Chapter>
+}
+
+export interface VolumesData {
+  result: string
+  volumes: Record<string, Volume>
+}
+
+export interface Comments {
+  threadId: number
+  repliesCount: number
+}
+
+interface RatingDistribution {
+  [key: string]: number // Keys are "1" through "10", each representing a rating count
+}
+
+interface Rating {
+  average: number
+  bayesian: number
+  distribution: RatingDistribution
+}
+
+export interface MangaStatistics {
+  comments: Comments
+  rating: Rating
+  follows: number
+}
+
+export interface StatisticsData {
+  result: string
+  statistics: Record<string, MangaStatistics> // Key is a unique manga ID
 }

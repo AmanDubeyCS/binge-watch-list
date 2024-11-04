@@ -1,11 +1,10 @@
-"use client"
-
 import React from "react"
-import { useGetPersonData } from "@/quries/TMDB/getPersonData"
+import { fetchFromTMDB } from "@/util/fetchFromTMDB"
+import { configTMDB } from "@/apiConfig"
 
-export default function SinglePerson({ params }: any) {
+export default async function SinglePerson({ params }: any) {
   const personID = params.personID
-  const { data } = useGetPersonData(personID)
-  // console.log(data)
+  const personData = await fetchFromTMDB(configTMDB.getPersonDetails(personID))
+  // console.log(personData)
   return <div></div>
 }

@@ -11,7 +11,13 @@ import { Pictures } from "./Pictures"
 import { Recommendations } from "./Recommendations"
 import { Anime } from "@/types/anime/singleAnime"
 
-export function MainContent({animaInfo, animeID}: { animaInfo: Anime, animeID: number }) {
+export function MainContent({
+  animaInfo,
+  animeID,
+}: {
+  animaInfo: Anime
+  animeID: number
+}) {
   const tabs = [
     "overview",
     "characters",

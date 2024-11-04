@@ -10,20 +10,21 @@ export async function GET(request: Request) {
   }
 
   // Extract headers and query params from the request
-  const token = searchParams.get("token") // Authorization token
   const params: Record<string, string> = {}
   searchParams.forEach((value, key) => {
     if (key !== "url" && key !== "token") {
       params[key] = value
     }
   })
-
+  const needsToken = url.includes("themoviedb")
   try {
     const response = await axios.get(url, {
       headers: {
-        Authorization: token ? `Bearer ${token}` : "", // Include Authorization header if token is provided
+        Authorization: needsToken
+          ? `Bearer ${process.env.TMDB_API_KEY}`
+          : undefined,
       },
-      params, // Pass all query parameters except 'url' and 'token'
+      params,
     })
     return NextResponse.json(response.data)
   } catch (error) {

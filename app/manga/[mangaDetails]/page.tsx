@@ -1,30 +1,29 @@
-"use client"
-
 import React from "react"
-import { useMangaData } from "@/quries/mangaDex/mangaFetch"
-
 import { MangaInfoPage } from "@/components/mangaPage/MangaInfoPage"
+import axios from "axios"
+import { config } from "@/apiConfig"
 
-export default function Page({ params }: any) {
+export default async function Page({ params }: any) {
   const mangaID = params.mangaDetails
 
-  const { mangaInfo, chapter, statistics, isLoading, error } =
-    useMangaData(mangaID)
+  try {
+    const mangaInfo = await axios.get(config.getSingleManga({ mangaID }))
+    const chapter = await axios.get(config.getMangaChapters({ mangaID }))
+    const statistics = await axios.get(config.getMangaStatistics({ mangaID }))
 
-  if (error) {
-    return <div>Error</div>
+    return (
+      <div className="">
+        {mangaInfo.data && chapter.data && statistics.data && (
+          <MangaInfoPage
+            mangaInfo={mangaInfo.data.data}
+            chapters={chapter.data}
+            statistics={statistics.data}
+          />
+        )}
+      </div>
+    )
+  } catch (error) {
+    console.error("Error fetching manga data:", error)
+    return <div>Error fetching manga data.</div>
   }
-
-  return (
-    <div className="">
-      {isLoading && <div>Loading...</div>}
-      {chapter && mangaInfo && statistics && (
-        <MangaInfoPage
-          mangaInfo={mangaInfo.data}
-          chapters={chapter}
-          statistics={statistics}
-        />
-      )}
-    </div>
-  )
 }
