@@ -4,7 +4,9 @@ import { Calendar, Star } from "lucide-react"
 import React from "react"
 
 export default async function page({ params }: any) {
-  const tvByprovider = await fetchFromTMDB(configTMDB.getTvByGenres(params.genresID))
+  const tvByprovider = await fetchFromTMDB(
+    configTMDB.getTvByGenres(params.genresID)
+  )
   return (
     <div className="container mx-auto px-4 py-8 text-black">
       <div className="flex flex-wrap justify-center gap-6">

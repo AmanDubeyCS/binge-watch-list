@@ -13,7 +13,6 @@ import { Reviews } from "./Reviews"
 import { Pictures } from "./Pictures"
 
 export function TvInfoPage({ tvInfo, tvID }: any) {
-  
   const tabs = [
     "Overview",
     "Characters",

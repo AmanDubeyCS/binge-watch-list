@@ -9,28 +9,12 @@ import { BannerCarousel } from "@/components/animePage/animeHomePage/BannerCarou
 import { fetchFromJikan } from "@/util/fetchFromJikan"
 
 export default async function Page() {
-
   try {
-    const bannerAnime = await fetchFromJikan(
-      config.getBannerAnime,
-      0
-    )
-    const trendingAnime = await fetchFromJikan(
-      config.getAnimeList,
-      350
-    ) 
-    const latestPromo = await fetchFromJikan(
-      config.getLatestpromos,
-      700
-    ) 
-    const upcomingRes = await fetchFromJikan(
-      config.getUpcomongAnimes,
-      1050
-    ) 
-    const popularStudios = await fetchFromJikan(
-      config.getPopularStudios,
-      1400
-    )
+    const bannerAnime = await fetchFromJikan(config.getBannerAnime, 0)
+    const trendingAnime = await fetchFromJikan(config.getAnimeList, 350)
+    const latestPromo = await fetchFromJikan(config.getLatestpromos, 700)
+    const upcomingRes = await fetchFromJikan(config.getUpcomongAnimes, 1050)
+    const popularStudios = await fetchFromJikan(config.getPopularStudios, 1400)
 
     return (
       <main className="mx-auto flex max-w-[1600px] flex-col gap-10 px-8 pb-10">

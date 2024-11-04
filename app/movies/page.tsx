@@ -47,10 +47,18 @@ export default async function MoviesPage() {
         />
       )}
       {popularMovies && (
-        <CurrentlyTrending movieData={popularMovies.results} title="Popular on Movie" />
+        <CurrentlyTrending
+          movieData={popularMovies.results}
+          title="Popular on Movie"
+        />
       )}
-       {movieProviders && <TvProviders TvProviders={movieProviders.results} />}
-       {movieGenres && <TvGenresList categorys={movieGenres.genres} genraImage={movieGenraImage}/>}
+      {movieProviders && <TvProviders TvProviders={movieProviders.results} />}
+      {movieGenres && (
+        <TvGenresList
+          categorys={movieGenres.genres}
+          genraImage={movieGenraImage}
+        />
+      )}
     </main>
   )
 }

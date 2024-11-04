@@ -1,74 +1,74 @@
-import { useMovieReviews } from '@/quries/TMDB/movies/moviesFetch'
+import { useMovieReviews } from "@/quries/TMDB/movies/moviesFetch"
 import { useEffect, useState } from "react"
 import { Star, Calendar, ChevronDown, ChevronUp } from "lucide-react"
-import React from 'react'
+import React from "react"
 
 interface Review {
-    author: string
-    author_details: {
-      name: string
-      username: string
-      avatar_path: string | null
-      rating: number | null
+  author: string
+  author_details: {
+    name: string
+    username: string
+    avatar_path: string | null
+    rating: number | null
+  }
+  content: string
+  created_at: string
+  id: string
+  updated_at: string
+  url: string
+}
+
+export function Reviews({ movieId }: { movieId: number }) {
+  const { data } = useMovieReviews(movieId)
+
+  useEffect(() => {
+    if (data?.results) {
+      setReviews(data.results)
     }
-    content: string
-    created_at: string
-    id: string
-    updated_at: string
-    url: string
+  }, [data])
+  const [reviews, setReviews] = useState<Review[]>([])
+  const [sortBy, setSortBy] = useState<
+    "newest" | "oldest" | "highest" | "lowest"
+  >("newest")
+  const [expandedReviews, setExpandedReviews] = useState<Set<string>>(new Set())
+
+  const sortedReviews = [...reviews].sort((a, b) => {
+    switch (sortBy) {
+      case "newest":
+        return (
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        )
+      case "oldest":
+        return (
+          new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+        )
+      case "highest":
+        return (b.author_details.rating || 0) - (a.author_details.rating || 0)
+      case "lowest":
+        return (a.author_details.rating || 0) - (b.author_details.rating || 0)
+    }
+  })
+
+  const toggleExpand = (id: string) => {
+    setExpandedReviews((prev) => {
+      const newSet = new Set(prev)
+      if (newSet.has(id)) {
+        newSet.delete(id)
+      } else {
+        newSet.add(id)
+      }
+      return newSet
+    })
   }
 
-export function Reviews({movieId}: {movieId: number}) {
-    const {data} = useMovieReviews(movieId)
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
+  }
 
-    useEffect(() => {
-        if (data?.results) {
-          setReviews(data.results)
-        }
-      }, [data])
-      const [reviews, setReviews] = useState<Review[]>([])
-      const [sortBy, setSortBy] = useState<
-        "newest" | "oldest" | "highest" | "lowest"
-      >("newest")
-      const [expandedReviews, setExpandedReviews] = useState<Set<string>>(new Set())
-    
-      const sortedReviews = [...reviews].sort((a, b) => {
-        switch (sortBy) {
-          case "newest":
-            return (
-              new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-            )
-          case "oldest":
-            return (
-              new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-            )
-          case "highest":
-            return (b.author_details.rating || 0) - (a.author_details.rating || 0)
-          case "lowest":
-            return (a.author_details.rating || 0) - (b.author_details.rating || 0)
-        }
-      })
-    
-      const toggleExpand = (id: string) => {
-        setExpandedReviews((prev) => {
-          const newSet = new Set(prev)
-          if (newSet.has(id)) {
-            newSet.delete(id)
-          } else {
-            newSet.add(id)
-          }
-          return newSet
-        })
-      }
-    
-      const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })
-      }
-    
   return (
     <div className="container mx-auto px-4 py-8 text-black">
       <div className="mb-6 flex items-center justify-between">

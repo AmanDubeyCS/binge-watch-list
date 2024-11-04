@@ -9,14 +9,14 @@ import { fetchFromTMDB } from "@/util/fetchFromTMDB"
 
 export default async function MoviesPage() {
   const trendingTv = await trendingTvFetch()
-  
+
   const [PopularTV, tvProviders, tvGenres] = await Promise.all([
     fetchFromTMDB(configTMDB.getTvPopular),
     fetchFromTMDB(configTMDB.getTvProviders),
     fetchFromTMDB(configTMDB.getTvGenres),
   ])
 
-  const tvGenraList= {
+  const tvGenraList = {
     10759: "https://image.tmdb.org/t/p/w500/reEMJA1uzscCbkpeRJeTT2bjqUp.jpg",
     16: "https://image.tmdb.org/t/p/w500/gdIrmf2DdY5mgN6ycVP0XlzKzbE.jpg",
     35: "	https://image.tmdb.org/t/p/w500/9akij7PqZ1g6zl42DQQTtL9CTSb.jpg",
@@ -32,9 +32,9 @@ export default async function MoviesPage() {
     10766: "https://image.tmdb.org/t/p/w500/sgCcmsJ4aKAK8QwrbG6RLYxxFAj.jpg",
     10767: "https://image.tmdb.org/t/p/w500/pbpoLLp4kvnYVfnEGiEhagpJuVZ.jpg",
     10768: "https://image.tmdb.org/t/p/w500/uCr7Ov7Rpzx0c0EPqbPcoEruTYl.jpg",
-    37: "https://image.tmdb.org/t/p/w500/vOYfRZ0NpUK5hG2CB2dJFnYJlGe.jpg"
+    37: "https://image.tmdb.org/t/p/w500/vOYfRZ0NpUK5hG2CB2dJFnYJlGe.jpg",
   }
-  
+
   return (
     <main className="mx-auto flex max-w-[1600px] flex-col gap-10 px-8 pb-10">
       {trendingTv && (
@@ -44,7 +44,9 @@ export default async function MoviesPage() {
         <CurrentlyTrending tvData={PopularTV.results} title="Popular on TV" />
       )}
       {tvProviders && <TvProviders TvProviders={tvProviders.results} />}
-      {tvGenres && <TvGenresList categorys={tvGenres.genres} genraImage={tvGenraList}/>}
+      {tvGenres && (
+        <TvGenresList categorys={tvGenres.genres} genraImage={tvGenraList} />
+      )}
     </main>
   )
 }

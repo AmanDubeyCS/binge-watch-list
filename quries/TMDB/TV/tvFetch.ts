@@ -8,8 +8,7 @@ const options = {
   method: "GET",
   headers: {
     accept: "application/json",
-    Authorization:
-      `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_KEY}`,
+    Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
   },
 }
 
@@ -28,8 +27,6 @@ export const trendingTvFetch = async () => {
       console.error(`API request failed with status ${response.status}`)
       return null
     }
-    // console.log(response.data);
-    // return response.data
   } catch (error) {
     console.error("Error fetching manga:", error)
   }
@@ -59,10 +56,11 @@ export const useTvCast = (seriesId: number) => {
   return useQuery({
     queryKey: ["TvCharacter", seriesId],
     queryFn: async () => {
-      const response = await axios.get(
-        configTMDB.getSingleTvCast(seriesId),
-        options
-      )
+      const response = await axios.get("/api/proxy", {
+        params: {
+          url: configTMDB.getSingleTvCast(seriesId),
+        },
+      })
       return response.data
     },
   })
@@ -72,10 +70,11 @@ export const useTvRecommendations = (seriesId: number) => {
   return useQuery({
     queryKey: ["TvRecommendations", seriesId],
     queryFn: async () => {
-      const response = await axios.get(
-        configTMDB.getTvRecommendations(seriesId),
-        options
-      )
+      const response = await axios.get("/api/proxy", {
+        params: {
+          url: configTMDB.getTvRecommendations(seriesId),
+        },
+      })
       return response.data
     },
   })
@@ -85,10 +84,11 @@ export const useTvReviews = (seriesId: number) => {
   return useQuery({
     queryKey: ["TvReviews", seriesId],
     queryFn: async () => {
-      const response = await axios.get(
-        configTMDB.getTvReviews(seriesId),
-        options
-      )
+      const response = await axios.get("/api/proxy", {
+        params: {
+          url: configTMDB.getTvReviews(seriesId),
+        },
+      })
       return response.data
     },
   })
@@ -98,10 +98,11 @@ export const useTvImages = (seriesId: number) => {
   return useQuery({
     queryKey: ["TvImages", seriesId],
     queryFn: async () => {
-      const response = await axios.get(
-        configTMDB.getTvImages(seriesId),
-        options
-      )
+      const response = await axios.get("/api/proxy", {
+        params: {
+          url: configTMDB.getTvImages(seriesId),
+        },
+      })
       return response.data
     },
   })
@@ -111,10 +112,11 @@ export const useSeasonEpisodes = (seriesId: number, seasonId: number) => {
   return useQuery({
     queryKey: ["SeasonEpisodes", seriesId, seasonId],
     queryFn: async () => {
-      const response = await axios.get(
-        configTMDB.getSeasonEpisodes(seriesId, seasonId),
-        options
-      )
+      const response = await axios.get("/api/proxy", {
+        params: {
+          url: configTMDB.getSeasonEpisodes(seriesId, seasonId),
+        },
+      })
       return response.data
     },
   })

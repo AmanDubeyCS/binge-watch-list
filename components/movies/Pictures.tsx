@@ -1,4 +1,3 @@
-
 import { useMovieImages } from "@/quries/TMDB/movies/moviesFetch"
 import { useState } from "react"
 

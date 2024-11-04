@@ -1,4 +1,14 @@
-import { BarChart2, Film, Info, Star, Tag, Tv, CircleDollarSign, Hourglass, Languages } from "lucide-react"
+import {
+  BarChart2,
+  Film,
+  Info,
+  Star,
+  Tag,
+  Tv,
+  CircleDollarSign,
+  Hourglass,
+  Languages,
+} from "lucide-react"
 import React from "react"
 
 const tmdbLanguageMap = {
@@ -103,7 +113,7 @@ interface Props {
   externalIds: ExternalIds
   watchProvider: StreamingAvailability
   revenue?: number
-  runTime?:  number
+  runTime?: number
   budget?: number
 }
 
@@ -120,8 +130,7 @@ export function SideBarDetails({
   watchProvider,
   revenue,
   runTime,
-  budget
-
+  budget,
 }: Props) {
   const platforms = [
     {
@@ -157,18 +166,18 @@ export function SideBarDetails({
   ]
   function formatNumber(num: number) {
     if (num >= 1_000_000_000) {
-      return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + ' billion';
+      return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, "") + " billion"
     } else if (num >= 1_000_000) {
-      return (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + ' million';
+      return (num / 1_000_000).toFixed(1).replace(/\.0$/, "") + " million"
     } else if (num >= 1_000) {
-      return (num / 1_000).toFixed(1).replace(/\.0$/, '') + ' thousand';
+      return (num / 1_000).toFixed(1).replace(/\.0$/, "") + " thousand"
     }
-    return num.toString();
+    return num.toString()
   }
   function convertMinutesToHoursAndMinutes(minutes: number) {
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = minutes % 60;
-    return `${hours}h ${remainingMinutes}min`;
+    const hours = Math.floor(minutes / 60)
+    const remainingMinutes = minutes % 60
+    return `${hours}h ${remainingMinutes}min`
   }
   return (
     <div className="w-[450px] space-y-6 text-black">
@@ -198,38 +207,38 @@ export function SideBarDetails({
         </p>
         {numberOfSeasons && (
           <p className="flex items-center text-gray-700">
-          <Film className="mr-2 size-4 text-blue-500" />
-          <span className="mr-1 font-semibold">Seasons:</span>{" "}
-          {numberOfSeasons || "N/A"}
-        </p>
+            <Film className="mr-2 size-4 text-blue-500" />
+            <span className="mr-1 font-semibold">Seasons:</span>{" "}
+            {numberOfSeasons || "N/A"}
+          </p>
         )}
         {budget && (
           <p className="flex items-center text-gray-700">
-          <CircleDollarSign className="mr-2 size-4 text-blue-500" />
-          <span className="mr-1 font-semibold">Budget:</span>{" "}
-          ${formatNumber(budget) || "N/A"}
-        </p>
+            <CircleDollarSign className="mr-2 size-4 text-blue-500" />
+            <span className="mr-1 font-semibold">Budget:</span> $
+            {formatNumber(budget) || "N/A"}
+          </p>
         )}
         {revenue && (
           <p className="flex items-center text-gray-700">
-          <CircleDollarSign className="mr-2 size-4 text-blue-500" />
-          <span className="mr-1 font-semibold">Revenue:</span>{" "}
-          ${formatNumber(revenue) || "N/A"}
-        </p>
+            <CircleDollarSign className="mr-2 size-4 text-blue-500" />
+            <span className="mr-1 font-semibold">Revenue:</span> $
+            {formatNumber(revenue) || "N/A"}
+          </p>
         )}
         {runTime && (
           <p className="flex items-center text-gray-700">
-          <Hourglass className="mr-2 size-4 text-blue-500" />
-          <span className="mr-1 font-semibold">Run time:</span>{" "}
-          {convertMinutesToHoursAndMinutes(runTime) || "N/A"}
-        </p>
+            <Hourglass className="mr-2 size-4 text-blue-500" />
+            <span className="mr-1 font-semibold">Run time:</span>{" "}
+            {convertMinutesToHoursAndMinutes(runTime) || "N/A"}
+          </p>
         )}
         {numberOfEpisodes && (
           <p className="flex items-center text-gray-700">
-          <Info className="mr-2 size-4 text-blue-500" />
-          <span className="mr-1 font-semibold">Episodes:</span>{" "}
-          {numberOfEpisodes}
-        </p>
+            <Info className="mr-2 size-4 text-blue-500" />
+            <span className="mr-1 font-semibold">Episodes:</span>{" "}
+            {numberOfEpisodes}
+          </p>
         )}
         <p className="flex items-center text-gray-700">
           <Languages className="mr-2 size-4 text-blue-500" />
@@ -238,14 +247,14 @@ export function SideBarDetails({
         </p>
         {network && network.length > 0 && (
           <p className="flex items-center text-gray-700">
-          <Tag className="mr-2 size-4 text-blue-500" />
-          <span className="mr-1 font-semibold">Network:</span>{" "}
-          <span className="line-clamp-1">
-            {network.map((network) => (
-              <span key={network.id}>{network.name}</span>
-            ))}
-          </span>
-        </p>
+            <Tag className="mr-2 size-4 text-blue-500" />
+            <span className="mr-1 font-semibold">Network:</span>{" "}
+            <span className="line-clamp-1">
+              {network.map((network) => (
+                <span key={network.id}>{network.name}</span>
+              ))}
+            </span>
+          </p>
         )}
       </section>
 

@@ -8,8 +8,7 @@ const options = {
   method: "GET",
   headers: {
     accept: "application/json",
-    Authorization:
-      `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_KEY}`,
+    Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
   },
 }
 
@@ -52,8 +51,6 @@ export const singleMovieFetch = async ({ movieID }: any) => {
       console.error(`API request failed with status ${response.status}`)
       return null
     }
-    // console.log(response.data);
-    // return response.data
   } catch (error) {
     console.error("Error fetching movie:", error)
   }
@@ -63,26 +60,28 @@ export const useMovieCast = (movieId: number) => {
   return useQuery({
     queryKey: ["MovieCast", movieId],
     queryFn: async () => {
-      const response = await axios.get(
-        configTMDB.getSingleMovieCast(movieId),
-        options
-      )
+      const response = await axios.get("/api/proxy", {
+        params: {
+          url: configTMDB.getSingleMovieCast(movieId),
+        },
+      })
       return response.data
     },
   })
 }
 
 export const useMovieCollection = (movieId: number | null) => {
-  if(movieId === null){
+  if (movieId === null) {
     return
   }
   return useQuery({
     queryKey: ["MovieCollection", movieId],
     queryFn: async () => {
-      const response = await axios.get(
-        configTMDB.getSingleMovieCollection(movieId),
-        options
-      )
+      const response = await axios.get("/api/proxy", {
+        params: {
+          url: configTMDB.getSingleMovieCollection(movieId),
+        },
+      })
       return response.data
     },
   })
@@ -92,10 +91,11 @@ export const useMovieReviews = (movieId: number) => {
   return useQuery({
     queryKey: ["MovieReviews", movieId],
     queryFn: async () => {
-      const response = await axios.get(
-        configTMDB.getMovieReviews(movieId),
-        options
-      )
+      const response = await axios.get("/api/proxy", {
+        params: {
+          url: configTMDB.getMovieReviews(movieId),
+        },
+      })
       return response.data
     },
   })
@@ -105,10 +105,11 @@ export const useMovieRecommendations = (movieId: number) => {
   return useQuery({
     queryKey: ["MovieRecommendations", movieId],
     queryFn: async () => {
-      const response = await axios.get(
-        configTMDB.getMovieRecommendations(movieId),
-        options
-      )
+      const response = await axios.get("/api/proxy", {
+        params: {
+          url: configTMDB.getMovieRecommendations(movieId),
+        },
+      })
       return response.data
     },
   })
@@ -118,10 +119,11 @@ export const useMovieImages = (movieId: number) => {
   return useQuery({
     queryKey: ["MovieImages", movieId],
     queryFn: async () => {
-      const response = await axios.get(
-        configTMDB.getMovieImages(movieId),
-        options
-      )
+      const response = await axios.get("/api/proxy", {
+        params: {
+          url: configTMDB.getMovieImages(movieId),
+        },
+      })
       return response.data
     },
   })

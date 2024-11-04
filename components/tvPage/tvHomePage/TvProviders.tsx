@@ -7,13 +7,11 @@ export function TvProviders({ TvProviders }: any) {
   const pathname = usePathname()
 
   const handleClick = (providerID: number) => {
-    if(pathname.includes("provider")){
+    if (pathname.includes("provider")) {
       router.push(`${providerID}`)
-    }
-    else{
+    } else {
       router.push(`${pathname}/provider/${providerID}`)
     }
-    
   }
   return (
     <section className="mb-12">
