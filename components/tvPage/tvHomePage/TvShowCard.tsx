@@ -2,7 +2,7 @@
 import React from "react"
 import { Star } from "lucide-react"
 import { ImageLoader } from "@/components/Card"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 
 interface TVShowCardProps {
   id: number
@@ -12,6 +12,7 @@ interface TVShowCardProps {
   voteAverage: number
   voteCount: number
   genreIds: number[]
+  popularity: number
 }
 
 const genreMap = {
@@ -52,11 +53,13 @@ export default function TVShowCard({
   voteAverage,
   voteCount,
   genreIds,
+  popularity,
 }: TVShowCardProps) {
   const router = useRouter()
+  const pathname = usePathname()
 
   const handleClick = () => {
-    router.push(`tv/${id}`)
+    router.push(`${pathname}/${id}`)
   }
   return (
     <div
@@ -93,6 +96,14 @@ export default function TVShowCard({
               </span>
             </div>
           )}
+          <div className="mb-3 flex items-center">
+            <span className="mr-2 text-sm font-medium text-gray-700">
+              Popularity:
+            </span>
+            <span className="text-sm font-semibold text-gray-800">
+              #{Math.round(popularity) || "N/A"}
+            </span>
+          </div>
           <div className="mb-2 flex flex-wrap gap-1.5">
             {genreIds.slice(0, 3).map((genreId) => (
               <div

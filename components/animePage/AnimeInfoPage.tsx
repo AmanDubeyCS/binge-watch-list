@@ -1,18 +1,9 @@
-"use client"
-import React, { useState } from "react"
+import React from "react"
 import Image from "next/image"
-import useAnimeStore from "@/store/animeIdStore"
 import { Bookmark, Heart, Info, Star } from "lucide-react"
-
-import ChipTabs from "../ChipTabs"
-import { EpisodesDetails } from "./EpisodesDetails"
-import AnimeStatsGraph from "./Statistics"
 import { Anime } from "@/types/anime/singleAnime"
-import { CharacterDetails } from "./CharacterDetails"
 import SideBarDetails from "./SideBarDetails"
-import Overview from "./Overview"
-import { Pictures } from "./Pictures"
-import { Recommendations } from "./Recommendations"
+import { MainContent } from "./MainContent"
 
 export const formatDate = (dateString: string) => {
   const date = new Date(dateString)
@@ -25,36 +16,8 @@ export const formatDate = (dateString: string) => {
     .replace(/\//g, "/")
 }
 
-export function AnimeInfoPage({ animaInfo }: { animaInfo: Anime }) {
-  const animeID = useAnimeStore((state) => state.animeID)
-  const tabs = [
-    "overview",
-    "characters",
-    "episodes",
-    "statistics",
-    "recommendations",
-    "pictures",
-  ]
-  const [activeTab, setActiveTab] = useState("overview")
+export function AnimeInfoPage({ animaInfo, animeID }: { animaInfo: Anime, animeID: number }) {
 
-  const renderContent = () => {
-    switch (activeTab) {
-      case "overview":
-        return <Overview animeInfo={animaInfo} />
-      case "characters":
-        return animeID && <CharacterDetails animeID={animeID} />
-      case "episodes":
-        return animeID && <EpisodesDetails animeID={animeID} />
-      case "statistics":
-        return animeID && <AnimeStatsGraph animeID={animeID} />
-      case "pictures":
-        return animeID && <Pictures animeID={animeID} />
-      case "recommendations":
-        return animeID && <Recommendations animeID={animeID} />
-      default:
-        return <Overview animeInfo={animaInfo} />
-    }
-  }
   return (
     <>
       <div
@@ -152,19 +115,10 @@ export function AnimeInfoPage({ animaInfo }: { animaInfo: Anime }) {
           backgroundImage:
             "linear-gradient(to right, rgba(255, 255, 255, 0.9) 0%, rgba(240, 240, 240, 0.9) 100%)",
         }}
-        className=""
       >
         <div className="mx-auto flex max-w-[1600px] gap-4 p-10">
           <SideBarDetails animeInfo={animaInfo} />
-          <div className="flex w-full flex-col gap-4">
-            <div className="h-[50px] rounded-lg border">
-              <ChipTabs
-                activeTab={(val: string) => setActiveTab(val)}
-                tabs={tabs}
-              />
-            </div>
-            <div className="size-full rounded-lg">{renderContent()}</div>
-          </div>
+          <MainContent animaInfo={animaInfo} animeID={animeID}/>
         </div>
       </div>
     </>

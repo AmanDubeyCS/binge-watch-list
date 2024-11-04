@@ -1,62 +1,15 @@
-import { useTvCast } from "@/quries/TMDB/TV/tvFetch"
+import React from "react"
 import { Heart } from "lucide-react"
 import Image from "next/image"
-import React from "react"
+import { useMovieCast } from "@/quries/TMDB/movies/moviesFetch"
 
-interface CastMember {
-  adult: boolean
-  gender: number
-  id: number
-  known_for_department: string
-  name: string
-  original_name: string
-  popularity: number
-  profile_path: string | null
-  roles: Role[]
-  total_episode_count: number
-  order: number
-}
-
-interface Role {
-  credit_id: string
-  character: string
-  episode_count: number
-}
-
-interface CrewMember {
-  adult: boolean
-  gender: number
-  id: number
-  known_for_department: string
-  name: string
-  original_name: string
-  popularity: number
-  profile_path: string | null
-  jobs: Job[]
-  department: string
-  total_episode_count: number
-}
-
-interface Job {
-  credit_id: string
-  job: string
-  episode_count: number
-}
-
-interface ShowCredits {
-  cast: CastMember[]
-  crew: CrewMember[]
-  id: number
-}
-
-export function CharacterDetails({ seriesId }: { seriesId: number }) {
-  const { data, isLoading } = useTvCast(seriesId)
-
+export function CastDetails({ movieId }: { movieId: number }) {
+  const { data, isLoading } = useMovieCast(movieId)
   return (
     <div className="flex flex-wrap items-center justify-center gap-2 py-4">
       {!isLoading &&
         data &&
-        data.cast.map((character: CastMember) => (
+        data.cast.map((character: any) => (
           <div
             key={character.id}
             className="w-56 overflow-hidden rounded-xl bg-white shadow-md"
@@ -78,9 +31,7 @@ export function CharacterDetails({ seriesId }: { seriesId: number }) {
                 {character.name}
               </h2>
               <p className="mb-2 text-sm text-gray-500">
-                {character.roles.map((role) => (
-                  <span key={role.credit_id}>As {role.character}</span>
-                ))}
+                <span>As {character.character}</span>
               </p>
               <div className="flex items-center justify-between">
                 <span className="rounded-full bg-indigo-100 px-2 py-1 text-xs font-semibold text-indigo-600">

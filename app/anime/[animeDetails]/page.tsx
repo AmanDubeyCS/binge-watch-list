@@ -1,24 +1,14 @@
-"use client"
-
-import React, { useEffect } from "react"
-import { useSingleAnimeInfo } from "@/quries/jikan/animefetch"
-import useAnimeStore from "@/store/animeIdStore"
+import React from "react"
 
 import { AnimeInfoPage } from "@/components/animePage/AnimeInfoPage"
+import { fetchFromJikan } from "@/util/fetchFromJikan"
+import { config } from "@/apiConfig"
 
-export default function Page({ params }: any) {
-  const { setAnimeID } = useAnimeStore()
+export default async function Page({ params }: any) {
   const animeID = params.animeDetails
-  const { data, error, isLoading } = useSingleAnimeInfo(animeID)
+  const data = await fetchFromJikan(config.getSingleAnime(animeID), 0)
 
-  useEffect(() => {
-    if (data) {
-      setAnimeID(data.mal_id)
-    }
-  }, [data, setAnimeID])
-
-  if (error) {
-    return <div>faild to load the page</div>
-  }
-  return <>{!isLoading && <AnimeInfoPage animaInfo={data} />}</>
+  return (
+    <>{data && <AnimeInfoPage animaInfo={data.data} animeID={animeID} />}</>
+  )
 }

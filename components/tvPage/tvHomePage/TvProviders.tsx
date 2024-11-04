@@ -1,12 +1,19 @@
 "use client"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import React from "react"
 
 export function TvProviders({ TvProviders }: any) {
   const router = useRouter()
+  const pathname = usePathname()
 
   const handleClick = (providerID: number) => {
-    router.push(`/tv/provider/${providerID}`)
+    if(pathname.includes("provider")){
+      router.push(`${providerID}`)
+    }
+    else{
+      router.push(`${pathname}/provider/${providerID}`)
+    }
+    
   }
   return (
     <section className="mb-12">
