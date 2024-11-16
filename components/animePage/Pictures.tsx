@@ -1,4 +1,4 @@
-import { useAnimePictures } from "@/quries/jikan/animefetch"
+import { useAnimePictures } from "@/queries/jikan/animefetch"
 import Image from "next/image"
 import React from "react"
 

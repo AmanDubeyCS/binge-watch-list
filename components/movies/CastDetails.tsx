@@ -1,10 +1,16 @@
 import React from "react"
 import { Heart } from "lucide-react"
 import Image from "next/image"
-import { useMovieCast } from "@/quries/TMDB/movies/moviesFetch"
+import { useMovieCast } from "@/queries/TMDB/movies/moviesFetch"
+import { useRouter } from "next/navigation"
 
 export function CastDetails({ movieId }: { movieId: number }) {
   const { data, isLoading } = useMovieCast(movieId)
+  const router = useRouter()
+
+  const handleClick = (personId: number) => {
+    router.push(`/person/${personId}`)
+  }
   return (
     <div className="flex flex-wrap items-center justify-center gap-2 py-4">
       {!isLoading &&
@@ -12,7 +18,8 @@ export function CastDetails({ movieId }: { movieId: number }) {
         data.cast.map((character: any) => (
           <div
             key={character.id}
-            className="w-56 overflow-hidden rounded-xl bg-white shadow-md"
+            onClick={() => handleClick(character.id)}
+            className="w-56 cursor-pointer overflow-hidden rounded-xl bg-white shadow-md"
           >
             <div className="relative h-64">
               <Image

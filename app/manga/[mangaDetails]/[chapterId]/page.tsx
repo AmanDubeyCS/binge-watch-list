@@ -1,5 +1,5 @@
 import React from "react"
-import { getChapterData } from "@/quries/mangaDex/mangaFetch"
+import { getChapterData } from "@/queries/mangaDex/mangaFetch"
 
 import { MangaReadPage } from "@/components/mangaPage/MangaReadPage"
 

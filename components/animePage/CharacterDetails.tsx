@@ -1,9 +1,9 @@
 import React from "react"
 import Image from "next/image"
-import { useAnimeCharacters } from "@/quries/jikan/animefetch"
+import { useAnimeCharacters } from "@/queries/jikan/animefetch"
 import { Heart } from "lucide-react"
 
-interface CharacterDetails {
+interface CharacterDetailsProps {
   character: {
     mal_id: number
     url: string
@@ -44,7 +44,7 @@ export function CharacterDetails({ animeID }: { animeID: number }) {
     <div className="flex flex-wrap items-center justify-center gap-2 py-4">
       {!isLoading &&
         data &&
-        data.map((character: CharacterDetails) => (
+        data.map((character: CharacterDetailsProps) => (
           <div
             key={character.character.mal_id}
             className="w-56 overflow-hidden rounded-xl bg-white shadow-md"

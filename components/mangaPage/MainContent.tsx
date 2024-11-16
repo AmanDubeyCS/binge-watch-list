@@ -17,7 +17,7 @@ export function MainContent({
 }) {
   const tabs = ["Chapters", "Reviews", "Media"]
   const [activeTab, setActiveTab] = useState("overview")
-  console.log(reviews)
+  // console.log(reviews)
   const renderContent = () => {
     switch (activeTab) {
       case "Chapters":

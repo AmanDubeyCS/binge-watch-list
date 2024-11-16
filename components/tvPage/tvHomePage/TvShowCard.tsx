@@ -13,6 +13,7 @@ interface TVShowCardProps {
   voteCount: number
   genreIds: number[]
   popularity: number
+  mediaType?: string
 }
 
 const genreMap = {
@@ -54,48 +55,61 @@ export default function TVShowCard({
   voteCount,
   genreIds,
   popularity,
+  mediaType,
 }: TVShowCardProps) {
   const router = useRouter()
   const pathname = usePathname()
 
   const handleClick = () => {
-    router.push(`${pathname}/${id}`)
+    if (mediaType === "movie") {
+      router.push(`/movies/${id}`)
+    } else if (mediaType === "tv") {
+      router.push(`/tv/${id}`)
+    } else if (mediaType === "game") {
+      router.push(`/games/${id}`)
+    } else {
+      router.push(`${pathname}/${id}`)
+    }
   }
   return (
     <div
       onClick={handleClick}
-      className="flex w-[360px] cursor-pointer items-center justify-start overflow-hidden bg-white p-2 shadow-md duration-300 hover:scale-105"
+      className={`flex ${pathname === "/games" ? "w-[550px]" : "w-[360px]"} cursor-pointer items-center justify-start overflow-hidden rounded-md bg-white p-2 shadow-md duration-300 hover:scale-105`}
     >
       <div className="flex gap-2">
-        <div className="relative w-[140px] shrink-0 overflow-hidden rounded-lg">
+        <div
+          className={`relative ${pathname === "/games" ? "w-[300px]" : "w-[140px]"} shrink-0 overflow-hidden rounded-lg`}
+        >
           <ImageLoader
             src={coverImage}
             alt=""
             fallback={
-              <div className="flex h-auto w-[140px] items-center justify-center bg-white text-center text-black">
+              <div
+                className={`flex h-auto ${pathname === "/games" ? "w-full" : "w-[140px]"} items-center justify-center bg-white text-center text-black`}
+              >
                 <p>Image not available</p>
               </div>
             }
           />
         </div>
         <div className="flex-1">
-          <div className="mb-2 w-fit rounded-lg border border-blue-700 px-2 py-1 text-sm font-medium uppercase text-black">
-            {firstAirDate}
-          </div>
+          {firstAirDate && (
+            <div className="mb-2 w-fit rounded-lg border border-blue-700 px-2 py-1 text-sm font-medium uppercase text-black">
+              {firstAirDate}
+            </div>
+          )}
           <h3 className="mb-2 line-clamp-2 text-wrap text-base font-semibold text-gray-800">
             {name}
           </h3>
-          {voteAverage && (
-            <div className="mb-2 flex items-center">
-              <Star className="mr-1 size-5 fill-current text-yellow-500" />
-              <span className="mr-2 text-lg font-semibold text-gray-800">
-                {voteAverage.toFixed(1) || "N/A"}
-              </span>
-              <span className="text-sm text-gray-600">
-                ({voteCount.toLocaleString()} users)
-              </span>
-            </div>
-          )}
+          <div className="mb-2 flex items-center">
+            <Star className="mr-1 size-5 fill-current text-yellow-500" />
+            <span className="mr-2 text-lg font-semibold text-gray-800">
+              {voteAverage > 0 ? voteAverage.toFixed(1) : "N/A"}
+            </span>
+            <span className="text-sm text-gray-600">
+              ({voteCount > 0 ? voteCount.toLocaleString() : "N/A"} users)
+            </span>
+          </div>
           <div className="mb-3 flex items-center">
             <span className="mr-2 text-sm font-medium text-gray-700">
               Popularity:
@@ -105,12 +119,14 @@ export default function TVShowCard({
             </span>
           </div>
           <div className="mb-2 flex flex-wrap gap-1.5">
-            {genreIds.slice(0, 3).map((genreId) => (
+            {genreIds.slice(0, 3).map((genreId: any) => (
               <div
                 key={genreId}
                 className="rounded-lg border bg-gray-100 p-1 text-xs text-black duration-300 hover:scale-110 hover:border-gray-500"
               >
-                {genreMap[genreId as keyof typeof genreMap] || "Unknown"}
+                {genreMap[genreId as keyof typeof genreMap] ||
+                  genreId.name ||
+                  "Unknown"}
               </div>
             ))}
             {genreIds.length > 3 && (

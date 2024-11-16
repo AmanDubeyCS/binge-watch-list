@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { useMangaFetch } from "@/quries/mangaDex/mangaFetch"
+import { useMangaFetch } from "@/queries/mangaDex/mangaFetch"
 
 import { MangaItem } from "@/types/manga/mangaTypes"
 

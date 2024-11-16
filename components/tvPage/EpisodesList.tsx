@@ -1,4 +1,4 @@
-import { useSeasonEpisodes } from "@/quries/TMDB/TV/tvFetch"
+import { useSeasonEpisodes } from "@/queries/TMDB/TV/tvFetch"
 import { Calendar, Star } from "lucide-react"
 import React from "react"
 

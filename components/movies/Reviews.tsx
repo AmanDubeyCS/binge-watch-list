@@ -1,4 +1,4 @@
-import { useMovieReviews } from "@/quries/TMDB/movies/moviesFetch"
+import { useMovieReviews } from "@/queries/TMDB/movies/moviesFetch"
 import { useEffect, useState } from "react"
 import { Star, Calendar, ChevronDown, ChevronUp } from "lucide-react"
 import React from "react"

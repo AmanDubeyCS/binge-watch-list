@@ -8,6 +8,8 @@ export const BASE_URL_ANIME = "https://api.jikan.moe/v4"
 
 const BASE_URL_TMDB = "https://api.themoviedb.org/3"
 
+const BASE_RAWG_URL = "https://api.rawg.io/api"
+
 export const config = {
   getMangaList: ({ limit, offset, title }: any) =>
     `${BASE_URL_MANGADEX}/manga?title=${title}&limit=${limit}&offset=${offset}&includes%5B%5D=cover_art`,
@@ -96,6 +98,17 @@ export const configTMDB = {
     `${BASE_URL_TMDB}/tv/${seriesId}/season/${seasonId}?language=en-US`,
 
   getPersonDetails: (personID: number) =>
-    `${BASE_URL_TMDB}/person/${personID}?append_to_response=combined_credits&language=en-US`,
+    `${BASE_URL_TMDB}/person/${personID}?append_to_response=combined_credits,external_ids&language=en-US`,
   getPopularPersons: `${BASE_URL_TMDB}/person/popular`,
+}
+
+export const configRAWG = {
+  getGamesList: `${BASE_RAWG_URL}/games?key=${process.env.RAWG_API_KEY}`,
+  getSingleGame: (gameId: number) =>
+    `${BASE_RAWG_URL}/games/${gameId}?key=${process.env.RAWG_API_KEY}`,
+  getAdditions: (gameId: number) =>
+    `${BASE_RAWG_URL}/games/${gameId}/additions`,
+  getGameAchivements: (gameId: number) =>
+    `${BASE_RAWG_URL}/games/${gameId}/achievements`,
+  getWhereToBuy: (gameId: number) => `${BASE_RAWG_URL}/games/${gameId}/stores`,
 }

@@ -22,8 +22,8 @@ export function MangaList({
   // console.log(mangaList[1])
 
   return (
-    <section className="py-12 text-black">
-      <div className="container mx-auto px-4">
+    <section>
+      <div>
         <h2 className="mb-6 text-3xl font-bold">{title}</h2>
         <div className="hide-scrollbar overflow-x-scroll">
           <div className="flex w-[3100px] flex-wrap gap-5 p-1.5">

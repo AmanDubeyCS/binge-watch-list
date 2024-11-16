@@ -1,4 +1,4 @@
-import { useMovieCollection } from "@/quries/TMDB/movies/moviesFetch"
+import { useMovieCollection } from "@/queries/TMDB/movies/moviesFetch"
 import { Calendar, Star } from "lucide-react"
 import React from "react"
 

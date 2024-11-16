@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Star, Calendar, ChevronDown, ChevronUp } from "lucide-react"
-import { useTvReviews } from "@/quries/TMDB/TV/tvFetch"
+import { useTvReviews } from "@/queries/TMDB/TV/tvFetch"
 
 interface Review {
   author: string

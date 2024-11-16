@@ -1,6 +1,7 @@
-import { useTvCast } from "@/quries/TMDB/TV/tvFetch"
+import { useTvCast } from "@/queries/TMDB/TV/tvFetch"
 import { Heart } from "lucide-react"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import React from "react"
 
 interface CastMember {
@@ -43,15 +44,18 @@ interface Job {
   episode_count: number
 }
 
-interface ShowCredits {
-  cast: CastMember[]
-  crew: CrewMember[]
-  id: number
-}
+// interface ShowCredits {
+//   cast: CastMember[]
+//   crew: CrewMember[]
+//   id: number
+// }
 
 export function CharacterDetails({ seriesId }: { seriesId: number }) {
   const { data, isLoading } = useTvCast(seriesId)
-
+  const router = useRouter()
+  const handleClick = (personId: number) => {
+    router.push(`/person/${personId}`)
+  }
   return (
     <div className="flex flex-wrap items-center justify-center gap-2 py-4">
       {!isLoading &&
@@ -59,7 +63,8 @@ export function CharacterDetails({ seriesId }: { seriesId: number }) {
         data.cast.map((character: CastMember) => (
           <div
             key={character.id}
-            className="w-56 overflow-hidden rounded-xl bg-white shadow-md"
+            onClick={() => handleClick(character.id)}
+            className="w-56 cursor-pointer overflow-hidden rounded-xl bg-white shadow-md"
           >
             <div className="relative h-64">
               <Image
