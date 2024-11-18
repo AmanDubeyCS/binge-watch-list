@@ -2,8 +2,6 @@ import { config } from "@/apiConfig"
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 
-import { AnimeResponse } from "@/types/anime/animeTypes"
-
 export const useAnimeSerch = (animeID: string) => {
   return useQuery({
     queryKey: ["searchedAnime", animeID],

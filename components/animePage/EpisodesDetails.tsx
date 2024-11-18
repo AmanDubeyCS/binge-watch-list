@@ -1,5 +1,5 @@
 import React from "react"
-import { useEpisodeDetails } from "@/quries/jikan/animefetch"
+import { useEpisodeDetails } from "@/queries/jikan/animefetch"
 import { Calendar, Star } from "lucide-react"
 
 export function EpisodesDetails({ animeID }: { animeID: number }) {

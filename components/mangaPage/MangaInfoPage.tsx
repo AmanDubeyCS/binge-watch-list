@@ -37,12 +37,12 @@ export function MangaInfoPage({
   const genres = mangaInfo.attributes.tags.filter(
     (tag) => tag.attributes.group === "genre"
   )
-  const themes = mangaInfo.attributes.tags.filter(
-    (tag) => tag.attributes.group === "theme"
-  )
-  const formats = mangaInfo.attributes.tags.filter(
-    (tag) => tag.attributes.group === "format"
-  )
+  // const themes = mangaInfo.attributes.tags.filter(
+  //   (tag) => tag.attributes.group === "theme"
+  // )
+  // const formats = mangaInfo.attributes.tags.filter(
+  //   (tag) => tag.attributes.group === "format"
+  // )
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)

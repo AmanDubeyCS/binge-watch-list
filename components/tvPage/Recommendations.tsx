@@ -1,4 +1,4 @@
-import { useTvRecommendations } from "@/quries/TMDB/TV/tvFetch"
+import { useTvRecommendations } from "@/queries/TMDB/TV/tvFetch"
 import { Calendar, Star } from "lucide-react"
 import React from "react"
 

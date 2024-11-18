@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { useAnimeSerch } from "@/quries/jikan/animefetch"
+import { useAnimeSerch } from "@/queries/jikan/animefetch"
 
 import { AnimeData } from "@/types/anime/animeTypes"
 

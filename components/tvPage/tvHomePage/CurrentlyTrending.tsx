@@ -2,8 +2,7 @@ import React from "react"
 import TVShowCard from "./TvShowCard"
 import { Tv } from "lucide-react"
 
-export function CurrentlyTrending({ tvData, movieData, title }: any) {
-  // console.log(movieData)
+export function CurrentlyTrending({ tvData, movieData, gameData, title }: any) {
   return (
     <section>
       <h2 className="mb-4 flex items-center text-2xl font-semibold text-gray-900">
@@ -12,7 +11,7 @@ export function CurrentlyTrending({ tvData, movieData, title }: any) {
       </h2>
       <div className="hide-scrollbar w-full overflow-x-scroll whitespace-nowrap">
         {tvData && (
-          <div className="flex w-max space-x-4 py-3 pr-5">
+          <div className="flex w-[3800px] flex-wrap gap-3 py-3 pr-5">
             {tvData.map((tv: any) => (
               <TVShowCard
                 key={tv.id}
@@ -33,7 +32,7 @@ export function CurrentlyTrending({ tvData, movieData, title }: any) {
           </div>
         )}
         {movieData && (
-          <div className="flex w-max space-x-4 py-3 pr-5">
+          <div className="flex w-[3800px] flex-wrap gap-3 py-3 pr-5">
             {movieData.map((movie: any) => (
               <TVShowCard
                 key={movie.id}
@@ -49,6 +48,24 @@ export function CurrentlyTrending({ tvData, movieData, title }: any) {
                 voteCount={movie.vote_count}
                 genreIds={movie.genre_ids}
                 popularity={movie.popularity}
+              />
+            ))}
+          </div>
+        )}
+        {gameData && (
+          <div className="flex w-[3800px] flex-wrap gap-3 py-3 pr-5">
+            {gameData.map((game: any) => (
+              <TVShowCard
+                key={game.id}
+                id={game.id}
+                name={game.name}
+                coverImage={game.background_image}
+                firstAirDate={game.released}
+                voteAverage={game.rating * 2}
+                voteCount={game.ratings_count}
+                genreIds={game.genres}
+                popularity={game.metacritic}
+                mediaType="game"
               />
             ))}
           </div>

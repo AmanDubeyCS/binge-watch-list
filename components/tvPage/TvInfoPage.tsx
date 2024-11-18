@@ -61,7 +61,7 @@ export function TvInfoPage({ tvInfo, tvID }: any) {
           priority={false}
           className="absolute -z-30 h-auto w-full pl-72"
         />
-        <div className="mx-auto flex h-full max-w-[1600px] items-center px-10 py-8">
+        <div className="mx-auto flex h-full max-w-[1600px] items-center px-10 py-8 text-white">
           <Image
             src={tvInfo.coverImage}
             alt="image"

@@ -1,4 +1,4 @@
-import { useAnimeStatistics } from "@/quries/jikan/animefetch"
+import { useAnimeStatistics } from "@/queries/jikan/animefetch"
 import { UseQueryResult } from "@tanstack/react-query"
 import React from "react"
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from "recharts"

@@ -25,12 +25,15 @@ export function TvGenresList({
       <div className="container mx-auto px-4">
         <h2 className="mb-6 text-3xl font-bold">Popular Categories</h2>
         <div className="hide-scrollbar overflow-x-scroll">
-          <div className="flex w-[2700px] flex-wrap gap-5">
+          <div
+            style={{ width: `${Math.round(categorys.length / 2) * 270}px` }}
+            className="flex flex-wrap gap-5"
+          >
             {categorys.map((genre) => (
               <div
                 key={genre.id}
                 onClick={() => handleClick(genre.id)}
-                className="group relative h-[180px] w-[250px] overflow-hidden rounded-lg shadow-lg transition-transform duration-300 ease-in-out hover:scale-105"
+                className="group relative h-[180px] w-[250px] cursor-pointer overflow-hidden rounded-lg shadow-lg transition-transform duration-300 ease-in-out hover:scale-105"
               >
                 <img
                   src={genraImage[genre.id]}

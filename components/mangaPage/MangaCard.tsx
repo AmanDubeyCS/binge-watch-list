@@ -4,7 +4,7 @@ import { ImageLoader } from "../Card"
 import { Star } from "lucide-react"
 import { MangaTag } from "@/types/manga/mangaTypes"
 
-interface MangaCard {
+interface MangaCardProps {
   coverImage: string
   publication: string
   title: string
@@ -20,7 +20,7 @@ export default function MangaCard({
   genresData,
   rating,
   follows,
-}: MangaCard) {
+}: MangaCardProps) {
   const router = useRouter()
 
   const handleClick = (mangaID: any) => {

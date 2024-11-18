@@ -212,18 +212,18 @@ export function SideBarDetails({
             {numberOfSeasons || "N/A"}
           </p>
         )}
-        {budget && (
+        {budget !== undefined && (
           <p className="flex items-center text-gray-700">
             <CircleDollarSign className="mr-2 size-4 text-blue-500" />
-            <span className="mr-1 font-semibold">Budget:</span> $
-            {formatNumber(budget) || "N/A"}
+            <span className="mr-1 font-semibold">Budget:</span>
+            {budget && budget > 0 ? ` $${formatNumber(budget)}` : "N/A"}
           </p>
         )}
-        {revenue && (
+        {revenue !== undefined && (
           <p className="flex items-center text-gray-700">
             <CircleDollarSign className="mr-2 size-4 text-blue-500" />
-            <span className="mr-1 font-semibold">Revenue:</span> $
-            {formatNumber(revenue) || "N/A"}
+            <span className="mr-1 font-semibold">Revenue:</span>
+            {revenue && revenue > 0 ? `$${formatNumber(revenue)}` : "N/A"}
           </p>
         )}
         {runTime && (

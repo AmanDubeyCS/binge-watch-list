@@ -1,5 +1,5 @@
 import React from "react"
-import { trendingTvFetch } from "@/quries/TMDB/TV/tvFetch"
+import { trendingTvFetch } from "@/queries/TMDB/TV/tvFetch"
 
 import { CurrentlyTrending } from "@/components/tvPage/tvHomePage/CurrentlyTrending"
 import { configTMDB } from "@/apiConfig"

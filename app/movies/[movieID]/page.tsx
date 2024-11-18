@@ -1,5 +1,5 @@
 import React from "react"
-import { singleMovieFetch } from "@/quries/TMDB/movies/moviesFetch"
+import { singleMovieFetch } from "@/queries/TMDB/movies/moviesFetch"
 
 import MovieInfoPage from "@/components/movies/MovieInfoPage"
 

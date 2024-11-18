@@ -1,4 +1,4 @@
-import { useGetMangaArt } from "@/quries/mangaDex/mangaFetch"
+import { useGetMangaArt } from "@/queries/mangaDex/mangaFetch"
 import Image from "next/image"
 import React from "react"
 

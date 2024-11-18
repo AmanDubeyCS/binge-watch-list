@@ -80,7 +80,7 @@ export const ImageLoader: React.FC<ImageLoaderProps> = ({
       onError={handleError}
       width={300}
       height={300}
-      className="h-[215px] w-[150px]"
+      className="h-[215px]"
     />
   ) : (
     fallback || null

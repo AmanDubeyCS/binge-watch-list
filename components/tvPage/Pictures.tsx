@@ -1,4 +1,4 @@
-import { useTvImages } from "@/quries/TMDB/TV/tvFetch"
+import { useTvImages } from "@/queries/TMDB/TV/tvFetch"
 import { useState } from "react"
 
 interface MediaItem {

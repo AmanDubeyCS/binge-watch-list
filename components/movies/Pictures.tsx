@@ -1,4 +1,4 @@
-import { useMovieImages } from "@/quries/TMDB/movies/moviesFetch"
+import { useMovieImages } from "@/queries/TMDB/movies/moviesFetch"
 import { useState } from "react"
 
 interface MediaItem {

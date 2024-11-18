@@ -1,5 +1,5 @@
 import React from "react"
-import { singleTvFetch } from "@/quries/TMDB/TV/tvFetch"
+import { singleTvFetch } from "@/queries/TMDB/TV/tvFetch"
 
 import { TvInfoPage } from "@/components/tvPage/TvInfoPage"
 
