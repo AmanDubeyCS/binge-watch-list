@@ -4,6 +4,28 @@ import React from "react"
 import { Icon } from "../icons"
 import Link from "next/link"
 
+interface Comments {
+  threadId: number;
+  repliesCount: number;
+}
+
+interface RatingDistribution {
+  [score: string]: number; // Keys are strings representing scores ('1' to '10'), values are counts.
+}
+
+interface Rating {
+  average: number;
+  bayesian: number;
+  distribution: RatingDistribution;
+}
+
+interface AnimeStatistics {
+  comments: Comments;
+  rating: Rating;
+  follows: number;
+}
+
+
 const LanguageMap = {
   ar: "Arabic",
   bg: "Bulgarian",
@@ -65,7 +87,7 @@ export function SidebarDetails({
   statistics,
 }: {
   mangaInfo: Manga
-  statistics: any
+  statistics: AnimeStatistics
 }) {
   const platformsTrack = [
     {
@@ -246,7 +268,7 @@ export function SidebarDetails({
       <section className="rounded-lg bg-white p-6 shadow-md">
         <h2 className="mb-4 text-2xl font-bold">Alternative Titles</h2>
         <div className="flex flex-col gap-1">
-          {mangaInfo.attributes.altTitles.map((title: any, index: number) => (
+          {mangaInfo.attributes.altTitles.map((title, index: number) => (
             <div key={index} className="flex flex-col">
               {Object.keys(title).map((langKey) => (
                 <p

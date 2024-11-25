@@ -3,27 +3,75 @@ import { Calendar, MapPin, TrendingUp } from "lucide-react"
 import React, { useState } from "react"
 import TVShowCard from "./tvPage/tvHomePage/TvShowCard"
 
-interface Work {
-  id: number
-  title: string
-  name: string
-  character?: string
-  job?: string
-  release_date: string
-  first_air_date: string
-  vote_average: number
-  media_type: string
-  poster_path: string
-  vote_count: number
-  genre_ids: any
-  popularity: number
+interface ExternalIds {
+  freebase_mid: string | null;
+  freebase_id: string | null;
+  imdb_id: string | null;
+  tvrage_id: string | null;
+  wikidata_id: string | null;
+  facebook_id: string | null;
+  instagram_id: string | null;
+  tiktok_id: string | null;
+  twitter_id: string | null;
+  youtube_id: string | null;
 }
 
-export default function PersonPage({ actorData }: { actorData: any }) {
+interface Cast {
+  adult: boolean;
+  backdrop_path: string | null;
+  genre_ids: number[];
+  id: number;
+  original_language: string;
+  original_title?: string;
+  original_name?: string;
+  overview: string;
+  popularity: number;
+  poster_path: string | null;
+  release_date: string;
+  first_air_date: string;
+  title: string;
+  name: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+  character: string;
+  credit_id: string;
+  order?: number;
+  media_type: "movie" | "tv";
+  origin_country?: string[];
+  episode_count?: number;
+}
+
+interface CombinedCredits {
+  cast: Cast[];
+  crew: Cast[];
+}
+
+interface Person {
+  adult: boolean;
+  also_known_as: string[];
+  biography: string;
+  birthday: string | null;
+  deathday: string | null;
+  gender: number;
+  homepage: string | null;
+  id: number;
+  imdb_id: string | null;
+  known_for_department: string;
+  name: string;
+  place_of_birth: string | null;
+  popularity: number;
+  profile_path: string | null;
+  combined_credits: CombinedCredits;
+  external_ids: ExternalIds;
+}
+
+
+export default function PersonPage({ actorData }: { actorData: Person }) {
   const [activeTab, setActiveTab] = useState<"cast" | "crew">("cast")
   const [showFullBio, setShowFullBio] = useState(false)
 
-  const renderWorkItem = (work: Work) => (
+  const renderWorkItem = (work: Cast) => (
     <TVShowCard
       id={work.id}
       name={work.title || work.name}

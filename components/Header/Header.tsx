@@ -7,7 +7,7 @@ export default function Header() {
       <div>LOGO</div>
       <div className="flex gap-3">
         <Link
-          href={"/"}
+          href={"/home"}
           className="text-neutrals-800 flex items-center justify-center gap-1 p-2 text-lg font-medium leading-[normal] hover:text-orange-400"
         >
           Home

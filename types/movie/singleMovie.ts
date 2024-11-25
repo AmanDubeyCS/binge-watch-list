@@ -78,7 +78,7 @@ export interface MovieDetails {
     freebase_id: string | null
     tvdb_id: number | null
     tvrage_id: number | null
-    wikidata_id: string
+    wikidata_id: string | null
     facebook_id: string | null
     instagram_id: string | null
     twitter_id: string | null

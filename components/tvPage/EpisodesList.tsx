@@ -2,6 +2,53 @@ import { useSeasonEpisodes } from "@/queries/TMDB/TV/tvFetch"
 import { Calendar, Star } from "lucide-react"
 import React from "react"
 
+interface Episode {
+  air_date: string;
+  episode_number: number;
+  episode_type: string;
+  id: number;
+  name: string;
+  overview: string;
+  production_code: string;
+  runtime: number;
+  season_number: number;
+  show_id: number;
+  still_path: string;
+  vote_average: number;
+  vote_count: number;
+  crew: CrewMember[];
+  guest_stars: GuestStar[];
+}
+
+interface CrewMember {
+  job: string;
+  department: string;
+  credit_id: string;
+  adult: boolean;
+  gender: number;
+  id: number;
+  known_for_department: string;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: string | null;
+}
+
+interface GuestStar {
+  character: string;
+  credit_id: string;
+  order: number;
+  adult: boolean;
+  gender: number;
+  id: number;
+  known_for_department: string;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: string | null;
+}
+
+
 export function EpisodesList({
   seriesId,
   seasonId,
@@ -14,7 +61,7 @@ export function EpisodesList({
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="space-y-6">
-        {data?.episodes?.map((episode: any) => (
+        {data?.episodes?.map((episode: Episode) => (
           <div
             key={episode.id}
             className="overflow-hidden rounded-lg bg-white shadow-md"

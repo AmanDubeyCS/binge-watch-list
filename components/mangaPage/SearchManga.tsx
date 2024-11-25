@@ -27,7 +27,7 @@ export default function SearchManga() {
     title: debouncedSearch,
   })
 
-  const handleClick = (mangaID: any) => {
+  const handleClick = (mangaID: string) => {
     router.push(`manga/${mangaID}`)
   }
 
@@ -57,7 +57,7 @@ export default function SearchManga() {
         {!isLoading && search.length > 0 ? (
           data.map((manga: MangaItem) => {
             const image = manga.relationships.filter(
-              (data: any) => data.type === "cover_art"
+              (data: {type: string}) => data.type === "cover_art"
             )
             return (
               <div

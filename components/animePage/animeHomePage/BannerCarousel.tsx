@@ -1,11 +1,12 @@
 import React from "react"
 import { Crouselcard } from "./Crouselcard"
+import { AnimeData } from "@/types/anime/animeTypes"
 
-export function BannerCarousel({ anime }: any) {
+export function BannerCarousel({ anime }: {anime: AnimeData[]}) {
   // console.log(anime)
   return (
     <div className="hide-scrollbar flex gap-5 overflow-x-scroll">
-      {anime.map((anime: any, index: number) => (
+      {anime.map((anime, index: number) => (
         <Crouselcard
           key={anime.mal_id}
           animeID={anime.mal_id}

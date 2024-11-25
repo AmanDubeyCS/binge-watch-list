@@ -11,7 +11,7 @@ export function MangaChapters({
   mangaId: string
 }) {
   const router = useRouter()
-  const handleChapter = (chapterID: any) => {
+  const handleChapter = (chapterID: string) => {
     router.push(`/manga/${mangaId}/${chapterID}`)
   }
 

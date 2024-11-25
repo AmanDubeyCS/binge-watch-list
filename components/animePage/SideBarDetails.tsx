@@ -1,40 +1,82 @@
+import { cn } from "@/lib/utils"
 import { Anime } from "@/types/anime/singleAnime"
-import {
-  Award,
-  BarChart2,
-  Book,
-  ExternalLink,
-  Film,
-  Info,
-  Play,
-  Star,
-  Tag,
-  Tv,
-} from "lucide-react"
+import { ImdbData } from "@/types/ImdbType"
+import { Book, ExternalLink, Film, Info, Play, Tv } from "lucide-react"
 import React from "react"
 
-export default function SideBarDetails({ animeInfo }: { animeInfo: Anime }) {
+export default function SideBarDetails({
+  animeInfo,
+  imdbData,
+}: {
+  animeInfo: Anime
+  imdbData: ImdbData
+}) {
+  function formatNumber(num: number | string) {
+    const numericValue =
+      typeof num === "string" ? parseFloat(num.replace(/,/g, "")) : num
+
+    if (numericValue >= 1000) {
+      return (numericValue / 1000).toFixed(1).replace(/\.0$/, "") + "k"
+    }
+    return numericValue?.toString()
+  }
+
+  const ratings = [
+    {
+      name: "IMDB",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/6/69/IMDB_Logo_2016.svg",
+      votes: `${formatNumber(imdbData.imdbVotes) || "N/A"} votes`,
+      bgColor: `bg-yellow-100`,
+      rating:
+        imdbData?.Ratings?.find(
+          (r: { Source: string; Value: string }) =>
+            r.Source === "Internet Movie Database"
+        )?.Value.slice(0, 3) || "N/A",
+    },
+    {
+      name: "MAL",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/9/9b/MyAnimeList_favicon.svg",
+      votes: `${formatNumber(animeInfo.scored_by)} votes`,
+      bgColor: `bg-green-100`,
+      rating: animeInfo.score ? animeInfo.score.toFixed(1) : "N/A",
+    },
+  ]
+
   return (
     <div className="w-[450px] space-y-6 text-black">
       <section className="rounded-lg bg-white p-6 shadow-md">
         <h2 className="mb-4 text-2xl font-bold">Ratings</h2>
-        <div className="mb-2 flex items-center">
-          <Star className="mr-2 size-6 text-yellow-400" />
-          <span className="text-3xl font-bold">
-            {animeInfo.score ? animeInfo.score : "N/A"}
-          </span>
-        </div>
-        <p className="text-gray-600">Scored by {animeInfo.scored_by} users</p>
-        <div className="mt-4">
-          <p className="flex items-center text-gray-700">
-            <Award className="mr-2 size-4 text-blue-500" />
-            <span className="font-semibold">Ranked:</span> #{animeInfo.rank}
-          </p>
-          <p className="flex items-center text-gray-700">
-            <BarChart2 className="mr-2 size-4 text-blue-500" />
-            <span className="font-semibold">Popularity:</span> #
-            {animeInfo.popularity}
-          </p>
+
+        <div className="grid grid-cols-2 gap-2">
+          {ratings.map((rating, index) => {
+            return (
+              <div
+                key={index}
+                className={cn(
+                  "flex min-w-[120px] flex-col items-center gap-1 rounded-md border p-3",
+                  rating.bgColor
+                )}
+              >
+                <div className="flex flex-col items-center gap-2">
+                  <img
+                    src={rating.logo}
+                    alt=""
+                    style={{
+                      width: "full",
+                      height: "30px",
+                    }}
+                  />
+                  <div className="text-[25px] font-bold">
+                    {rating.rating}
+                    <span className="text-base font-bold">
+                      {rating.rating !== "N/A" && "/10"}
+                    </span>
+                  </div>
+                </div>
+                <div className="text-xs text-zinc-500">{rating.votes}</div>
+              </div>
+            )
+          })}
         </div>
       </section>
 
@@ -57,11 +99,11 @@ export default function SideBarDetails({ animeInfo }: { animeInfo: Anime }) {
           <Book className="mr-2 size-4 text-blue-500" />
           <span className="mr-1 font-semibold">Source:</span> {animeInfo.source}
         </p>
-        <p className="flex items-center text-gray-700">
+        {/* <p className="flex items-center text-gray-700">
           <Tag className="mr-2 size-4 text-blue-500" />
           <span className="mr-1 font-semibold">Rating:</span>{" "}
           <span className="line-clamp-1">{animeInfo.rating}</span>
-        </p>
+        </p> */}
       </section>
       {/* 
           <section className="bg-white rounded-lg shadow-md p-6">

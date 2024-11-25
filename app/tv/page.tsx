@@ -1,5 +1,4 @@
 import React from "react"
-import { trendingTvFetch } from "@/queries/TMDB/TV/tvFetch"
 
 import { CurrentlyTrending } from "@/components/tvPage/tvHomePage/CurrentlyTrending"
 import { configTMDB } from "@/apiConfig"
@@ -8,9 +7,8 @@ import { TvGenresList } from "@/components/tvPage/tvHomePage/TvGenresList"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
 
 export default async function MoviesPage() {
-  const trendingTv = await trendingTvFetch()
-
-  const [PopularTV, tvProviders, tvGenres] = await Promise.all([
+  const [trendingTv, PopularTV, tvProviders, tvGenres] = await Promise.all([
+    fetchFromTMDB(configTMDB.getTvList),
     fetchFromTMDB(configTMDB.getTvPopular),
     fetchFromTMDB(configTMDB.getTvProviders),
     fetchFromTMDB(configTMDB.getTvGenres),
@@ -38,7 +36,10 @@ export default async function MoviesPage() {
   return (
     <main className="mx-auto flex max-w-[1600px] flex-col gap-10 px-8 pb-10">
       {trendingTv && (
-        <CurrentlyTrending tvData={trendingTv} title="Currently Trending" />
+        <CurrentlyTrending
+          tvData={trendingTv.results}
+          title="Currently Trending"
+        />
       )}
       {PopularTV && (
         <CurrentlyTrending tvData={PopularTV.results} title="Popular on TV" />

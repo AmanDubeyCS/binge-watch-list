@@ -26,7 +26,7 @@ export function MangaList({
       <div>
         <h2 className="mb-6 text-3xl font-bold">{title}</h2>
         <div className="hide-scrollbar overflow-x-scroll">
-          <div className="flex w-[3100px] flex-wrap gap-5 p-1.5">
+          <div className="flex w-[3100px] flex-wrap gap-3 p-1.5">
             {mangaList.map((manga: MangaItem) => {
               const image = manga.relationships.filter(
                 (data) => data.type === "cover_art"

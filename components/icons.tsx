@@ -1,7 +1,7 @@
 import { LucideProps } from "lucide-react"
 
 export const Icon = {
-  starIcon: (props: any) => (
+  starIcon: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 -960 960 960"

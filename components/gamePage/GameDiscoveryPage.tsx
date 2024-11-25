@@ -183,7 +183,7 @@ const DropdownMultiSelect = ({
     </div>
   )
 }
-export default function GameDiscoverPage() {
+export function GameDiscoverPage() {
   const [search, setSearchTerm] = useState("")
   const [order, setSelectedOrder] = useState("")
   const [genres, setSelectedGenres] = useState<string[]>([])

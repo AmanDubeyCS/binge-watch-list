@@ -1,5 +1,4 @@
 import React from "react"
-import { trendingMoviesFetch } from "@/queries/TMDB/movies/moviesFetch"
 
 import { CurrentlyTrending } from "@/components/tvPage/tvHomePage/CurrentlyTrending"
 import { configTMDB } from "@/apiConfig"
@@ -8,13 +7,13 @@ import { TvGenresList } from "@/components/tvPage/tvHomePage/TvGenresList"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
 
 export default async function MoviesPage() {
-  const trendingMovies = await trendingMoviesFetch()
-
-  const [popularMovies, movieProviders, movieGenres] = await Promise.all([
-    fetchFromTMDB(configTMDB.getPopularMovie),
-    fetchFromTMDB(configTMDB.getMovieProviders),
-    fetchFromTMDB(configTMDB.getMovieGenres),
-  ])
+  const [trendingMovies, popularMovies, movieProviders, movieGenres] =
+    await Promise.all([
+      fetchFromTMDB(configTMDB.getMoviesList),
+      fetchFromTMDB(configTMDB.getPopularMovie),
+      fetchFromTMDB(configTMDB.getMovieProviders),
+      fetchFromTMDB(configTMDB.getMovieGenres),
+    ])
 
   const movieGenraImage = {
     28: "https://image.tmdb.org/t/p/w500/r2J02Z2OpNTctfOSN1Ydgii51I3.jpg",
@@ -42,7 +41,7 @@ export default async function MoviesPage() {
     <main className="mx-auto flex max-w-[1600px] flex-col gap-10 px-8 pb-10">
       {trendingMovies && (
         <CurrentlyTrending
-          movieData={trendingMovies}
+          movieData={trendingMovies.results}
           title="Currently Trending"
         />
       )}
