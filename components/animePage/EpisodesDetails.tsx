@@ -2,6 +2,19 @@ import React from "react"
 import { useEpisodeDetails } from "@/queries/jikan/animefetch"
 import { Calendar, Star } from "lucide-react"
 
+interface Episode {
+  mal_id: number;
+  url: string;
+  title: string;
+  title_japanese: string;
+  title_romanji: string;
+  aired: string;
+  score: number;
+  filler: boolean;
+  recap: boolean;
+  forum_url: string;
+}
+
 export function EpisodesDetails({ animeID }: { animeID: number }) {
   const { data } = useEpisodeDetails(animeID)
 
@@ -23,10 +36,11 @@ export function EpisodesDetails({ animeID }: { animeID: number }) {
       })
       .replace(/\//g, "/")
   }
+
   return (
     <div className="flex flex-wrap gap-2 p-4">
       {data &&
-        data.map((episode: any, index: number) => (
+        data.map((episode: Episode, index: number) => (
           <div
             key={index}
             className="mx-auto w-full max-w-4xl rounded-lg border border-gray-200 bg-white p-6 shadow-sm"

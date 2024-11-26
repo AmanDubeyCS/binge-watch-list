@@ -9,7 +9,7 @@ export interface MangaTag {
     group: string
     version: number
   }
-  relationships: any[] // Adjust type if needed
+  relationships: any[]
 }
 
 interface MangaLinks {

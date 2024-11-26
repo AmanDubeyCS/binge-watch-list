@@ -22,7 +22,7 @@ export default function SearchAnime() {
 
   const { data, error, isLoading } = useAnimeSerch(animeID)
 
-  const handleClick = (animeID: any) => {
+  const handleClick = (animeID: number) => {
     router.push(`anime/${animeID}`)
   }
 

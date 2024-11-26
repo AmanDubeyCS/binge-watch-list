@@ -1,9 +1,12 @@
 import React from "react"
 import Image from "next/image"
 import { Bookmark, Heart, Info, Star } from "lucide-react"
-import { Anime } from "@/types/anime/singleAnime"
+import { Anime, Genre } from "@/types/anime/singleAnime"
 import SideBarDetails from "./SideBarDetails"
 import { MainContent } from "./MainContent"
+import { ImdbData } from "@/types/ImdbType"
+
+
 
 export const formatDate = (dateString: string) => {
   const date = new Date(dateString)
@@ -19,10 +22,13 @@ export const formatDate = (dateString: string) => {
 export function AnimeInfoPage({
   animaInfo,
   animeID,
+  imdbData,
 }: {
   animaInfo: Anime
   animeID: number
+  imdbData: ImdbData
 }) {
+
   return (
     <>
       <div
@@ -41,7 +47,7 @@ export function AnimeInfoPage({
           className="absolute -z-30 h-auto w-full pl-72"
         />
 
-        <div className="mx-auto flex h-full max-w-[1600px] items-center justify-center px-10 py-8">
+        <div className="mx-auto flex h-full max-w-[1600px] items-center justify-center px-10 py-8 text-white">
           <div className="flex w-fit shrink-0 justify-center">
             <Image
               src={animaInfo.images?.webp.large_image_url}
@@ -59,12 +65,12 @@ export function AnimeInfoPage({
             </h1>
             <div className="flex items-center gap-2 text-base">
               <p className="rounded-md border border-white px-[4px]">
-                {animaInfo.status}
+                {animaInfo.rating}
               </p>
               <p>{formatDate(animaInfo.aired.from)}</p>
               <div className="size-[4px] rounded-full bg-white"></div>
               <div className="flex flex-1 flex-wrap">
-                {animaInfo.genres.map((genra: any) => (
+                {animaInfo.genres.map((genra: Genre) => (
                   <p key={genra.mal_id}>{genra.name},</p>
                 ))}
               </div>
@@ -72,7 +78,9 @@ export function AnimeInfoPage({
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2 rounded-full px-3 py-1">
                 <Star className="size-5 text-yellow-400" />
-                <span className="text-lg font-bold">{animaInfo.score}</span>
+                <span className="text-lg font-bold">
+                  {animaInfo.score.toFixed(1)}
+                </span>
                 <span className="text-sm text-gray-300">
                   ({animaInfo.scored_by} votes)
                 </span>
@@ -91,7 +99,7 @@ export function AnimeInfoPage({
                 <h3 className="flex items-center gap-2 font-semibold">
                   <Info className="size-4" /> Studio
                 </h3>
-                {animaInfo.studios.map((studio: any) => (
+                {animaInfo.studios.map((studio: Genre) => (
                   <div key={studio.mal_id}>
                     <p className="text-base font-medium text-gray-300">
                       {studio.name}
@@ -104,7 +112,7 @@ export function AnimeInfoPage({
                   <Info className="size-4" /> Producers
                 </h3>
                 <div className="flex flex-wrap text-gray-400">
-                  {animaInfo.producers.map((producer: any) => (
+                  {animaInfo.producers.map((producer: Genre) => (
                     <div key={producer.mal_id}>
                       <p className="text-base font-medium">{producer.name},</p>
                     </div>
@@ -122,7 +130,7 @@ export function AnimeInfoPage({
         }}
       >
         <div className="mx-auto flex max-w-[1600px] gap-4 p-10">
-          <SideBarDetails animeInfo={animaInfo} />
+          <SideBarDetails animeInfo={animaInfo} imdbData={imdbData} />
           <MainContent animaInfo={animaInfo} animeID={animeID} />
         </div>
       </div>

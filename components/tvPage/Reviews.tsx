@@ -26,9 +26,7 @@ export function Reviews({ seriesId }: { seriesId: number }) {
     }
   }, [data])
   const [reviews, setReviews] = useState<Review[]>([])
-  const [sortBy, setSortBy] = useState<
-    "newest" | "oldest" | "highest" | "lowest"
-  >("newest")
+  const [sortBy, setSortBy] = useState("newest")
   const [expandedReviews, setExpandedReviews] = useState<Set<string>>(new Set())
 
   const sortedReviews = [...reviews].sort((a, b) => {
@@ -45,6 +43,8 @@ export function Reviews({ seriesId }: { seriesId: number }) {
         return (b.author_details.rating || 0) - (a.author_details.rating || 0)
       case "lowest":
         return (a.author_details.rating || 0) - (b.author_details.rating || 0)
+      default:
+        return 0
     }
   })
 
@@ -74,7 +74,7 @@ export function Reviews({ seriesId }: { seriesId: number }) {
         <p className="text-lg">{reviews.length} reviews</p>
         <select
           className="rounded-md border border-gray-300 bg-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          onChange={(e) => setSortBy(e.target.value as any)}
+          onChange={(e) => setSortBy(e.target.value)}
           value={sortBy}
         >
           <option value="newest">Newest First</option>

@@ -37,7 +37,7 @@ export function Recommendations({ animeID }: { animeID: number }) {
     )
   }
 
-  const handleClick = (animeID: any) => {
+  const handleClick = (animeID: number) => {
     router.push(`${animeID}`)
   }
   return (

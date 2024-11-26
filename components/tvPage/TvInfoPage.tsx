@@ -11,8 +11,10 @@ import { EpisodesDetails } from "./EpisodesDetails"
 import { Recommendations } from "./Recommendations"
 import { Reviews } from "./Reviews"
 import { Pictures } from "./Pictures"
+import { ImdbData } from "@/types/ImdbType"
+import { Show } from "@/types/tv/singleTvType"
 
-export function TvInfoPage({ tvInfo, tvID }: any) {
+export function TvInfoPage({ tvInfo, tvID, imdbdata }: { tvInfo: Show, tvID: number, imdbdata: ImdbData}) {
   const tabs = [
     "Overview",
     "Characters",
@@ -80,7 +82,7 @@ export function TvInfoPage({ tvInfo, tvID }: any) {
               <p>{tvInfo.first_air_date}</p>
               <div className="size-[4px] rounded-full bg-white"></div>
               <div className="flex flex-1 flex-wrap">
-                {tvInfo.genres.map((genre: any, index: number) => (
+                {tvInfo.genres.map((genre, index: number) => (
                   <p key={genre.id}>
                     {genre.name}
                     {index < tvInfo.genres.length - 1 ? "," : ""}
@@ -114,7 +116,7 @@ export function TvInfoPage({ tvInfo, tvID }: any) {
                     <Info className="size-4" /> Creator
                   </h3>
                   <div className="flex flex-wrap text-gray-400">
-                    {tvInfo.created_by.map((createdBy: any, index: number) => (
+                    {tvInfo.created_by.map((createdBy, index: number) => (
                       <div key={createdBy.id}>
                         <p className="font-mediu text-base">
                           {createdBy.name}
@@ -131,7 +133,7 @@ export function TvInfoPage({ tvInfo, tvID }: any) {
                 </h3>
                 <div className="flex flex-wrap text-gray-400">
                   {tvInfo.production_companies.map(
-                    (productionCompanies: any, index: number) => (
+                    (productionCompanies, index: number) => (
                       <div key={productionCompanies.id}>
                         <p className="text-base font-medium">
                           {productionCompanies.name}
@@ -158,6 +160,7 @@ export function TvInfoPage({ tvInfo, tvID }: any) {
         <div className="mx-auto flex max-w-[1600px] gap-4 p-10">
           <SideBarDetails
             rating={tvInfo.vote_average}
+            imdbRatings={imdbdata}
             voteCount={tvInfo.vote_count}
             popularity={tvInfo.popularity}
             type={tvInfo.type}

@@ -22,6 +22,7 @@ export async function GET(request: Request) {
       params[key] = value
     }
   })
+
   const needsToken = url.includes("themoviedb")
   const RAWGUrl = url.includes("rawg") && !url.includes("page")
   try {

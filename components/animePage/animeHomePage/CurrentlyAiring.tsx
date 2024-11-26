@@ -15,7 +15,10 @@ export function CurrentlyAiring({
         Currently Airing
       </h2>
       <div className="hide-scrollbar w-full overflow-x-scroll whitespace-nowrap">
-        <div className="flex w-max space-x-4 py-3 pr-5">
+        <div
+          style={{ width: `${Math.round(currentlyAiring.length / 2) * 375}px` }}
+          className="flex flex-wrap gap-3 py-3 pr-5"
+        >
           {currentlyAiring.map((anime) => (
             <Animecard
               key={anime.mal_id}

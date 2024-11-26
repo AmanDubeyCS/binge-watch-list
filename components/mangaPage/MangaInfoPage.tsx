@@ -17,7 +17,7 @@ export function MangaInfoPage({
   statistics: StatisticsData
 }) {
   const image = mangaInfo.relationships.filter(
-    (data: any) => data.type === "cover_art"
+    (data: {type: string}) => data.type === "cover_art"
   )
   const mangaId = Object.keys(statistics.statistics)[0]
   const ratingData = statistics.statistics[mangaId]
@@ -98,7 +98,7 @@ export function MangaInfoPage({
               <p>{formatDate(mangaInfo.attributes.createdAt)}</p>
               <div className="size-[4px] rounded-full bg-white"></div>
               <div className="flex flex-1 flex-wrap">
-                {genres.map((genra: any) => (
+                {genres.map((genra) => (
                   <p key={genra.id}>{genra.attributes.name.en},</p>
                 ))}
               </div>

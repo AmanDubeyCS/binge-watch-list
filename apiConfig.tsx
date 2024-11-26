@@ -1,5 +1,5 @@
 const isProd = true
-const tvdb = "14923218-bcc2-4cdb-ab1a-1983494b21ed"
+const tvdb = ""
 export const BASE_URL_MANGADEX = isProd
   ? "https://api.mangadex.org"
   : "https://api.mangadex.dev"
@@ -9,6 +9,8 @@ export const BASE_URL_ANIME = "https://api.jikan.moe/v4"
 const BASE_URL_TMDB = "https://api.themoviedb.org/3"
 
 const BASE_RAWG_URL = "https://api.rawg.io/api"
+
+const OMBD_BASE_URL = "https://www.omdbapi.com/"
 
 export const config = {
   getMangaList: ({ limit, offset, title }: any) =>
@@ -30,11 +32,13 @@ export const config = {
   getMangaArt: (mangaId: string) =>
     `${BASE_URL_MANGADEX}/cover?order[volume]=asc&manga[]=${mangaId}&limit=15&offset=0`,
 
-  getBannerAnime: `https://api.jikan.moe/v4/anime?status=airing&order_by=score&sort=desc&start_date=2024-01-01&limit=6`,
+  getBannerAnime: `${BASE_URL_ANIME}/anime?status=airing&order_by=score&sort=desc&start_date=2024-01-01&limit=6`,
   getAnimeList: `${BASE_URL_ANIME}/top/anime?type=tv&filter=airing&limit=15`,
   getLatestpromos: `${BASE_URL_ANIME}/watch/promos`,
   getUpcomongAnimes: `${BASE_URL_ANIME}/seasons/upcoming?limit=15`,
   getPopularStudios: `${BASE_URL_ANIME}/producers?order_by=favorites&sort=desc&limit=15`,
+  getAnimeGenres: `${BASE_URL_ANIME}/genres/anime`,
+
   getSingleAnime: (animeID: number) =>
     `${BASE_URL_ANIME}/anime/${animeID}/full`,
   getSearchedAnime: (title: string) =>
@@ -60,6 +64,9 @@ export const configTMDB = {
   getPopularMovie: `${BASE_URL_TMDB}/discover/movie?air_date.lte=2025-04-07&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=IN&with_runtime.gte=0&with_runtime.lte=400&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&without_keywords=210024`,
   getMovieProviders: `${BASE_URL_TMDB}/watch/providers/movie?language=en-US&watch_region=IN`,
   getMovieGenres: `${BASE_URL_TMDB}/genre/movie/list`,
+  getMovieLanguagesList: `${BASE_URL_TMDB}/configuration/languages`,
+  getMoviecertificationsList: `${BASE_URL_TMDB}/certification/movie/list`,
+
   getMovieByGenres: (genresID: number) =>
     `${BASE_URL_TMDB}/discover/movie?air_date.lte=2025-04-07&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=IN&with_runtime.gte=0&with_runtime.lte=400&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&with_genres=${genresID}&without_keywords=210024`,
   getMovieByProvider: (tvProviderId: number) =>
@@ -81,6 +88,8 @@ export const configTMDB = {
   getTvPopular: `${BASE_URL_TMDB}/discover/tv?air_date.lte=2025-04-07&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=IN&with_runtime.gte=0&with_runtime.lte=400&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&without_keywords=210024`,
   getTvProviders: `${BASE_URL_TMDB}/watch/providers/tv?language=en-US&watch_region=IN`,
   getTvGenres: `${BASE_URL_TMDB}/genre/tv/list`,
+  getTvcertificationsList: `${BASE_URL_TMDB}/certification/tv/list`,
+
   getTvByProvider: (tvProviderId: number) =>
     `${BASE_URL_TMDB}/discover/tv?air_date.lte=2025-04-07&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=IN&with_runtime.gte=0&with_runtime.lte=400&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&with_watch_providers=${tvProviderId}&without_keywords=210024`,
   getTvByGenres: (genresID: number) =>
@@ -111,4 +120,11 @@ export const configRAWG = {
   getGameAchivements: (gameId: number) =>
     `${BASE_RAWG_URL}/games/${gameId}/achievements`,
   getWhereToBuy: (gameId: number) => `${BASE_RAWG_URL}/games/${gameId}/stores`,
+}
+
+export const configOMDB = {
+  getOmdbData: (contentId: string) =>
+    `${OMBD_BASE_URL}/?i=${contentId}&plot=full&apikey=${process.env.OMDB_API_KEY}`,
+  getOmdbSearchData: (contentId: string) =>
+    `${OMBD_BASE_URL}/?t=${contentId}&plot=full&apikey=${process.env.OMDB_API_KEY}`,
 }

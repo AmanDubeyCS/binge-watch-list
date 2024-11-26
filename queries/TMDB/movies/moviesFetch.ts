@@ -2,60 +2,6 @@ import { configTMDB } from "@/apiConfig"
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 
-const TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/"
-
-const options = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    Authorization: `Bearer ${process.env.TMDB_API_KEY}`,
-  },
-}
-
-export const trendingMoviesFetch = async () => {
-  try {
-    const response = await axios.get(configTMDB.getMoviesList, options)
-    if (response.status === 200) {
-      const movies = response.data.results
-
-      const moviesWithImages = movies.map((movie: any) => ({
-        ...movie,
-        coverImage: `${TMDB_IMAGE_BASE_URL}w300${movie.poster_path}`,
-      }))
-      return moviesWithImages
-    } else {
-      console.error(`API request failed with status ${response.status}`)
-      return null
-    }
-  } catch (error) {
-    console.error("Error fetching manga:", error)
-  }
-}
-
-export const singleMovieFetch = async ({ movieID }: any) => {
-  try {
-    const response = await axios.get(
-      configTMDB.getSingleMovie({ movieID }),
-      options
-    )
-    if (response.status === 200) {
-      const movie = response.data
-
-      // Add full image URLs to the movie object
-      return {
-        ...movie,
-        coverImage: `${TMDB_IMAGE_BASE_URL}w500${movie.poster_path}`, // Change 'w500' to desired image size
-        backdropImage: `${TMDB_IMAGE_BASE_URL}w1280${movie.backdrop_path}`, // Example for backdrop image
-      }
-    } else {
-      console.error(`API request failed with status ${response.status}`)
-      return null
-    }
-  } catch (error) {
-    console.error("Error fetching movie:", error)
-  }
-}
-
 export const useMovieCast = (movieId: number) => {
   return useQuery({
     queryKey: ["MovieCast", movieId],
@@ -125,6 +71,24 @@ export const useMovieImages = (movieId: number) => {
         },
       })
       return response.data
+    },
+  })
+}
+
+export const useFetchMedia = (
+  type: "tv" | "movie",
+  currentParams: Record<string, string>
+) => {
+  return useQuery({
+    queryKey: ["Media", type, currentParams],
+    queryFn: async () => {
+      const queryString = new URLSearchParams({
+        ...currentParams,
+        type,
+      }).toString()
+      const response = await fetch(`/api/fetchMovies?${queryString}`)
+      if (!response.ok) throw new Error("Error fetching media")
+      return response.json()
     },
   })
 }

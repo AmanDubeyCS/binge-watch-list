@@ -1,4 +1,4 @@
-import { config } from "@/apiConfig"
+import { BASE_URL_ANIME, config } from "@/apiConfig"
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 
@@ -68,6 +68,20 @@ export const useAnimeCharacters = (animeID: number) => {
     queryFn: async () => {
       const response = await axios.get(config.getCharactersDetail(animeID))
       return response.data.data
+    },
+  })
+}
+
+export const useFetchAnime = (currentParams: Record<string, string>) => {
+  return useQuery({
+    queryKey: ["Anime", currentParams],
+    queryFn: async () => {
+      const queryString = new URLSearchParams({ ...currentParams }).toString()
+      const response = await fetch(
+        `${BASE_URL_ANIME}/anime?limit=24&${queryString}`
+      )
+      if (!response.ok) throw new Error("Error fetching media")
+      return response.json()
     },
   })
 }

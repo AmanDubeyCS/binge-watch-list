@@ -1,7 +1,20 @@
 import React from "react"
 
-export function Overview({ trailer }: any) {
-  const trailerData = trailer.filter((trailer: any) =>
+interface Video {
+  iso_639_1: string
+  iso_3166_1: string
+  name: string
+  key: string
+  site: string
+  size: number
+  type: string
+  official: boolean
+  published_at: string
+  id: string
+}
+
+export function Overview({ trailer }: { trailer: Video[] }) {
+  const trailerData = trailer.filter((trailer) =>
     trailer.name.includes("Trailer" || "Official")
   )
 

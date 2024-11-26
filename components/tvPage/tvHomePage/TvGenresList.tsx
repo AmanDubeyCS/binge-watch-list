@@ -7,18 +7,22 @@ interface Props {
   name: string
 }
 
+interface GenreImages {
+  [genreId: number]: string;
+}
+
 export function TvGenresList({
   categorys,
   genraImage,
 }: {
   categorys: Props[]
-  genraImage?: any
+  genraImage: GenreImages
 }) {
   const router = useRouter()
   const pathname = usePathname()
 
   const handleClick = (genresID: number) => {
-    router.push(`${pathname}/genres/${genresID}`)
+    router.push(`${pathname}/discover?genres=${genresID}`)
   }
   return (
     <section className="py-12 text-black">

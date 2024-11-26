@@ -3,7 +3,7 @@ import { getChapterData } from "@/queries/mangaDex/mangaFetch"
 
 import { MangaReadPage } from "@/components/mangaPage/MangaReadPage"
 
-export default async function ChapterPage({ params }: any) {
+export default async function ChapterPage({ params }: { params: { chapterId: string } }) {
   const chapterID = params.chapterId
 
   try {

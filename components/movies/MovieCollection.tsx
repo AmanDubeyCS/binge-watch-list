@@ -2,6 +2,34 @@ import { useMovieCollection } from "@/queries/TMDB/movies/moviesFetch"
 import { Calendar, Star } from "lucide-react"
 import React from "react"
 
+interface MovieCollectionProp {
+  id: number;
+  name: string;
+  overview: string;
+  poster_path: string;
+  backdrop_path: string;
+  parts: MoviePart[];
+}
+
+interface MoviePart {
+  backdrop_path: string;
+  id: number;
+  title: string;
+  original_title: string;
+  overview: string;
+  poster_path: string;
+  media_type: string;
+  adult: boolean;
+  original_language: string;
+  genre_ids: number[];
+  popularity: number;
+  release_date: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+}
+
+
 export function MovieCollection({
   collectionId,
 }: {
@@ -32,7 +60,7 @@ export function MovieCollection({
           </div>
 
           <div className="space-y-6">
-            {data.parts.map((movie: any) => (
+            {data.parts.map((movie: MoviePart) => (
               <div
                 key={movie.id}
                 className="flex flex-col overflow-hidden rounded-lg bg-white shadow-md md:flex-row"

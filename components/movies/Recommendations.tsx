@@ -1,4 +1,5 @@
 import { useMovieRecommendations } from "@/queries/TMDB/movies/moviesFetch"
+import { Movie } from "@/types/movie/movieListType"
 import { Calendar, Star } from "lucide-react"
 import React from "react"
 
@@ -34,17 +35,18 @@ const genreMap = {
 
 export function Recommendations({ movieId }: { movieId: number }) {
   const { data } = useMovieRecommendations(movieId)
+
   return (
     <div className="container mx-auto px-4 py-8 text-black">
       <div className="flex flex-wrap justify-center gap-6">
-        {data?.results?.map((movie: any) => (
+        {data?.results?.map((movie: Movie) => (
           <div
             key={movie.id}
             className="w-[260px] overflow-hidden rounded-lg bg-white shadow-md"
           >
             <img
               src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-              alt={`${movie.name} Poster`}
+              alt={`${movie.title} Poster`}
               className="h-64 w-full object-cover"
             />
             <div className="p-4">
@@ -66,7 +68,7 @@ export function Recommendations({ movieId }: { movieId: number }) {
               <div className="mb-2 flex items-center">
                 <Calendar className="mr-1 size-5 text-gray-400" />
                 <span className="text-sm text-gray-600">
-                  {movie.first_air_date}
+                  {movie.release_date}
                 </span>
               </div>
               <div className="flex flex-wrap gap-2">

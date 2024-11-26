@@ -2,7 +2,19 @@
 import { usePathname, useRouter } from "next/navigation"
 import React from "react"
 
-export function TvProviders({ TvProviders }: any) {
+interface DisplayPriorities {
+  [countryCode: string]: number
+}
+
+interface ProviderData {
+  display_priorities: DisplayPriorities
+  display_priority: number
+  logo_path: string
+  provider_name: string
+  provider_id: number
+}
+
+export function TvProviders({ TvProviders }: { TvProviders: ProviderData[] }) {
   const router = useRouter()
   const pathname = usePathname()
 
@@ -10,7 +22,7 @@ export function TvProviders({ TvProviders }: any) {
     if (pathname.includes("provider")) {
       router.push(`${providerID}`)
     } else {
-      router.push(`${pathname}/provider/${providerID}`)
+      router.push(`${pathname}/discover?providers=${providerID}`)
     }
   }
   return (
@@ -20,7 +32,7 @@ export function TvProviders({ TvProviders }: any) {
       </h2>
       <div className="flex flex-wrap justify-center gap-8">
         {TvProviders &&
-          TvProviders.slice(0, 20).map((provider: any) => (
+          TvProviders.slice(0, 20).map((provider) => (
             <div
               key={provider.provider_id}
               className="text-center"

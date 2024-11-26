@@ -3,6 +3,7 @@ import React from "react"
 import { Star } from "lucide-react"
 import { ImageLoader } from "@/components/Card"
 import { usePathname, useRouter } from "next/navigation"
+import { cn } from "@/lib/utils"
 
 interface TVShowCardProps {
   id: number
@@ -46,6 +47,85 @@ const genreMap = {
   10752: "War",
 }
 
+const genresList = [
+  {
+    id: 28,
+    name: "Action",
+  },
+  {
+    id: 12,
+    name: "Adventure",
+  },
+  {
+    id: 16,
+    name: "Animation",
+  },
+  {
+    id: 35,
+    name: "Comedy",
+  },
+  {
+    id: 80,
+    name: "Crime",
+  },
+  {
+    id: 99,
+    name: "Documentary",
+  },
+  {
+    id: 18,
+    name: "Drama",
+  },
+  {
+    id: 10751,
+    name: "Family",
+  },
+  {
+    id: 14,
+    name: "Fantasy",
+  },
+  {
+    id: 36,
+    name: "History",
+  },
+  {
+    id: 27,
+    name: "Horror",
+  },
+  {
+    id: 10402,
+    name: "Music",
+  },
+  {
+    id: 9648,
+    name: "Mystery",
+  },
+  {
+    id: 10749,
+    name: "Romance",
+  },
+  {
+    id: 878,
+    name: "Science Fiction",
+  },
+  {
+    id: 10770,
+    name: "TV Movie",
+  },
+  {
+    id: 53,
+    name: "Thriller",
+  },
+  {
+    id: 10752,
+    name: "War",
+  },
+  {
+    id: 37,
+    name: "Western",
+  },
+]
+
 export default function TVShowCard({
   id,
   name,
@@ -59,6 +139,8 @@ export default function TVShowCard({
 }: TVShowCardProps) {
   const router = useRouter()
   const pathname = usePathname()
+  // const searchParams = useSearchParams()
+  // const genres = searchParams.get("genres")
 
   const handleClick = () => {
     if (mediaType === "movie") {
@@ -122,7 +204,11 @@ export default function TVShowCard({
             {genreIds.slice(0, 3).map((genreId: any) => (
               <div
                 key={genreId}
-                className="rounded-lg border bg-gray-100 p-1 text-xs text-black duration-300 hover:scale-110 hover:border-gray-500"
+                className={cn(
+                  "rounded-lg border bg-gray-100 p-1 text-xs text-black duration-300 hover:scale-110 hover:border-gray-500",
+                  // genres?.includes(genreId) &&
+                  //   "border border-green-600 bg-green-100"
+                )}
               >
                 {genreMap[genreId as keyof typeof genreMap] ||
                   genreId.name ||

@@ -1,8 +1,8 @@
+import { cn } from "@/lib/utils"
+import { ImdbData } from "@/types/ImdbType"
 import {
-  BarChart2,
   Film,
   Info,
-  Star,
   Tag,
   Tv,
   CircleDollarSign,
@@ -54,6 +54,7 @@ const tmdbLanguageMap = {
 const platformLogos = {
   IMDB: "https://upload.wikimedia.org/wikipedia/commons/6/69/IMDB_Logo_2016.svg",
   TVDB: "https://www.thetvdb.com/images/attribution/logo2.png", // Example logo, adjust as needed
+  TMDB: "https://upload.wikimedia.org/wikipedia/commons/8/89/Tmdb.new.logo.svg",
   Wikidata:
     "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Wikidata-logo-en.svg/1200px-Wikidata-logo-en.svg.png",
   Facebook:
@@ -72,12 +73,12 @@ interface Network {
 }
 
 interface ExternalIds {
-  imdb_id: string
+  imdb_id: string | null
   freebase_mid: string | null
   freebase_id: string | null
   tvdb_id: number | null
-  tvrage_id: number | null
-  wikidata_id: string
+  tvrage_id: string | number | null
+  wikidata_id: string | null
   facebook_id: string | null
   instagram_id: string | null
   twitter_id: string | null
@@ -103,6 +104,7 @@ interface StreamingAvailability {
 
 interface Props {
   rating: number
+  imdbRatings?: ImdbData | undefined
   voteCount: number
   popularity: number
   type?: string
@@ -119,6 +121,7 @@ interface Props {
 
 export function SideBarDetails({
   rating,
+  imdbRatings,
   voteCount,
   popularity,
   type,
@@ -164,6 +167,49 @@ export function SideBarDetails({
       url: `https://twitter.com/${externalIds.twitter_id}`,
     },
   ]
+
+  const ratings = [
+    {
+      name: "IMDB",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/6/69/IMDB_Logo_2016.svg",
+      votes: `${imdbRatings?.imdbVotes} votes`,
+      bgColor: `bg-yellow-100`,
+      rating:
+        imdbRatings?.Ratings.find(
+          (r: { Source: string; Value: string }) =>
+            r.Source === "Internet Movie Database"
+        )?.Value.slice(0, 3) || "N/A",
+    },
+    {
+      name: "TMDB",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/8/89/Tmdb.new.logo.svg",
+      votes: `${voteCount} votes`,
+      bgColor: `bg-green-100`,
+      rating: rating ? rating.toFixed(1).slice(0, 3) : "N/A",
+    },
+    {
+      name: "RottenTomatoes",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/5/5b/Rotten_Tomatoes.svg",
+      votes: "Fresh",
+      bgColor: `bg-red-100`,
+      rating:
+        imdbRatings?.Ratings.find(
+          (r: { Source: string; Value: string }) =>
+            r.Source === "Rotten Tomatoes"
+        )?.Value || "N/A",
+    },
+    {
+      name: "Metacritic",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/2/20/Metacritic.svg",
+      votes: "Votes",
+      bgColor: `bg-gray-200`,
+      rating:
+        imdbRatings?.Ratings.find(
+          (r: { Source: string; Value: string }) => r.Source === "Metacritic"
+        )?.Value.slice(0, 2) || "N/A",
+    },
+  ]
+
   function formatNumber(num: number) {
     if (num >= 1_000_000_000) {
       return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, "") + " billion"
@@ -183,19 +229,44 @@ export function SideBarDetails({
     <div className="w-[450px] space-y-6 text-black">
       <section className="rounded-lg bg-white p-6 shadow-md">
         <h2 className="mb-4 text-2xl font-bold">Ratings</h2>
-        <div className="mb-2 flex items-center">
-          <Star className="mr-2 size-6 text-yellow-400" />
-          <span className="text-3xl font-bold">
-            {rating ? rating.toFixed(1) : "N/A"}
-          </span>
-        </div>
-        <p className="text-gray-600">Scored by {voteCount} users</p>
-        <div className="mt-4">
-          <p className="flex items-center text-gray-700">
-            <BarChart2 className="mr-2 size-4 text-blue-500" />
-            <span className="font-semibold">Popularity:</span> #
-            {Math.round(popularity)}
-          </p>
+
+        <div className="grid grid-cols-2 gap-2">
+          {ratings.map((rating, index) => {
+            if (rating.rating !== "N/A") {
+              return (
+                <div
+                  key={index}
+                  className={cn(
+                    "flex min-w-[120px] flex-col items-center gap-1 rounded-md border p-3",
+                    rating.bgColor
+                  )}
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <img
+                      src={rating.logo}
+                      alt=""
+                      style={{
+                        width: "full",
+                        height: "30px",
+                      }}
+                    />
+                    <div className="text-[25px] font-bold">
+                      {rating.rating}
+                      <span className="text-base font-bold">
+                        {rating.name.includes("DB")
+                          ? "/10"
+                          : rating.name === "Metacritic" &&
+                              rating.rating !== "N/A"
+                            ? "/100"
+                            : ""}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="text-xs text-zinc-500">{rating.votes}</div>
+                </div>
+              )
+            }
+          })}
         </div>
       </section>
 
@@ -261,6 +332,22 @@ export function SideBarDetails({
       <section className="rounded-lg bg-white p-6 shadow-md">
         <h2 className="mb-4 text-2xl font-bold">External Links</h2>
         <ul className="flex flex-wrap gap-4">
+          <a
+            href={`https://www.themoviedb.org/`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="social-link flex w-[75px] flex-col items-center justify-center"
+          >
+            <img
+              src={platformLogos["TMDB" as keyof typeof platformLogos]}
+              alt=""
+              style={{
+                width: "full",
+                height: "40px",
+              }}
+            />
+            <span>TMDB</span>
+          </a>
           {platforms.map(
             (platform) =>
               platform.id && (

@@ -11,13 +11,16 @@ import { Reviews } from "./Reviews"
 import { Recommendations } from "./Recommendations"
 import { Pictures } from "./Pictures"
 import { MovieDetails } from "@/types/movie/singleMovie"
+import { ImdbData } from "@/types/ImdbType"
 
 export default function MovieInfoPage({
   movieInfo,
   movieId,
+  imdbData,
 }: {
   movieInfo: MovieDetails
   movieId: number
+  imdbData: ImdbData
 }) {
   const [activeTab, setActiveTab] = useState("overview")
   const tabs = [
@@ -61,7 +64,7 @@ export default function MovieInfoPage({
         }}
       >
         <Image
-          src={movieInfo.backdropImage}
+          src={`https://image.tmdb.org/t/p/w1280${movieInfo.backdrop_path}`}
           alt="image"
           width={1000}
           height={1000}
@@ -70,7 +73,7 @@ export default function MovieInfoPage({
         />
         <div className="mx-auto flex h-full max-w-[1600px] items-center px-10 py-8 text-white">
           <Image
-            src={movieInfo.coverImage}
+            src={`https://image.tmdb.org/t/p/w500${movieInfo.poster_path}`}
             alt="image"
             width={600}
             height={500}
@@ -82,12 +85,12 @@ export default function MovieInfoPage({
             </h1>
             <div className="flex items-center gap-2 text-base">
               <p className="rounded-md border border-white px-[4px]">
-                {movieInfo.status}
+                {imdbData.Rated}
               </p>
               <p>{movieInfo.release_date}</p>
               <div className="size-[4px] rounded-full bg-white"></div>
               <div className="flex flex-1 flex-wrap">
-                {movieInfo.genres.map((genre: any, index: number) => (
+                {movieInfo.genres.map((genre, index: number) => (
                   <p key={genre.id}>
                     {genre.name}
                     {index < movieInfo.genres.length - 1 ? "," : ""}
@@ -114,14 +117,30 @@ export default function MovieInfoPage({
             </div>
             <p className="text-[22px] font-bold text-white">Overview</p>
             <p className="line-clamp-6 text-gray-300">{movieInfo.overview}</p>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <h3 className="flex items-center gap-2 font-semibold">
+                  <Info className="size-4" /> Director
+                </h3>
+                <div className="flex flex-wrap text-gray-400">
+                  <p className="text-base font-medium">{imdbData.Director}</p>
+                </div>
+              </div>
+              <div>
+                <h3 className="flex items-center gap-2 font-semibold">
+                  <Info className="size-4" /> Writer
+                </h3>
+                <div className="flex flex-wrap text-gray-400">
+                  <p className="text-base font-medium">{imdbData.Writer}</p>
+                </div>
+              </div>
               <div>
                 <h3 className="flex items-center gap-2 font-semibold">
                   <Info className="size-4" /> Production
                 </h3>
                 <div className="flex flex-wrap text-gray-400">
                   {movieInfo.production_companies.map(
-                    (productionCompanies: any, index: number) => (
+                    (productionCompanies, index: number) => (
                       <div key={productionCompanies.id}>
                         <p className="text-base font-medium">
                           {productionCompanies.name}
@@ -148,6 +167,7 @@ export default function MovieInfoPage({
         <div className="mx-auto flex max-w-[1600px] gap-4 p-10">
           <SideBarDetails
             rating={movieInfo.vote_average}
+            imdbRatings={imdbData}
             voteCount={movieInfo.vote_count}
             popularity={movieInfo.popularity}
             type={movieInfo.status}

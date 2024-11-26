@@ -4,6 +4,22 @@ import Image from "next/image"
 import { useMovieCast } from "@/queries/TMDB/movies/moviesFetch"
 import { useRouter } from "next/navigation"
 
+interface Actor {
+  adult: boolean;
+  gender: number; 
+  id: number; 
+  known_for_department: string;
+  name: string; 
+  original_name: string;
+  popularity: number;
+  profile_path: string | null; 
+  cast_id: number;
+  character: string;
+  credit_id: string;
+  order: number;
+}
+
+
 export function CastDetails({ movieId }: { movieId: number }) {
   const { data, isLoading } = useMovieCast(movieId)
   const router = useRouter()
@@ -15,7 +31,7 @@ export function CastDetails({ movieId }: { movieId: number }) {
     <div className="flex flex-wrap items-center justify-center gap-2 py-4">
       {!isLoading &&
         data &&
-        data.cast.map((character: any) => (
+        data.cast.map((character: Actor) => (
           <div
             key={character.id}
             onClick={() => handleClick(character.id)}

@@ -3,6 +3,7 @@ import React, { useState } from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { Star } from "lucide-react"
+import { Genre } from "@/types/anime/singleAnime"
 
 interface Props {
   image: string
@@ -10,7 +11,7 @@ interface Props {
   title_en: string
   title?: string
   animeID: number
-  genres: any
+  genres: Genre[]
   ranking: number
   scoredBy: number
   status: string
@@ -30,7 +31,7 @@ export default function Animecard({
   const router = useRouter()
 
   const handleClick = () => {
-    router.push(`anime/${animeID}`)
+    router.push(`/anime/${animeID}`)
   }
   return (
     <div
@@ -74,7 +75,7 @@ export default function Animecard({
             </span>
           </div>
           <div className="mb-2 flex flex-wrap gap-1.5">
-            {genres.slice(0, 2).map((genra: any) => (
+            {genres.slice(0, 2).map((genra) => (
               <p
                 key={genra.mal_id}
                 className="rounded-lg border bg-gray-100 p-1 text-xs text-black duration-300 hover:scale-110 hover:border-gray-500"

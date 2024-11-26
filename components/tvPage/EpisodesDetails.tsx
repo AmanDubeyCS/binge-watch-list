@@ -1,10 +1,12 @@
 import { Calendar, ChevronDown, ChevronUp, Star } from "lucide-react"
 import React, { useState } from "react"
 import { EpisodesList } from "./EpisodesList"
+import { Season } from "@/types/tv/singleTvType"
 
-export function EpisodesDetails({ seasons, seriesId }: any) {
+
+export function EpisodesDetails({ seasons, seriesId }: {seasons: Season[], seriesId: number}) {
   const [expandedSeason, setExpandedSeason] = useState<number | null>(null)
-  const [seasonId, setSeasonID] = useState()
+  const [seasonId, setSeasonID] = useState<number>()
 
   const toggleExpand = (seasonNumber: number) => {
     setExpandedSeason(expandedSeason === seasonNumber ? null : seasonNumber)
@@ -12,7 +14,7 @@ export function EpisodesDetails({ seasons, seriesId }: any) {
   return (
     <div className="container mx-auto px-4 py-8 text-black">
       <div className="space-y-6">
-        {seasons.map((season: any) => (
+        {seasons.map((season) => (
           <div
             key={season.id}
             onClick={() => setSeasonID(season.season_number)}
