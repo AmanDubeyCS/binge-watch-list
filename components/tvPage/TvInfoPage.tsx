@@ -14,7 +14,15 @@ import { Pictures } from "./Pictures"
 import { ImdbData } from "@/types/ImdbType"
 import { Show } from "@/types/tv/singleTvType"
 
-export function TvInfoPage({ tvInfo, tvID, imdbdata }: { tvInfo: Show, tvID: number, imdbdata: ImdbData}) {
+export function TvInfoPage({
+  tvInfo,
+  tvID,
+  imdbData,
+}: {
+  tvInfo: Show
+  tvID: number
+  imdbData: ImdbData
+}) {
   const tabs = [
     "Overview",
     "Characters",
@@ -24,6 +32,8 @@ export function TvInfoPage({ tvInfo, tvID, imdbdata }: { tvInfo: Show, tvID: num
     "Media",
   ]
   const [activeTab, setActiveTab] = useState("overview")
+
+  // console.log(imdbData)
 
   const renderContent = () => {
     switch (activeTab) {
@@ -77,7 +87,7 @@ export function TvInfoPage({ tvInfo, tvID, imdbdata }: { tvInfo: Show, tvID: num
             </h1>
             <div className="flex items-center gap-2 text-base">
               <p className="rounded-md border border-white px-[4px]">
-                {tvInfo.in_production ? "Currently Airing" : tvInfo.status}
+                {imdbData?.Rated}
               </p>
               <p>{tvInfo.first_air_date}</p>
               <div className="size-[4px] rounded-full bg-white"></div>
@@ -160,7 +170,7 @@ export function TvInfoPage({ tvInfo, tvID, imdbdata }: { tvInfo: Show, tvID: num
         <div className="mx-auto flex max-w-[1600px] gap-4 p-10">
           <SideBarDetails
             rating={tvInfo.vote_average}
-            imdbRatings={imdbdata}
+            imdbRatings={imdbData}
             voteCount={tvInfo.vote_count}
             popularity={tvInfo.popularity}
             type={tvInfo.type}

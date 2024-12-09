@@ -1,12 +1,12 @@
 import React from "react"
 
 import { config } from "@/apiConfig"
-import { CurrentlyAiring } from "@/components/animePage/animeHomePage/CurrentlyAiring"
 import { AnimeVideos } from "@/components/animePage/animeHomePage/AnimeVideos"
 import { AnimeStudios } from "@/components/animePage/animeHomePage/AnimeStudios"
-import { UpcomingAnime } from "@/components/animePage/animeHomePage/UpcomingAnime"
 import { BannerCarousel } from "@/components/animePage/animeHomePage/BannerCarousel"
 import { fetchFromJikan } from "@/util/fetchFromJikan"
+import { CurrentlyTrending } from "@/components/tvPage/tvHomePage/CurrentlyTrending"
+import { Tv } from "lucide-react"
 
 export default async function Page() {
   try {
@@ -22,7 +22,11 @@ export default async function Page() {
           <BannerCarousel anime={bannerAnime.data} />
         )}
         {trendingAnime?.data?.length > 0 && (
-          <CurrentlyAiring currentlyAiring={trendingAnime.data} />
+          <CurrentlyTrending
+            animeData={trendingAnime.data}
+            title="Currently Airing"
+            titleIcon={<Tv className="mr-2" />}
+          />
         )}
         {latestPromo?.data?.length > 0 && (
           <AnimeVideos animeVideos={latestPromo.data} />
@@ -31,7 +35,11 @@ export default async function Page() {
           <AnimeStudios studios={popularStudios.data} />
         )}
         {upcomingRes?.data?.length > 0 && (
-          <UpcomingAnime upcomingAnime={upcomingRes.data} />
+          <CurrentlyTrending
+            animeData={upcomingRes.data}
+            title="Upcoming"
+            titleIcon={<Tv className="mr-2" />}
+          />
         )}
       </main>
     )

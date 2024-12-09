@@ -2,70 +2,70 @@
 import { Calendar, MapPin, TrendingUp } from "lucide-react"
 import React, { useState } from "react"
 import TVShowCard from "./tvPage/tvHomePage/TvShowCard"
+import { genreMap } from "./tvPage/tvHomePage/CurrentlyTrending"
 
 interface ExternalIds {
-  freebase_mid: string | null;
-  freebase_id: string | null;
-  imdb_id: string | null;
-  tvrage_id: string | null;
-  wikidata_id: string | null;
-  facebook_id: string | null;
-  instagram_id: string | null;
-  tiktok_id: string | null;
-  twitter_id: string | null;
-  youtube_id: string | null;
+  freebase_mid: string | null
+  freebase_id: string | null
+  imdb_id: string | null
+  tvrage_id: string | null
+  wikidata_id: string | null
+  facebook_id: string | null
+  instagram_id: string | null
+  tiktok_id: string | null
+  twitter_id: string | null
+  youtube_id: string | null
 }
 
 interface Cast {
-  adult: boolean;
-  backdrop_path: string | null;
-  genre_ids: number[];
-  id: number;
-  original_language: string;
-  original_title?: string;
-  original_name?: string;
-  overview: string;
-  popularity: number;
-  poster_path: string | null;
-  release_date: string;
-  first_air_date: string;
-  title: string;
-  name: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
-  character: string;
-  credit_id: string;
-  order?: number;
-  media_type: "movie" | "tv";
-  origin_country?: string[];
-  episode_count?: number;
+  adult: boolean
+  backdrop_path: string | null
+  genre_ids: number[]
+  id: number
+  original_language: string
+  original_title?: string
+  original_name?: string
+  overview: string
+  popularity: number
+  poster_path: string | null
+  release_date: string
+  first_air_date: string
+  title: string
+  name: string
+  video: boolean
+  vote_average: number
+  vote_count: number
+  character: string
+  credit_id: string
+  order?: number
+  media_type: "movie" | "tv"
+  origin_country?: string[]
+  episode_count?: number
 }
 
 interface CombinedCredits {
-  cast: Cast[];
-  crew: Cast[];
+  cast: Cast[]
+  crew: Cast[]
 }
 
 interface Person {
-  adult: boolean;
-  also_known_as: string[];
-  biography: string;
-  birthday: string | null;
-  deathday: string | null;
-  gender: number;
-  homepage: string | null;
-  id: number;
-  imdb_id: string | null;
-  known_for_department: string;
-  name: string;
-  place_of_birth: string | null;
-  popularity: number;
-  profile_path: string | null;
-  combined_credits: CombinedCredits;
-  external_ids: ExternalIds;
+  adult: boolean
+  also_known_as: string[]
+  biography: string
+  birthday: string | null
+  deathday: string | null
+  gender: number
+  homepage: string | null
+  id: number
+  imdb_id: string | null
+  known_for_department: string
+  name: string
+  place_of_birth: string | null
+  popularity: number
+  profile_path: string | null
+  combined_credits: CombinedCredits
+  external_ids: ExternalIds
 }
-
 
 export default function PersonPage({ actorData }: { actorData: Person }) {
   const [activeTab, setActiveTab] = useState<"cast" | "crew">("cast")
@@ -73,15 +73,19 @@ export default function PersonPage({ actorData }: { actorData: Person }) {
 
   const renderWorkItem = (work: Cast) => (
     <TVShowCard
+      key={work.id}
       id={work.id}
       name={work.title || work.name}
-      coverImage={`https://image.tmdb.org/t/p/w200${work.poster_path}`}
-      firstAirDate={work.release_date || work.first_air_date}
+      coverImage={`https://image.tmdb.org/t/p/w300/${work.poster_path}`}
+      tag={work.release_date || work.first_air_date}
       voteAverage={work.vote_average}
       voteCount={work.vote_count}
-      genreIds={work.genre_ids}
-      popularity={work.popularity}
-      mediaType={work.media_type}
+      genre={work.genre_ids.map(
+        (genres) => genreMap[genres as keyof typeof genreMap]
+      )}
+      numbers={work.popularity}
+      mediaType="movie"
+      statusData={[]}
     />
   )
 

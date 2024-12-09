@@ -2,8 +2,10 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 
 import "./globals.css"
-import { Providers } from "@/components/Providers"
+import { AppLayout, Providers, SessionProvider } from "@/components/Providers"
 import Header from "@/components/Header/Header"
+import { getServerSession } from "next-auth"
+import { authOptions } from "./api/auth/[...nextauth]/options"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -12,18 +14,23 @@ export const metadata: Metadata = {
   description: "Binge Watch List",
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const session = await getServerSession(authOptions)
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers>
-          <Header />
-          {children}
-        </Providers>
+        <SessionProvider session={session}>
+          <Providers>
+            <AppLayout>
+              <Header />
+              {children}
+            </AppLayout>
+          </Providers>
+        </SessionProvider>
       </body>
     </html>
   )

@@ -17,7 +17,7 @@ export function MangaInfoPage({
   statistics: StatisticsData
 }) {
   const image = mangaInfo.relationships.filter(
-    (data: {type: string}) => data.type === "cover_art"
+    (data: { type: string }) => data.type === "cover_art"
   )
   const mangaId = Object.keys(statistics.statistics)[0]
   const ratingData = statistics.statistics[mangaId]
@@ -74,7 +74,7 @@ export function MangaInfoPage({
           />
         )}
 
-        <div className="mx-auto flex h-full max-w-[1600px] items-center justify-center px-10 py-8">
+        <div className="mx-auto flex h-full max-w-[1600px] items-center justify-center px-10 py-8 text-white">
           <div className="flex w-fit shrink-0 justify-center">
             {image && (
               <Image

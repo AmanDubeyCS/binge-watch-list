@@ -5,6 +5,7 @@ import { configTMDB } from "@/apiConfig"
 import { TvProviders } from "@/components/tvPage/tvHomePage/TvProviders"
 import { TvGenresList } from "@/components/tvPage/tvHomePage/TvGenresList"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
+import { Tv } from "lucide-react"
 
 export default async function MoviesPage() {
   const [trendingMovies, popularMovies, movieProviders, movieGenres] =
@@ -43,12 +44,14 @@ export default async function MoviesPage() {
         <CurrentlyTrending
           movieData={trendingMovies.results}
           title="Currently Trending"
+          titleIcon={<Tv className="mr-2" />}
         />
       )}
       {popularMovies && (
         <CurrentlyTrending
           movieData={popularMovies.results}
           title="Popular on Movie"
+          titleIcon={<Tv className="mr-2" />}
         />
       )}
       {movieProviders && <TvProviders TvProviders={movieProviders.results} />}

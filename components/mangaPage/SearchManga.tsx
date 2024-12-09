@@ -3,8 +3,8 @@ import { useRouter } from "next/navigation"
 import { useMangaFetch } from "@/queries/mangaDex/mangaFetch"
 
 import { MangaItem } from "@/types/manga/mangaTypes"
+import { ImageLoader } from "@/util/ImageLoader"
 
-import { ImageLoader } from "../Card"
 
 export default function SearchManga() {
   const router = useRouter()
@@ -57,7 +57,7 @@ export default function SearchManga() {
         {!isLoading && search.length > 0 ? (
           data.map((manga: MangaItem) => {
             const image = manga.relationships.filter(
-              (data: {type: string}) => data.type === "cover_art"
+              (data: { type: string }) => data.type === "cover_art"
             )
             return (
               <div

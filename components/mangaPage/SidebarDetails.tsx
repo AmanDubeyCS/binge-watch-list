@@ -5,26 +5,25 @@ import { Icon } from "../icons"
 import Link from "next/link"
 
 interface Comments {
-  threadId: number;
-  repliesCount: number;
+  threadId: number
+  repliesCount: number
 }
 
 interface RatingDistribution {
-  [score: string]: number; // Keys are strings representing scores ('1' to '10'), values are counts.
+  [score: string]: number // Keys are strings representing scores ('1' to '10'), values are counts.
 }
 
 interface Rating {
-  average: number;
-  bayesian: number;
-  distribution: RatingDistribution;
+  average: number
+  bayesian: number
+  distribution: RatingDistribution
 }
 
 interface AnimeStatistics {
-  comments: Comments;
-  rating: Rating;
-  follows: number;
+  comments: Comments
+  rating: Rating
+  follows: number
 }
-
 
 const LanguageMap = {
   ar: "Arabic",

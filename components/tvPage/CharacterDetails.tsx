@@ -24,19 +24,19 @@ interface Role {
   episode_count: number
 }
 
-interface CrewMember {
-  adult: boolean
-  gender: number
-  id: number
-  known_for_department: string
-  name: string
-  original_name: string
-  popularity: number
-  profile_path: string | null
-  jobs: Job[]
-  department: string
-  total_episode_count: number
-}
+// interface CrewMember {
+//   adult: boolean
+//   gender: number
+//   id: number
+//   known_for_department: string
+//   name: string
+//   original_name: string
+//   popularity: number
+//   profile_path: string | null
+//   jobs: Job[]
+//   department: string
+//   total_episode_count: number
+// }
 
 interface Job {
   credit_id: string

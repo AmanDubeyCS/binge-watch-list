@@ -1,8 +1,8 @@
 import { useRouter } from "next/navigation"
 import React from "react"
-import { ImageLoader } from "../Card"
 import { Star } from "lucide-react"
 import { MangaTag } from "@/types/manga/mangaTypes"
+import { ImageLoader } from "@/util/ImageLoader"
 
 interface MangaCardProps {
   coverImage: string

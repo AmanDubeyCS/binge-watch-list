@@ -12,7 +12,11 @@ function extractAnimeName(animeName: string) {
     .trim()
 }
 
-export default async function Page({ params }: { params: { animeDetails: number } }) {
+export default async function Page({
+  params,
+}: {
+  params: { animeDetails: number }
+}) {
   const animeID = params.animeDetails
   const data = await fetchFromJikan(config.getSingleAnime(animeID), 0)
 

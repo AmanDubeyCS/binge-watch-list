@@ -32,7 +32,7 @@ export const trendingTvFetch = async () => {
   }
 }
 
-export const singleTvFetch = async ({ tvID }: {tvID: number}) => {
+export const singleTvFetch = async ({ tvID }: { tvID: number }) => {
   try {
     const response = await axios.get(configTMDB.getSingleTv({ tvID }), options)
     if (response.status === 200) {

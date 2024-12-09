@@ -4,6 +4,7 @@ import React from "react"
 import TVShowCard from "../tvPage/tvHomePage/TvShowCard"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { TvShow } from "@/types/tv/tvListType"
+import { DataStore, useDataStore } from "@/store/allDataStore"
 
 export interface Movie {
   adult: boolean
@@ -22,15 +23,46 @@ export interface Movie {
   vote_count: number
 }
 
+const genreMap = {
+  10759: "Action & Adventure",
+  16: "Animation",
+  35: "Comedy",
+  80: "Crime",
+  99: "Documentary",
+  18: "Drama",
+  10751: "Family",
+  10762: "Kids",
+  9648: "Mystery",
+  10763: "News",
+  10764: "Reality",
+  10765: "Sci-Fi & Fantasy",
+  10766: "Soap",
+  10767: "Talk",
+  10768: "War & Politics",
+  37: "Western",
+  28: "Action",
+  12: "Adventure",
+  14: "Fantasy",
+  36: "History",
+  27: "Horror",
+  10402: "Music",
+  10749: "Romance",
+  878: "Science Fiction",
+  10770: "TV Movie",
+  53: "Thriller",
+  10752: "War",
+}
+
 export function ListOfMovies() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const type = pathname.includes("tv") ? "tv" : "movie"
+  const { data: watchData } = useDataStore() as DataStore
 
   const currentParams = Object.fromEntries(searchParams.entries())
 
-  const { data, isLoading } = useFetchMedia(type, currentParams)
+  const { data } = useFetchMedia(type, currentParams)
 
   const page = (data?.page || 1).toString()
   const totalPages = data?.total_pages > 500 ? 500 : data?.total_pages
@@ -75,11 +107,15 @@ export function ListOfMovies() {
                     id={movie.id}
                     name={movie.title || movie.original_title}
                     coverImage={`https://image.tmdb.org/t/p/w300/${movie.poster_path}`}
-                    firstAirDate={movie.release_date}
+                    tag={movie.release_date}
                     voteAverage={movie.vote_average}
                     voteCount={movie.vote_count}
-                    genreIds={movie.genre_ids}
-                    popularity={movie.popularity}
+                    genre={movie.genre_ids.map(
+                      (genres) => genreMap[genres as keyof typeof genreMap]
+                    )}
+                    numbers={movie.popularity}
+                    mediaType="movie"
+                    statusData={watchData}
                   />
                 ))
               : data.results.map((tv: TvShow) => (
@@ -88,12 +124,15 @@ export function ListOfMovies() {
                     id={tv.id}
                     name={tv.name}
                     coverImage={`https://image.tmdb.org/t/p/w300/${tv.poster_path}`}
-                    firstAirDate={tv.first_air_date}
+                    tag={tv.first_air_date}
                     voteAverage={tv.vote_average}
                     voteCount={tv.vote_count}
-                    genreIds={tv.genre_ids}
-                    popularity={tv.popularity}
+                    genre={tv.genre_ids.map(
+                      (genres) => genreMap[genres as keyof typeof genreMap]
+                    )}
+                    numbers={tv.popularity}
                     mediaType="tv"
+                    statusData={watchData}
                   />
                 ))}
           </div>

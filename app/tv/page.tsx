@@ -5,6 +5,7 @@ import { configTMDB } from "@/apiConfig"
 import { TvProviders } from "@/components/tvPage/tvHomePage/TvProviders"
 import { TvGenresList } from "@/components/tvPage/tvHomePage/TvGenresList"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
+import { Tv } from "lucide-react"
 
 export default async function MoviesPage() {
   const [trendingTv, PopularTV, tvProviders, tvGenres] = await Promise.all([
@@ -39,10 +40,15 @@ export default async function MoviesPage() {
         <CurrentlyTrending
           tvData={trendingTv.results}
           title="Currently Trending"
+          titleIcon={<Tv className="mr-2" />}
         />
       )}
       {PopularTV && (
-        <CurrentlyTrending tvData={PopularTV.results} title="Popular on TV" />
+        <CurrentlyTrending
+          tvData={PopularTV.results}
+          title="Popular on TV"
+          titleIcon={<Tv className="mr-2" />}
+        />
       )}
       {tvProviders && <TvProviders TvProviders={tvProviders.results} />}
       {tvGenres && (

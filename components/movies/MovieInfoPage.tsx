@@ -54,6 +54,8 @@ export default function MovieInfoPage({
         return <Overview trailer={movieInfo.videos.results} />
     }
   }
+
+  console.log(movieInfo)
   return (
     <section>
       <div
