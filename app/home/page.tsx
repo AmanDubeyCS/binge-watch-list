@@ -1,11 +1,10 @@
 import { config, configRAWG, configTMDB } from "@/apiConfig"
-import { CurrentlyAiring } from "@/components/animePage/animeHomePage/CurrentlyAiring"
 import { GameCard } from "@/components/gamePage/GameCard"
-import { MangaList } from "@/components/mangaPage/MangaList"
 import { CurrentlyTrending } from "@/components/tvPage/tvHomePage/CurrentlyTrending"
 import { fetchTopManhua } from "@/queries/mangaDex/mangaFetch"
 import { fetchFromJikan } from "@/util/fetchFromJikan"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
+import { BookOpen, Tv } from "lucide-react"
 import React from "react"
 
 export default async function page() {
@@ -22,14 +21,23 @@ export default async function page() {
         <CurrentlyTrending
           movieData={popularMovies.results}
           title="Popular Movie"
+          titleIcon={<Tv className="mr-2" />}
         />
       )}
       {PopularTV && (
-        <CurrentlyTrending tvData={PopularTV.results} title="Popular TV" />
+        <CurrentlyTrending
+          tvData={PopularTV.results}
+          title="Popular TV"
+          titleIcon={<Tv className="mr-2" />}
+        />
       )}
 
       {trendingAnime?.data?.length > 0 && (
-        <CurrentlyAiring currentlyAiring={trendingAnime.data} />
+        <CurrentlyTrending
+          animeData={trendingAnime.data}
+          title="Currently Airing"
+          titleIcon={<Tv className="mr-2" />}
+        />
       )}
       <div>
         <h2 className="mb-6 text-3xl font-bold">Popular Games</h2>
@@ -54,7 +62,13 @@ export default async function page() {
         </div>
       </div>
 
-      {topManhua && <MangaList mangaList={topManhua} title="Top Manhua" />}
+      {topManhua && (
+        <CurrentlyTrending
+          mangaData={topManhua}
+          title="Top Manhua"
+          titleIcon={<BookOpen className="mr-2" />}
+        />
+      )}
     </main>
   )
 }

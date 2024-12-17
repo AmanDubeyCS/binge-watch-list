@@ -8,7 +8,7 @@ interface Props {
 }
 
 interface GenreImages {
-  [genreId: number]: string;
+  [genreId: number]: string
 }
 
 export function TvGenresList({

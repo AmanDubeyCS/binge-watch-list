@@ -1,173 +1,149 @@
 "use client"
-import React from "react"
-import { Star } from "lucide-react"
-import { ImageLoader } from "@/components/Card"
+import React, { useMemo } from "react"
+import { CircleCheckBig, Clock, Eye, Star, ThumbsDown } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
+import { WatchlistRibbon } from "@/components/WatchlistRibbon"
+import { doc, setDoc } from "firebase/firestore"
+import { db } from "@/app/firebaseConfig"
+import { useSession } from "next-auth/react"
+import { formatNumber } from "@/util/formatNumber"
+import { ImageLoader } from "@/util/ImageLoader"
 
 interface TVShowCardProps {
-  id: number
+  id: number | string
   name: string
   coverImage: string
-  firstAirDate: string
+  tag: string
   voteAverage: number
   voteCount: number
-  genreIds: number[]
-  popularity: number
+  genre: any
+  numbers: number
   mediaType?: string
+  statusData: any
+  episodes?: any
+  showStatus?: any
 }
-
-const genreMap = {
-  10759: "Action & Adventure",
-  16: "Animation",
-  35: "Comedy",
-  80: "Crime",
-  99: "Documentary",
-  18: "Drama",
-  10751: "Family",
-  10762: "Kids",
-  9648: "Mystery",
-  10763: "News",
-  10764: "Reality",
-  10765: "Sci-Fi & Fantasy",
-  10766: "Soap",
-  10767: "Talk",
-  10768: "War & Politics",
-  37: "Western",
-  28: "Action",
-  12: "Adventure",
-  14: "Fantasy",
-  36: "History",
-  27: "Horror",
-  10402: "Music",
-  10749: "Romance",
-  878: "Science Fiction",
-  10770: "TV Movie",
-  53: "Thriller",
-  10752: "War",
-}
-
-const genresList = [
-  {
-    id: 28,
-    name: "Action",
-  },
-  {
-    id: 12,
-    name: "Adventure",
-  },
-  {
-    id: 16,
-    name: "Animation",
-  },
-  {
-    id: 35,
-    name: "Comedy",
-  },
-  {
-    id: 80,
-    name: "Crime",
-  },
-  {
-    id: 99,
-    name: "Documentary",
-  },
-  {
-    id: 18,
-    name: "Drama",
-  },
-  {
-    id: 10751,
-    name: "Family",
-  },
-  {
-    id: 14,
-    name: "Fantasy",
-  },
-  {
-    id: 36,
-    name: "History",
-  },
-  {
-    id: 27,
-    name: "Horror",
-  },
-  {
-    id: 10402,
-    name: "Music",
-  },
-  {
-    id: 9648,
-    name: "Mystery",
-  },
-  {
-    id: 10749,
-    name: "Romance",
-  },
-  {
-    id: 878,
-    name: "Science Fiction",
-  },
-  {
-    id: 10770,
-    name: "TV Movie",
-  },
-  {
-    id: 53,
-    name: "Thriller",
-  },
-  {
-    id: 10752,
-    name: "War",
-  },
-  {
-    id: 37,
-    name: "Western",
-  },
-]
 
 export default function TVShowCard({
   id,
   name,
   coverImage,
-  firstAirDate,
+  tag,
   voteAverage,
   voteCount,
-  genreIds,
-  popularity,
+  genre,
+  numbers,
   mediaType,
+  statusData,
+  episodes,
+  showStatus,
 }: TVShowCardProps) {
+  const { data: session } = useSession()
   const router = useRouter()
   const pathname = usePathname()
-  // const searchParams = useSearchParams()
-  // const genres = searchParams.get("genres")
 
   const handleClick = () => {
     if (mediaType === "movie") {
       router.push(`/movies/${id}`)
     } else if (mediaType === "tv") {
       router.push(`/tv/${id}`)
-    } else if (mediaType === "game") {
-      router.push(`/games/${id}`)
+    } else if (mediaType === "anime") {
+      router.push(`/anime/${id}`)
+    } else if (mediaType === "manga") {
+      router.push(`/manga/${id}`)
     } else {
       router.push(`${pathname}/${id}`)
     }
   }
+
+  const watchStatus = useMemo(() => {
+    return (
+      statusData.find((item: { id: number | string }) => item.id === id)
+        ?.status || null
+    )
+  }, [statusData, id])
+
+  const handleStatusChange = async (selectedStatus: string) => {
+    if (!session?.user?.id || !mediaType) return
+    // setWatchStatus(selectedStatus)
+    try {
+      const docRef = doc(db, "users", session.user.id, mediaType, id.toString())
+      await setDoc(
+        docRef,
+        {
+          id: id,
+          name,
+          coverImage,
+          tag,
+          voteAverage,
+          voteCount,
+          numbers,
+          genre,
+          progress: mediaType === "tv" ? "S01-E01" : 0,
+          remarks: "",
+          status: selectedStatus,
+          episodeCount: episodes || 0,
+          showStatus: showStatus || "",
+        },
+        { merge: true }
+      )
+      console.log("Status and details updated successfully!")
+    } catch (error) {
+      console.error("Error updating status and details:", error)
+    }
+  }
+
+  const tvStatuses = {
+    watching: { label: "Watching", icon: <Eye size={14} /> },
+    planning: { label: "Plan to Watch", icon: <Clock size={14} /> },
+    completed: { label: "Completed", icon: <CircleCheckBig size={14} /> },
+    dropped: { label: "Dropped", icon: <ThumbsDown size={14} /> },
+  }
+
+  const movieStatuses = {
+    planning: { label: "Plan to Watch", icon: <Clock size={14} /> },
+    completed: { label: "I've seen this", icon: <CircleCheckBig size={14} /> },
+    dropped: { label: "Dropped", icon: <ThumbsDown size={14} /> },
+  }
+
+  const bookStatuses = {
+    reading: { label: "Reading", icon: <Eye size={14} /> },
+    planning: { label: "Plan to Read", icon: <Clock size={14} /> },
+    completed: { label: "Completed", icon: <CircleCheckBig size={14} /> },
+    dropped: { label: "Dropped", icon: <ThumbsDown size={14} /> },
+  }
+
   return (
     <div
       onClick={handleClick}
-      className={`flex ${pathname === "/games" ? "w-[550px]" : "w-[360px]"} cursor-pointer items-center justify-start overflow-hidden rounded-md bg-white p-2 shadow-md duration-300 hover:scale-105`}
+      className={`flex h-[245px] w-[360px] cursor-pointer items-center justify-start overflow-hidden rounded-md bg-white p-2 shadow-md duration-300 hover:scale-105`}
     >
-      <div className="flex gap-2">
+      <div className="group flex h-full gap-2">
         <div
-          className={`relative ${pathname === "/games" ? "w-[300px]" : "w-[140px]"} shrink-0 overflow-hidden rounded-lg`}
+          className={`relative w-[140px] shrink-0 overflow-hidden rounded-lg group-hover:rounded-tl-none`}
         >
+          {!pathname.includes("profile") && (
+            <div className="opacity-0 group-hover:opacity-100">
+              <WatchlistRibbon
+                onStatusChange={handleStatusChange}
+                currentStatus={watchStatus}
+                statuses={
+                  mediaType === "manga"
+                    ? bookStatuses
+                    : mediaType === "movie"
+                      ? movieStatuses
+                      : tvStatuses
+                }
+              />
+            </div>
+          )}
           <ImageLoader
             src={coverImage}
             alt=""
             fallback={
               <div
-                className={`flex h-auto ${pathname === "/games" ? "w-full" : "w-[140px]"} items-center justify-center bg-white text-center text-black`}
+                className={`flex h-auto w-[140px] items-center justify-center bg-white text-center text-black`}
               >
                 <p>Image not available</p>
               </div>
@@ -175,9 +151,9 @@ export default function TVShowCard({
           />
         </div>
         <div className="flex-1">
-          {firstAirDate && (
+          {tag && (
             <div className="mb-2 w-fit rounded-lg border border-blue-700 px-2 py-1 text-sm font-medium uppercase text-black">
-              {firstAirDate}
+              {tag}
             </div>
           )}
           <h3 className="mb-2 line-clamp-2 text-wrap text-base font-semibold text-gray-800">
@@ -188,36 +164,38 @@ export default function TVShowCard({
             <span className="mr-2 text-lg font-semibold text-gray-800">
               {voteAverage > 0 ? voteAverage.toFixed(1) : "N/A"}
             </span>
-            <span className="text-sm text-gray-600">
-              ({voteCount > 0 ? voteCount.toLocaleString() : "N/A"} users)
-            </span>
+            {mediaType !== "manga" && (
+              <span className="text-sm text-gray-600">
+                ({voteCount > 0 ? formatNumber(voteCount) : "N/A"} votes)
+              </span>
+            )}
           </div>
           <div className="mb-3 flex items-center">
             <span className="mr-2 text-sm font-medium text-gray-700">
-              Popularity:
+              {mediaType === "manga"
+                ? "Follows:"
+                : mediaType === "anime"
+                  ? "Ranking:"
+                  : "Popularity:"}
             </span>
             <span className="text-sm font-semibold text-gray-800">
-              #{Math.round(popularity) || "N/A"}
+              #{Math.round(numbers) || "N/A"}
             </span>
           </div>
           <div className="mb-2 flex flex-wrap gap-1.5">
-            {genreIds.slice(0, 3).map((genreId: any) => (
+            {genre.slice(0, 3).map((genreId: any) => (
               <div
                 key={genreId}
                 className={cn(
-                  "rounded-lg border bg-gray-100 p-1 text-xs text-black duration-300 hover:scale-110 hover:border-gray-500",
-                  // genres?.includes(genreId) &&
-                  //   "border border-green-600 bg-green-100"
+                  "rounded-lg border bg-gray-100 p-1 text-xs text-black duration-300 hover:scale-110 hover:border-gray-500"
                 )}
               >
-                {genreMap[genreId as keyof typeof genreMap] ||
-                  genreId.name ||
-                  "Unknown"}
+                {genreId || "Unknown"}
               </div>
             ))}
-            {genreIds.length > 3 && (
+            {genre.length > 3 && (
               <p className="rounded-lg border bg-gray-100 p-1 text-xs text-black duration-300 hover:scale-110 hover:border-gray-500">
-                +{genreIds.length - 3}
+                +{genre.length - 3}
               </p>
             )}
           </div>

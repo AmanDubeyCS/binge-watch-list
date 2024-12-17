@@ -6,8 +6,6 @@ import SideBarDetails from "./SideBarDetails"
 import { MainContent } from "./MainContent"
 import { ImdbData } from "@/types/ImdbType"
 
-
-
 export const formatDate = (dateString: string) => {
   const date = new Date(dateString)
   return date
@@ -28,7 +26,6 @@ export function AnimeInfoPage({
   animeID: number
   imdbData: ImdbData
 }) {
-
   return (
     <>
       <div

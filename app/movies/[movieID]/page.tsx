@@ -4,7 +4,11 @@ import MovieInfoPage from "@/components/movies/MovieInfoPage"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
 import { configOMDB, configTMDB } from "@/apiConfig"
 
-export default async function SingleMoviePage({ params }: { params: { movieID: number } }) {
+export default async function SingleMoviePage({
+  params,
+}: {
+  params: { movieID: number }
+}) {
   const movieID = params.movieID
   try {
     const response = await fetchFromTMDB(configTMDB.getSingleMovie({ movieID }))

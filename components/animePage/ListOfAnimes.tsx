@@ -2,12 +2,14 @@
 import React from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useFetchAnime } from "@/queries/jikan/animefetch"
-import Animecard from "./animeHomePage/AnimeCard"
 import { AnimeData } from "@/types/anime/animeTypes"
+import TVShowCard from "../tvPage/tvHomePage/TvShowCard"
+import { DataStore, useDataStore } from "@/store/allDataStore"
 
 export function ListOfAnimes() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { data: listData } = useDataStore() as DataStore
 
   const currentParams = Object.fromEntries(searchParams.entries())
 
@@ -50,16 +52,20 @@ export function ListOfAnimes() {
         <>
           <div className="grid gap-3 p-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4">
             {data.data.map((anime: AnimeData) => (
-              <Animecard
+              <TVShowCard
                 key={anime.mal_id}
-                animeID={anime.mal_id}
-                title_en={anime.title_english || anime.title}
-                image={anime.images.webp.image_url}
-                rating={anime.score}
-                genres={anime.genres}
-                ranking={anime.rank}
-                scoredBy={anime.scored_by}
-                status={anime.status}
+                id={anime.mal_id}
+                name={anime.title_english || anime.title}
+                coverImage={anime.images.webp.image_url}
+                tag={anime.status}
+                voteAverage={anime.score}
+                voteCount={anime.scored_by}
+                genre={anime.genres.map((genres) => genres.name)}
+                numbers={anime.rank}
+                mediaType="anime"
+                statusData={listData}
+                episodes={anime.episodes}
+                showStatus={anime.status}
               />
             ))}
           </div>

@@ -4,7 +4,11 @@ import { singleTvFetch } from "@/queries/TMDB/TV/tvFetch"
 import { TvInfoPage } from "@/components/tvPage/TvInfoPage"
 import { configOMDB } from "@/apiConfig"
 
-export default async function SingleTvPage({ params }: { params: { tvID: number } }) {
+export default async function SingleTvPage({
+  params,
+}: {
+  params: { tvID: number }
+}) {
   const tvID = params.tvID
   try {
     const response = await singleTvFetch({ tvID })
@@ -27,7 +31,7 @@ export default async function SingleTvPage({ params }: { params: { tvID: number 
 
     const tvData = response
 
-    return <TvInfoPage tvInfo={tvData} tvID={tvID} imdbdata={imdbData} />
+    return <TvInfoPage tvInfo={tvData} tvID={tvID} imdbData={imdbData} />
   } catch (error) {
     console.error("Error fetching movies data:", error)
     return <div>Error: Failed to fetch movies data.</div>

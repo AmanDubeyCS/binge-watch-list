@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils"
 import { Anime } from "@/types/anime/singleAnime"
 import { ImdbData } from "@/types/ImdbType"
+import { formatNumber } from "@/util/formatNumber"
 import { Book, ExternalLink, Film, Info, Play, Tv } from "lucide-react"
 import React from "react"
 
@@ -11,21 +12,11 @@ export default function SideBarDetails({
   animeInfo: Anime
   imdbData: ImdbData
 }) {
-  function formatNumber(num: number | string) {
-    const numericValue =
-      typeof num === "string" ? parseFloat(num.replace(/,/g, "")) : num
-
-    if (numericValue >= 1000) {
-      return (numericValue / 1000).toFixed(1).replace(/\.0$/, "") + "k"
-    }
-    return numericValue?.toString()
-  }
-
   const ratings = [
     {
       name: "IMDB",
       logo: "https://upload.wikimedia.org/wikipedia/commons/6/69/IMDB_Logo_2016.svg",
-      votes: `${formatNumber(imdbData.imdbVotes) || "N/A"} votes`,
+      votes: `${formatNumber(imdbData?.imdbVotes) || "N/A"} votes`,
       bgColor: `bg-yellow-100`,
       rating:
         imdbData?.Ratings?.find(

@@ -3,16 +3,16 @@ import { useEpisodeDetails } from "@/queries/jikan/animefetch"
 import { Calendar, Star } from "lucide-react"
 
 interface Episode {
-  mal_id: number;
-  url: string;
-  title: string;
-  title_japanese: string;
-  title_romanji: string;
-  aired: string;
-  score: number;
-  filler: boolean;
-  recap: boolean;
-  forum_url: string;
+  mal_id: number
+  url: string
+  title: string
+  title_japanese: string
+  title_romanji: string
+  aired: string
+  score: number
+  filler: boolean
+  recap: boolean
+  forum_url: string
 }
 
 export function EpisodesDetails({ animeID }: { animeID: number }) {

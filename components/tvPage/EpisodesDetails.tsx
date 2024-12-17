@@ -3,8 +3,13 @@ import React, { useState } from "react"
 import { EpisodesList } from "./EpisodesList"
 import { Season } from "@/types/tv/singleTvType"
 
-
-export function EpisodesDetails({ seasons, seriesId }: {seasons: Season[], seriesId: number}) {
+export function EpisodesDetails({
+  seasons,
+  seriesId,
+}: {
+  seasons: Season[]
+  seriesId: number
+}) {
   const [expandedSeason, setExpandedSeason] = useState<number | null>(null)
   const [seasonId, setSeasonID] = useState<number>()
 

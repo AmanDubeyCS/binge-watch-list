@@ -2,8 +2,14 @@
 const nextConfig = {
   reactStrictMode: false,
   images: {
-    domains: ["mangadex.org", "cdn.myanimelist.net", "image.tmdb.org","cmdxd98sb0x3yprd.mangadex.network","img.youtube.com","media.rawg.io"],
-  },
+    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*',
+      }
+    ]
+  }
 };
 
 export default nextConfig;

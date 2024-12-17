@@ -16,7 +16,7 @@ export default async function Page({
     const statistics = await axios.get(config.getMangaStatistics({ mangaID }))
 
     return (
-      <div className="">
+      <div>
         {mangaInfo.data && chapter.data && statistics.data && (
           <MangaInfoPage
             mangaInfo={mangaInfo.data.data}

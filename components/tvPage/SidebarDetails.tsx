@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils"
 import { ImdbData } from "@/types/ImdbType"
+import { formatNumber } from "@/util/formatNumber"
 import {
   Film,
   Info,
@@ -172,7 +173,7 @@ export function SideBarDetails({
     {
       name: "IMDB",
       logo: "https://upload.wikimedia.org/wikipedia/commons/6/69/IMDB_Logo_2016.svg",
-      votes: `${imdbRatings?.imdbVotes} votes`,
+      votes: `${formatNumber(imdbRatings?.imdbVotes || 0)} votes`,
       bgColor: `bg-yellow-100`,
       rating:
         imdbRatings?.Ratings.find(
@@ -183,7 +184,7 @@ export function SideBarDetails({
     {
       name: "TMDB",
       logo: "https://upload.wikimedia.org/wikipedia/commons/8/89/Tmdb.new.logo.svg",
-      votes: `${voteCount} votes`,
+      votes: `${formatNumber(voteCount)} votes`,
       bgColor: `bg-green-100`,
       rating: rating ? rating.toFixed(1).slice(0, 3) : "N/A",
     },
@@ -210,7 +211,7 @@ export function SideBarDetails({
     },
   ]
 
-  function formatNumber(num: number) {
+  function formatAmount(num: number) {
     if (num >= 1_000_000_000) {
       return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, "") + " billion"
     } else if (num >= 1_000_000) {
@@ -287,14 +288,14 @@ export function SideBarDetails({
           <p className="flex items-center text-gray-700">
             <CircleDollarSign className="mr-2 size-4 text-blue-500" />
             <span className="mr-1 font-semibold">Budget:</span>
-            {budget && budget > 0 ? ` $${formatNumber(budget)}` : "N/A"}
+            {budget && budget > 0 ? ` $${formatAmount(budget)}` : "N/A"}
           </p>
         )}
         {revenue !== undefined && (
           <p className="flex items-center text-gray-700">
             <CircleDollarSign className="mr-2 size-4 text-blue-500" />
             <span className="mr-1 font-semibold">Revenue:</span>
-            {revenue && revenue > 0 ? `$${formatNumber(revenue)}` : "N/A"}
+            {revenue && revenue > 0 ? `$${formatAmount(revenue)}` : "N/A"}
           </p>
         )}
         {runTime && (

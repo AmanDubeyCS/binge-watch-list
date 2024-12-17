@@ -2,30 +2,28 @@ import Link from "next/link"
 import React from "react"
 
 interface Title {
-  type: string;
-  title: string;
+  type: string
+  title: string
 }
 
 interface Image {
   jpg: {
-    image_url: string;
-  };
+    image_url: string
+  }
 }
 
 interface Producer {
-  mal_id: number;
-  url: string;
-  titles: Title[];
-  images: Image;
-  favorites: number;
-  established: string; 
-  about: string;
-  count: number;
+  mal_id: number
+  url: string
+  titles: Title[]
+  images: Image
+  favorites: number
+  established: string
+  about: string
+  count: number
 }
 
-
-export function AnimeStudios({ studios }: {studios: Producer[]}) {
-
+export function AnimeStudios({ studios }: { studios: Producer[] }) {
   return (
     <section className="mb-12">
       <h2 className="mb-4 text-2xl font-semibold text-gray-900">

@@ -4,7 +4,13 @@ import { ChevronDown, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useRouter, useSearchParams } from "next/navigation"
 import { ListOfAnimes } from "./ListOfAnimes"
-import { certificationOptions, format, orderBy, statusOptions, years } from "./AnimeData"
+import {
+  certificationOptions,
+  format,
+  orderBy,
+  statusOptions,
+  years,
+} from "./AnimeData"
 interface Items {
   mal_id?: number | string
   name?: string
