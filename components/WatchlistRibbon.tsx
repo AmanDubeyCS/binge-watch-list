@@ -87,11 +87,13 @@ export const WatchlistRibbon: React.FC<WatchlistRibbonProps> = ({
             onSelect={() => handleStatusChange(key)}
             className={cn(
               "flex cursor-pointer items-center rounded-md p-3 transition-colors duration-200 hover:opacity-80",
-              label === "Watching"
+              label === "Watching" || label === "Playing" || label === "Reading"
                 ? "bg-blue-100 text-blue-600"
-                : label === "Plan to Watch"
+                : label === "Plan to Watch" ||
+                    label === "Want to play" ||
+                    label === "Plan to Read"
                   ? "bg-yellow-100 text-yellow-600"
-                  : label === "Completed"
+                  : label === "Completed" || label === "I've seen this"
                     ? "bg-green-100 text-green-600"
                     : "bg-red-100 text-red-600"
             )}

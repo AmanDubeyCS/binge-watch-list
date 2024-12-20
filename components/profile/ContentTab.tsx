@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from "react"
-import { Card } from "./Card"
+import { ProfileCard } from "./Card"
 import { cn } from "@/lib/utils"
 
 interface WatchListData {
@@ -17,6 +17,7 @@ interface WatchListData {
   progress: string
   episodeCount: number
   showStatus: string
+  WatchStatus: any
 }
 
 export default function ContentTab({
@@ -39,11 +40,12 @@ export default function ContentTab({
       setFilteredData(data)
     } else {
       const filterdData = data.filter(
-        (data: { status: string }) => data.status === filter
+        (data: { WatchStatus: string }) => data.WatchStatus === filter
       )
       setFilteredData(filterdData)
     }
   }
+
   return (
     <div>
       <div className="mb-10 flex h-[35px] justify-between">
@@ -74,22 +76,29 @@ export default function ContentTab({
       </div>
       <div className="flex flex-wrap gap-3">
         {filteredData.map((data) => (
-          <Card
+          <ProfileCard
             key={data.id}
             id={data.id}
             name={data.name}
-            coverImage={data.coverImage}
-            firstAirDate={data.tag}
-            voteAverage={data.voteAverage}
-            voteCount={data.voteCount}
-            genreIds={data.genre}
-            popularity={data.numbers}
+            coverImage={
+              data.poster_path
+                ? `https://image.tmdb.org/t/p/w300/${data.poster_path}.webp`
+                : data.coverImage
+            }
+            tag={data.tag}
+            voteAverage={data.vote_average || data.voteAverage}
+            voteCount={data.vote_count || data.voteCount}
+            genre={data.genres?.map((genre) => genre.name) || data.genre}
+            numbers={data.popularity || data.numbers}
             mediaType={mediaType}
-            status={data.status}
+            status={data.watchStatus || data.readStatus || data.gameStatus}
             remarks={data.remarks}
-            progress={data.progress}
-            episodes={data.episodeCount}
-            showStatus={data.showStatus}
+            showProgress={data.tvProgress}
+            seasons={data.seasons}
+            platforms={data.platforms}
+            animeprogress={data.animeProgress}
+            episodes={data.episodes}
+            mangaProgress={data.mangaProgress}
           />
         ))}
       </div>

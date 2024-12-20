@@ -1,7 +1,8 @@
 import { configRAWG } from "@/apiConfig"
-import { GameCard } from "@/components/gamePage/GameCard"
+import { ListCards } from "@/components/common/ListContent"
 import { GameGenresList } from "@/components/gamePage/GameGenresList"
 import GamingPlatforms from "@/components/gamePage/GamingPlatforms"
+import { Tv } from "lucide-react"
 import React from "react"
 
 interface Common {
@@ -95,28 +96,11 @@ export default async function page() {
 
   return (
     <main className="mx-auto flex max-w-[1600px] flex-col gap-5 px-8 pb-10 text-black">
-      <div>
-        <h2 className="mb-6 text-3xl font-bold">Popular Picks</h2>
-        <div className="hide-scrollbar w-full overflow-x-scroll whitespace-nowrap">
-          <div className="grid w-[3400px] grid-cols-10 gap-3 py-3 pr-5">
-            {gamesList &&
-              gamesList.results.map((game: Game) => (
-                <GameCard
-                  key={game.id}
-                  id={game.id}
-                  title={game.name}
-                  image={game.background_image}
-                  rating={game.rating * 2}
-                  platforms={game.parent_platforms}
-                  release={game.released}
-                  genres={game.genres}
-                  tags={game.tags}
-                  grade={game.ratings}
-                />
-              ))}
-          </div>
-        </div>
-      </div>
+      <ListCards
+        gameData={gamesList.results}
+        title="Popular Games"
+        titleIcon={<Tv className="mr-2" />}
+      />
       <GamingPlatforms />
       <GameGenresList />
     </main>

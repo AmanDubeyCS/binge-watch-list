@@ -185,7 +185,7 @@ const DropdownMultiSelect = ({
 }
 export function GameDiscoverPage() {
   const [search, setSearchTerm] = useState("")
-  const [order, setSelectedOrder] = useState("")
+  const [ordering, setSelectedOrder] = useState("")
   const [genres, setSelectedGenres] = useState<string[]>([])
   const [platforms, setSelectedPlatforms] = useState<number[]>([])
   const [stores, setSelectedStore] = useState<number[]>([])
@@ -273,7 +273,7 @@ export function GameDiscoverPage() {
   const handleSearch = () => {
     const params = new URLSearchParams({
       ...(search && { search }),
-      ...(order && { order }),
+      ...(ordering && { ordering }),
       ...(genres.length > 0 && { genres: genres.join(",") }),
       ...(stores.length > 0 && { stores: stores.join(",") }),
       ...(platforms.length > 0 && { platforms: platforms.join(",") }),
@@ -285,7 +285,7 @@ export function GameDiscoverPage() {
 
   const hasActiveFilters =
     search ||
-    order ||
+    ordering ||
     stores.length > 0 ||
     genres.length > 0 ||
     platforms.length > 0 ||
@@ -319,7 +319,7 @@ export function GameDiscoverPage() {
               title="Order by"
               placeholder="Ex: Relevence"
               options={orderOptions}
-              selectedItems={order}
+              selectedItems={ordering}
               onSelect={(value: string | number) =>
                 setSelectedOrder(value as string)
               }
@@ -393,12 +393,12 @@ export function GameDiscoverPage() {
                     />
                   </div>
                 )}
-                {order && (
+                {ordering && (
                   <div className="flex items-center gap-1 rounded-md bg-[#3DB4F2] px-2 py-1 text-xs font-semibold text-white">
-                    {orderOptions.find((o) => o.slug === order)?.name}
+                    {orderOptions.find((o) => o.slug === ordering)?.name}
                     <X
                       className="ml-1 size-3 cursor-pointer"
-                      onClick={() => removeFilter("order", order)}
+                      onClick={() => removeFilter("order", ordering)}
                     />
                   </div>
                 )}

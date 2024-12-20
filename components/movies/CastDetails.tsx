@@ -26,6 +26,7 @@ export function CastDetails({ movieId }: { movieId: number }) {
   const handleClick = (personId: number) => {
     router.push(`/person/${personId}`)
   }
+
   return (
     <div className="flex flex-wrap items-center justify-center gap-2 py-4">
       {!isLoading &&

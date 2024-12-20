@@ -38,7 +38,7 @@ export async function GET(req: NextRequest) {
   // Filters
   const filters = {
     search: searchParams.get("search") || undefined,
-    ordering: searchParams.get("order") || undefined,
+    ordering: searchParams.get("ordering") || undefined,
     genres: searchParams.get("genres") || undefined,
     platforms: searchParams.get("platforms") || undefined,
     dates: searchParams.get("release") || undefined,

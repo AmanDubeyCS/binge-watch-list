@@ -1,11 +1,11 @@
 import React from "react"
 
-import { CurrentlyTrending } from "@/components/tvPage/tvHomePage/CurrentlyTrending"
 import { configTMDB } from "@/apiConfig"
 import { TvProviders } from "@/components/tvPage/tvHomePage/TvProviders"
 import { TvGenresList } from "@/components/tvPage/tvHomePage/TvGenresList"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
 import { Tv } from "lucide-react"
+import { ListCards } from "@/components/common/ListContent"
 
 export default async function MoviesPage() {
   const [trendingTv, PopularTV, tvProviders, tvGenres] = await Promise.all([
@@ -37,14 +37,14 @@ export default async function MoviesPage() {
   return (
     <main className="mx-auto flex max-w-[1600px] flex-col gap-10 px-8 pb-10">
       {trendingTv && (
-        <CurrentlyTrending
+        <ListCards
           tvData={trendingTv.results}
           title="Currently Trending"
           titleIcon={<Tv className="mr-2" />}
         />
       )}
       {PopularTV && (
-        <CurrentlyTrending
+        <ListCards
           tvData={PopularTV.results}
           title="Popular on TV"
           titleIcon={<Tv className="mr-2" />}

@@ -1,4 +1,3 @@
-import Image from "next/image"
 import { Star, Calendar, Gamepad2, Tag, Monitor } from "lucide-react"
 import { MainContent } from "./MainContent"
 import { Game } from "@/types/game/singleGame"
@@ -27,8 +26,8 @@ export default function GameInfo({ gameData }: { gameData: Game }) {
     ))
   }
   return (
-    <div className="mx-auto flex max-w-[1400px] flex-col gap-5 p-10">
-      <div className="flex gap-6">
+    <div className="mx-auto flex max-w-[1600px] flex-col gap-5 p-10">
+      {/* <div className="flex gap-6">
         <div className="w-2/3">
           <div className="rounded-lg bg-white p-6 shadow-md">
             <div className="flex items-start justify-between">
@@ -139,7 +138,7 @@ export default function GameInfo({ gameData }: { gameData: Game }) {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div>
         <div>
@@ -147,13 +146,101 @@ export default function GameInfo({ gameData }: { gameData: Game }) {
             <div className="flex w-full flex-col gap-4">
               <MainContent gameId={gameData.id}>
                 <div className="rounded-lg">
-                  <div className="rounded-md bg-white p-6 shadow-md">
-                    <h2 className="mb-4 text-4xl font-semibold text-gray-900">
-                      About the Game
-                    </h2>
-                    <div
-                      dangerouslySetInnerHTML={{ __html: gameData.description }}
-                    ></div>
+                  <div className="">
+                    <div>
+                      <div className="w-full">
+                        <div className="flex gap-10">
+                          <div className="mb-6 w-[50%] rounded-lg bg-white p-6 shadow-md">
+                            <h2 className="mb-4 text-xl font-semibold text-gray-900">
+                              Ratings & Reviews
+                            </h2>
+                            <div className="mb-4 flex items-center">
+                              <span className="mr-2 text-4xl font-bold text-gray-900">
+                                {gameData.rating * 2}
+                              </span>
+                              <div>
+                                <div className="flex">
+                                  {Array.from({
+                                    length: Math.round(gameData.rating),
+                                  }).map((_, star) => (
+                                    <Star
+                                      key={star}
+                                      className="fill-yellow-400 text-yellow-400"
+                                      size={20}
+                                    />
+                                  ))}
+                                  {[1, 2, 3, 4, 5]
+                                    .slice(Math.round(gameData.rating), 5)
+                                    .map((star) => (
+                                      <Star
+                                        key={star}
+                                        className="text-yellow-400"
+                                        size={20}
+                                        fill="none"
+                                        strokeWidth={1.5}
+                                      />
+                                    ))}
+                                </div>
+                                <p className="text-sm text-gray-600">
+                                  Based on {gameData.ratings_count} reviews
+                                </p>
+                              </div>
+                            </div>
+                            <div className="space-y-2">
+                              {gameData.ratings.map((rating) => (
+                                <div
+                                  key={rating.title}
+                                  className="flex items-center"
+                                >
+                                  <span className="w-24 text-sm text-gray-600">
+                                    {rating.title}
+                                  </span>
+                                  <div className="mx-2 h-2 grow rounded-full bg-gray-200">
+                                    <div
+                                      className="h-2 rounded-full bg-blue-600"
+                                      style={{ width: `${rating.percent}%` }}
+                                    ></div>
+                                  </div>
+                                  <span className="text-sm text-gray-600">
+                                    {rating.percent.toFixed(1)}%
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                          <div className="mb-6 w-[50%] rounded-lg bg-white p-6 shadow-md">
+                            <h2 className="mb-4 text-xl font-semibold text-gray-900">
+                              Game Info
+                            </h2>
+                            <div className="space-y-2 text-gray-600">
+                              <p>
+                                <strong>Developer:</strong>{" "}
+                                {gameData.developers[0]?.name}
+                              </p>
+                              <p>
+                                <strong>Publisher:</strong>{" "}
+                                {gameData.publishers[0]?.name}
+                              </p>
+                              <p>
+                                <strong>Genre:</strong>{" "}
+                                {gameData.genres.map((genre) => (
+                                  <span>{genre.name}, </span>
+                                ))}
+                              </p>
+                              <p>
+                                <strong>Website:</strong>{" "}
+                                <a
+                                  href={gameData.website}
+                                  className="text-blue-500 hover:underline"
+                                >
+                                  Official Website
+                                </a>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     {pcPlatform?.requirements.minimum && (
                       <div>
                         <h2 className="my-4 flex items-center text-xl font-semibold">

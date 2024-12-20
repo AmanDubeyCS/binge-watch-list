@@ -1,8 +1,8 @@
 import React from "react"
 
-import MovieInfoPage from "@/components/movies/MovieInfoPage"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
-import { configOMDB, configTMDB } from "@/apiConfig"
+import { configTMDB } from "@/apiConfig"
+import VideoList from "@/components/common/VideoList"
 
 export default async function SingleMoviePage({
   params,
@@ -11,30 +11,9 @@ export default async function SingleMoviePage({
 }) {
   const movieID = params.movieID
   try {
-    const response = await fetchFromTMDB(configTMDB.getSingleMovie({ movieID }))
-    const imdbId = response.external_ids.imdb_id
+    const response = await fetchFromTMDB(configTMDB.getMovieVideos(movieID))
 
-    if (!imdbId) {
-      throw new Error("IMDB ID not found")
-    }
-
-    const imdbResponse = await fetch(configOMDB.getOmdbData(imdbId))
-    if (!imdbResponse.ok) {
-      throw new Error(`OMDB API error: ${imdbResponse.statusText}`)
-    }
-
-    const imdbData = await imdbResponse.json()
-    if (!response) {
-      throw new Error("No data received")
-    }
-
-    return (
-      <MovieInfoPage
-        movieInfo={response}
-        movieId={movieID}
-        imdbData={imdbData}
-      />
-    )
+    return <VideoList videos={response.results} />
   } catch (error) {
     console.error("Error fetching movies data:", error)
     return <div>Error: Failed to fetch movies data.</div>

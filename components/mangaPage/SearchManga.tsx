@@ -5,7 +5,6 @@ import { useMangaFetch } from "@/queries/mangaDex/mangaFetch"
 import { MangaItem } from "@/types/manga/mangaTypes"
 import { ImageLoader } from "@/util/ImageLoader"
 
-
 export default function SearchManga() {
   const router = useRouter()
   const [search, setSearch] = useState("")

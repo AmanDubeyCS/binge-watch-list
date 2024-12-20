@@ -1,5 +1,4 @@
 "use client"
-
 import { useState } from "react"
 import Image from "next/image"
 import {
@@ -9,8 +8,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Icon } from "../icons"
-import { useRouter } from "next/navigation"
 import { platformData } from "./gamedata"
+import Link from "next/link"
 
 const platformLogos = {
   pc: <Icon.windowsIcon className="size-[64px] text-white" />,
@@ -32,48 +31,67 @@ const platformLogos = {
 }
 
 export default function GamingPlatforms() {
-  const router = useRouter()
   const [openDialog, setOpenDialog] = useState<number | null>(null)
 
-  const handleClick = (platformId: number) => {
-    router.push(`/games/discover?platforms=${platformId}`)
-  }
-
   return (
-    <div className="mx-auto max-w-[1600px] px-4 py-8">
+    <section className="px-4 py-8">
       <h2 className="mb-6 text-3xl font-bold">Gaming Platforms</h2>
       <div className="hide-scrollbar flex gap-6 overflow-x-scroll">
-        {platformData.results.map((platform) => (
-          <div
-            key={platform.id}
-            className="aspect-square size-[225px] shrink-0 cursor-pointer overflow-hidden rounded-full transition-shadow duration-300 hover:shadow-lg"
-            onClick={() =>
-              platform.platforms.length > 1
-                ? setOpenDialog(platform.id)
-                : handleClick(platform.platforms[0].id)
-            }
-          >
-            <div className="h-full p-0">
-              <div
-                className={`group relative flex h-full flex-col items-center justify-center gap-2 transition-transform duration-300 ease-in-out hover:scale-105`}
-              >
-                <img
-                  src={platform.platforms[0].image_background}
-                  alt={platform.name}
-                  className="size-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300 ease-in-out group-hover:bg-opacity-30"></div>
+        {platformData.results.map((platform) =>
+          platform.platforms.length > 1 ? (
+            <div
+              key={platform.id}
+              className="aspect-square size-[225px] shrink-0 cursor-pointer overflow-hidden rounded-full transition-shadow duration-300 hover:shadow-lg"
+              onClick={() => setOpenDialog(platform.id)}
+            >
+              <div className="h-full p-0">
+                <div
+                  className={`group relative flex h-full flex-col items-center justify-center gap-2 transition-transform duration-300 ease-in-out hover:scale-105`}
+                >
+                  <img
+                    src={platform.platforms[0].image_background}
+                    alt={platform.name}
+                    className="size-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300 ease-in-out group-hover:bg-opacity-30"></div>
 
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-center">
-                  {platformLogos[platform.slug as keyof typeof platformLogos]}
-                  <span className="text-2xl font-bold text-white">
-                    {platform.name}
-                  </span>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-center">
+                    {platformLogos[platform.slug as keyof typeof platformLogos]}
+                    <span className="text-2xl font-bold text-white">
+                      {platform.name}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          ) : (
+            <Link
+              key={platform.id}
+              href={`/games/discover?platforms=${platform.platforms[0].id}`}
+              className="aspect-square size-[225px] shrink-0 cursor-pointer overflow-hidden rounded-full transition-shadow duration-300 hover:shadow-lg"
+            >
+              <div className="h-full p-0">
+                <div
+                  className={`group relative flex h-full flex-col items-center justify-center gap-2 transition-transform duration-300 ease-in-out hover:scale-105`}
+                >
+                  <img
+                    src={platform.platforms[0].image_background}
+                    alt={platform.name}
+                    className="size-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300 ease-in-out group-hover:bg-opacity-30"></div>
+
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-center">
+                    {platformLogos[platform.slug as keyof typeof platformLogos]}
+                    <span className="text-2xl font-bold text-white">
+                      {platform.name}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          )
+        )}
       </div>
 
       {platformData.results.map(
@@ -92,9 +110,9 @@ export default function GamingPlatforms() {
                 </DialogHeader>
                 <div className="flex flex-wrap gap-4 py-4">
                   {platform.platforms.map((subPlatform) => (
-                    <div
+                    <Link
+                      href={`/games/discover?platforms=${subPlatform.id}`}
                       key={subPlatform.id}
-                      onClick={() => handleClick(subPlatform.id)}
                       className="flex flex-col items-center"
                     >
                       <div className="mb-2 flex size-[160px] items-center justify-center overflow-hidden rounded-full bg-gray-200">
@@ -109,13 +127,13 @@ export default function GamingPlatforms() {
                       <span className="text-center text-sm font-medium">
                         {subPlatform.name}
                       </span>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </DialogContent>
             </Dialog>
           )
       )}
-    </div>
+    </section>
   )
 }

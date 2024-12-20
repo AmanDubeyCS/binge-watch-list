@@ -78,7 +78,7 @@ export const useFetchAnime = (currentParams: Record<string, string>) => {
     queryFn: async () => {
       const queryString = new URLSearchParams({ ...currentParams }).toString()
       const response = await fetch(
-        `${BASE_URL_ANIME}/anime?limit=24&${queryString}`
+        `${BASE_URL_ANIME}/anime?limit=24&sort=desc&${queryString}`
       )
       if (!response.ok) throw new Error("Error fetching media")
       return response.json()

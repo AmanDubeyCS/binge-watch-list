@@ -4,8 +4,6 @@ import Image from "next/image"
 import { Manga, StatisticsData, VolumesData } from "@/types/manga/singleManga"
 
 import { Bookmark, Heart, Info, Star } from "lucide-react"
-import { SidebarDetails } from "./SidebarDetails"
-import { MainContent } from "./MainContent"
 
 export function MangaInfoPage({
   mangaInfo,
@@ -21,8 +19,6 @@ export function MangaInfoPage({
   )
   const mangaId = Object.keys(statistics.statistics)[0]
   const ratingData = statistics.statistics[mangaId]
-  const reviews = statistics.statistics[mangaId].comments
-  const volumes = chapters.volumes
 
   const authors = mangaInfo.relationships.filter(
     (item) => item.type === "author"
@@ -173,7 +169,7 @@ export function MangaInfoPage({
           </div>
         </div>
       </div>
-      <div
+      {/* <div
         style={{
           backgroundImage:
             "linear-gradient(to right, rgba(255, 255, 255, 0.9) 0%, rgba(240, 240, 240, 0.9) 100%)",
@@ -187,7 +183,7 @@ export function MangaInfoPage({
             reviews={reviews}
           />
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }
