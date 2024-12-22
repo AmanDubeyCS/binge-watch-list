@@ -1,5 +1,8 @@
 import { db } from "@/app/firebaseConfig"
 import { doc, setDoc } from "firebase/firestore"
+import { fetchFromMangaDex } from "./fetchFromTMDB"
+import { fetchCanonicalAndEncode } from "./fetchFromMangaUpdates"
+import { config } from "@/apiConfig"
 
 const updateMediaDetails = async (
   userId: string,
@@ -27,7 +30,7 @@ export const handleMovieStatusChange = async (
     voteAverage: number
     voteCount: number
   },
-  remarks?: string,
+  remarks?: string
 ) => {
   const data = {
     id,
@@ -51,7 +54,7 @@ export const handleTvShowStatusChange = async (
     voteCount: number
     tvProgress?: string
   },
-  remarks?: string,
+  remarks?: string
 ) => {
   const data = {
     id,
@@ -77,7 +80,7 @@ export const handleAnimeStatusChange = async (
     episodes?: number
     aniProgress?: number
   },
-  remarks?: string,
+  remarks?: string
 ) => {
   const data = {
     id,
@@ -102,7 +105,7 @@ export const handleGameStatusChange = async (
     voteCount: number
     platforms: any
   },
-  remarks?: string,
+  remarks?: string
 ) => {
   const data = {
     id,
@@ -112,6 +115,28 @@ export const handleGameStatusChange = async (
   }
 
   await updateMediaDetails(userId, "game", id, data)
+}
+
+const checkdata = async (mangaID: string) => {
+  try {
+    const manga = await fetchFromMangaDex(config.getSingleManga({ mangaID }))
+    const mangaInfo = await manga.data
+
+    if (Number(mangaInfo.attributes.links.mu)) {
+      const muID = await fetchCanonicalAndEncode(
+        `https://www.mangaupdates.com/series.html?id=${mangaInfo.attributes.links.mu}`
+      )
+
+      return muID
+    } else if (!mangaInfo.attributes.links.mu) {
+      return 1
+    } else {
+      return parseInt(mangaInfo.attributes.links.mu, 36)
+    }
+  } catch (error) {
+    console.error("Error fetching manga data:", error)
+    return <div>Error fetching manga data.</div>
+  }
 }
 
 export const handleMangaStatusChange = async (
@@ -126,11 +151,13 @@ export const handleMangaStatusChange = async (
     voteCount: number
     mgProgress?: number
   },
-  remarks?: string,
+  remarks?: string
 ) => {
+  const muID = await checkdata(String(id))
   const data = {
     id,
     ...mangaDetails,
+    mangaUpdatesID: muID,
     mangaProgress: mangaDetails.mgProgress || 1,
     remarks: remarks || "",
     readStatus: selectedStatus,

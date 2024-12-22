@@ -14,6 +14,7 @@ const checkdata = async (mangaID: string) => {
       const muID = await fetchCanonicalAndEncode(
         `https://www.mangaupdates.com/series.html?id=${mangaInfo.attributes.links.mu}`
       )
+     
       return muID
     } else if (!mangaInfo.attributes.links.mu) {
       return 1
