@@ -10,6 +10,9 @@ interface WatchListData {
   genre: string[] // Array of genres associated with the anime
   numbers: number // Some numerical value (e.g., episode count)
   status: string // User's current status with the anime (e.g., "watching")
+  watchStatus?: string
+  readStatus?: string
+  gameStatus?: string
   tag: string // Additional tag or label (e.g., "Currently Airing")
   voteAverage: number // Average user rating for the anime
   voteCount: number // Total number of votes or ratings
@@ -18,6 +21,17 @@ interface WatchListData {
   episodeCount: number
   showStatus: string
   WatchStatus: any
+  poster_path: string
+  vote_average: number
+  vote_count: number
+  genres: string[]
+  popularity: number
+  tvProgress: string
+  seasons: any
+  platforms: any
+  animeProgress: number
+  episodes: number
+  mangaProgress: number
 }
 
 export default function ContentTab({
@@ -39,18 +53,21 @@ export default function ContentTab({
     if (filter === "All") {
       setFilteredData(data)
     } else {
-      const filterdData = data.filter(
-        (data: { WatchStatus: string }) => data.WatchStatus === filter
+      const filteredData = data.filter(
+        (item: WatchListData) =>
+          item.watchStatus === filter ||
+          item.readStatus === filter ||
+          item.gameStatus === filter
       )
-      setFilteredData(filterdData)
+      setFilteredData(filteredData)
     }
   }
 
   return (
     <div>
-      <div className="mb-10 flex h-[35px] justify-between">
-        <h2 className="mb-6 text-2xl font-bold">{title}</h2>
-        <div className="flex gap-3">
+      <div className="mb-10 gap-6 flex flex-col md:flex-row justify-between">
+        <h2 className="text-2xl font-bold">{title}</h2>
+        <div className="flex gap-3 h-[35px] overflow-scroll hide-scrollbar">
           <span
             onClick={() => handleClick("All")}
             className={cn(
@@ -74,7 +91,7 @@ export default function ContentTab({
           ))}
         </div>
       </div>
-      <div className="flex flex-wrap gap-3">
+      <div className="grid grid-cols-3 md:grid-cols-4 gap-3 md:flex flex-wrap">
         {filteredData.map((data) => (
           <ProfileCard
             key={data.id}
@@ -88,11 +105,19 @@ export default function ContentTab({
             tag={data.tag}
             voteAverage={data.vote_average || data.voteAverage}
             voteCount={data.vote_count || data.voteCount}
-            genre={data.genres?.map((genre) => genre.name) || data.genre}
+            genre={
+              Array.isArray(data.genres)
+                ? data.genres.map((genre: any) =>
+                    typeof genre === "string" ? genre : genre.name
+                  )
+                : data.genre
+            }
             numbers={data.popularity || data.numbers}
             mediaType={mediaType}
-            status={data.watchStatus || data.readStatus || data.gameStatus}
-            remarks={data.remarks}
+            status={
+              data.watchStatus || data.readStatus || data.gameStatus || ""
+            }
+            remark={data.remarks}
             showProgress={data.tvProgress}
             seasons={data.seasons}
             platforms={data.platforms}

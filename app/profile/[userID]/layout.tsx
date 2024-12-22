@@ -109,7 +109,7 @@ export default async function Layout({
         </div>
       </header>
       <ProfileNav userId={userId} />
-      <div className="mx-auto max-w-[1600px] py-10">{children}</div>
+      <div className="mx-auto max-w-[1600px] py-10 px-4">{children}</div>
     </div>
   )
 }

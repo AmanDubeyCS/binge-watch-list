@@ -51,7 +51,7 @@ interface TVShowCardProps {
   showStatus?: any
   platforms?: any
   status?: any
-  profileCradStatus?: any
+  profileCardStatus?: any
 }
 
 export default function Card({
@@ -68,7 +68,7 @@ export default function Card({
   episodes,
   platforms,
   status,
-  profileCradStatus,
+  profileCardStatus,
 }: TVShowCardProps) {
   const { data: session } = useSession()
   const router = useRouter()
@@ -91,14 +91,14 @@ export default function Card({
   }
 
   const watchStatus = useMemo(() => {
-    if (profileCradStatus) return profileCradStatus
+    if (profileCardStatus) return profileCardStatus
     else {
       return (
         statusData.find((item: { id: number | string }) => item.id === id)
           ?.status || null
       )
     }
-  }, [statusData, id, profileCradStatus])
+  }, [statusData, id, profileCardStatus])
 
   const handleStatusChange = async (selectedStatus: string) => {
     if (!session?.user?.id || !mediaType) return
@@ -180,11 +180,11 @@ export default function Card({
   return (
     <div
       onClick={handleClick}
-      className={`flex h-[245px] w-[360px] cursor-pointer items-center justify-start overflow-hidden rounded-md bg-white p-2 shadow-md duration-300 hover:scale-105`}
+      className={`flex w-[150px] h-[220px] md:h-[245px] md:w-[360px] cursor-pointer items-center justify-start overflow-hidden rounded-md bg-white md:p-2 shadow-md duration-300 hover:scale-105`}
     >
       <div className="group flex h-full gap-2">
         <div
-          className={`relative w-[140px] shrink-0 overflow-hidden rounded-lg`}
+          className={`relative w-[150px] md:w-[140px] shrink-0 overflow-hidden rounded-lg`}
         >
           {!pathname.includes("profile") ? (
             <div className="opacity-0 group-hover:opacity-100">
@@ -214,7 +214,7 @@ export default function Card({
             }
           />
         </div>
-        <div className="flex-1">
+        <div className="flex-1 hidden md:block">
           {tag && mediaType !== "game" && (
             <div className="mb-2 w-fit rounded-lg border border-blue-700 px-2 py-1 text-sm font-medium uppercase text-black">
               {tag}

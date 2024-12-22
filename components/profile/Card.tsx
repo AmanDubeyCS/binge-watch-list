@@ -38,7 +38,7 @@ interface TVShowCardProps {
   numbers: number
   mediaType: string
   status: string
-  remarks: string
+  remark: string
   showProgress: string
   episodes?: number
   showStatus?: string
@@ -59,7 +59,7 @@ export function ProfileCard({
   numbers,
   mediaType,
   status,
-  remarks,
+  remark,
   showProgress,
   episodes,
   seasons,
@@ -70,7 +70,7 @@ export function ProfileCard({
   const { data: session } = useSession()
   const [isEditing, setIsEditing] = useState(false)
   const [manProgress, setManProgress] = useState(mangaProgress)
-  const [remark, setRemarks] = useState(remarks)
+  const [remarks, setRemarks] = useState(remark)
   const [tvProgress, settvProgress] = useState(showProgress)
   const [aniProgress, setAniProgress] = useState(animeprogress)
   const [barProgress, setBarProgress] = useState(0)
@@ -94,32 +94,33 @@ export function ProfileCard({
           session.user.id,
           Number(id),
           status,
-          details
+          details,
+          remarks,
         )
         break
       case "tv":
         await handleTvShowStatusChange(session.user.id, Number(id), status, {
           ...details,
           tvProgress,
-        })
+        }, remarks)
         break
       case "anime":
         await handleAnimeStatusChange(session.user.id, Number(id), status, {
           ...details,
           aniProgress,
-        })
+        }, remarks)
         break
       case "game":
         await handleGameStatusChange(session.user.id, Number(id), status, {
           ...details,
           platforms,
-        })
+        }, remarks)
         break
       case "manga":
         await handleMangaStatusChange(session.user.id, id, status, {
           ...details,
           mgProgress: manProgress,
-        })
+        }, remarks)
         break
       default:
         console.error("Invalid media type")
@@ -226,7 +227,7 @@ export function ProfileCard({
                 : tvStatuses
         }
         platforms={platforms}
-        profileCradStatus={status}
+        profileCardStatus={status}
       />
       {(mediaType === "tv" ||
         mediaType === "anime" ||
@@ -244,7 +245,7 @@ export function ProfileCard({
                     ? tvProgress
                     : mediaType === "manga"
                       ? `CH-${manProgress.toString().length < 2 ? `0${manProgress}` : manProgress}`
-                      : `E-${aniProgress.toString().length < 2 ? `0${aniProgress}` : aniProgress}/${episodes}`}
+                      : `E-${aniProgress?.toString().length < 2 ? `0${aniProgress}` : aniProgress}/${episodes}`}
                 </div>
                 <div className="flex items-center space-x-2">
                   <TooltipProvider>

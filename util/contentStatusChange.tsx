@@ -26,12 +26,13 @@ export const handleMovieStatusChange = async (
     genre: string[]
     voteAverage: number
     voteCount: number
-  }
+  },
+  remarks?: string,
 ) => {
   const data = {
     id,
     ...movieDetails,
-    remarks: "",
+    remarks: remarks || "",
     watchStatus: selectedStatus,
   }
 
@@ -49,13 +50,14 @@ export const handleTvShowStatusChange = async (
     voteAverage: number
     voteCount: number
     tvProgress?: string
-  }
+  },
+  remarks?: string,
 ) => {
   const data = {
     id,
     ...tvDetails,
     tvProgress: tvDetails.tvProgress || "S01-E01",
-    remarks: "",
+    remarks: remarks || "",
     watchStatus: selectedStatus,
   }
 
@@ -74,13 +76,14 @@ export const handleAnimeStatusChange = async (
     voteCount: number
     episodes?: number
     aniProgress?: number
-  }
+  },
+  remarks?: string,
 ) => {
   const data = {
     id,
     ...animeDetails,
     animeProgress: animeDetails.aniProgress || 1,
-    remarks: "",
+    remarks: remarks || "",
     watchStatus: selectedStatus,
   }
 
@@ -98,12 +101,13 @@ export const handleGameStatusChange = async (
     voteAverage: number
     voteCount: number
     platforms: any
-  }
+  },
+  remarks?: string,
 ) => {
   const data = {
     id,
     ...gameDetails,
-    remarks: "",
+    remarks: remarks || "",
     gameStatus: selectedStatus,
   }
 
@@ -121,13 +125,14 @@ export const handleMangaStatusChange = async (
     voteAverage: number
     voteCount: number
     mgProgress?: number
-  }
+  },
+  remarks?: string,
 ) => {
   const data = {
     id,
     ...mangaDetails,
     mangaProgress: mangaDetails.mgProgress || 1,
-    remarks: "",
+    remarks: remarks || "",
     readStatus: selectedStatus,
   }
 

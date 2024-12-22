@@ -75,6 +75,8 @@ export const configTMDB = {
     `${BASE_URL_TMDB}/discover/movie?air_date.lte=2025-04-07&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=IN&with_runtime.gte=0&with_runtime.lte=400&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&with_watch_providers=${tvProviderId}&without_keywords=210024`,
   getSingleMovie: ({ movieID }: any) =>
     `${BASE_URL_TMDB}/movie/${movieID}?append_to_response=external_ids%2Cvideos%2Cwatch%2Fproviders&language=en-US`,
+  getSingleMovieProfile: (tvID: number) =>
+    `${BASE_URL_TMDB}/movie/${tvID}?append_to_response=videos&language=en-US`,
   getSingleMovieCast: (movieId: number) =>
     `${BASE_URL_TMDB}/movie/${movieId}/credits?language=en-US`,
   getSingleMovieCollection: (movieId: number) =>
