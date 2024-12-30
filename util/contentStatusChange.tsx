@@ -1,7 +1,7 @@
 import { db } from "@/app/firebaseConfig"
 import { doc, setDoc } from "firebase/firestore"
 import { fetchFromMangaDex } from "./fetchFromTMDB"
-import { fetchCanonicalAndEncode } from "./fetchFromMangaUpdates"
+import { checkdata, fetchCanonicalAndEncode } from "./fetchFromMangaUpdates"
 import { config } from "@/apiConfig"
 
 const updateMediaDetails = async (
@@ -117,28 +117,6 @@ export const handleGameStatusChange = async (
   await updateMediaDetails(userId, "game", id, data)
 }
 
-const checkdata = async (mangaID: string) => {
-  try {
-    const manga = await fetchFromMangaDex(config.getSingleManga({ mangaID }))
-    const mangaInfo = await manga.data
-
-    if (Number(mangaInfo.attributes.links.mu)) {
-      const muID = await fetchCanonicalAndEncode(
-        `https://www.mangaupdates.com/series.html?id=${mangaInfo.attributes.links.mu}`
-      )
-
-      return muID
-    } else if (!mangaInfo.attributes.links.mu) {
-      return 1
-    } else {
-      return parseInt(mangaInfo.attributes.links.mu, 36)
-    }
-  } catch (error) {
-    console.error("Error fetching manga data:", error)
-    return <div>Error fetching manga data.</div>
-  }
-}
-
 export const handleMangaStatusChange = async (
   userId: string,
   id: number | string,
@@ -150,17 +128,21 @@ export const handleMangaStatusChange = async (
     voteAverage: number
     voteCount: number
     mgProgress?: number
+    mangaUpdatesID?: number | string
   },
-  remarks?: string
+  remarks?: string,
+  muID?: string
 ) => {
-  const muID = await checkdata(String(id))
   const data = {
     id,
     ...mangaDetails,
-    mangaUpdatesID: muID,
     mangaProgress: mangaDetails.mgProgress || 1,
     remarks: remarks || "",
     readStatus: selectedStatus,
+  }
+
+  if (muID !== undefined) {
+    data.mangaUpdatesID = muID
   }
 
   await updateMediaDetails(userId, "manga", id, data)

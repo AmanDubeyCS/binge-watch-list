@@ -1,8 +1,9 @@
-import { configOMDB, configTMDB } from "@/apiConfig"
+import { configTMDB } from "@/apiConfig"
 import { ContentDetails } from "@/components/common/ContentDetails"
-import { ContentSidebar } from "@/components/common/ContentSidebar"
 import NavLinks from "@/components/common/NavLinks"
+import VideoList from "@/components/common/VideoList"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
+import { getIMDBData } from "@/util/fetchIMDBdata"
 import React, { ReactElement } from "react"
 
 const links = [
@@ -43,17 +44,17 @@ export default async function layout({
   try {
     const tvInfo = await fetchFromTMDB(configTMDB.getSingleTv({ tvID }))
     const imdbId = tvInfo.external_ids.imdb_id
+    const response = await fetchFromTMDB(configTMDB.getTvVideos(tvID))
 
     if (!imdbId) {
       throw new Error("IMDB ID not found")
     }
+    const imdbResponse = await getIMDBData(imdbId, tvInfo.first_air_date)
 
-    const imdbResponse = await fetch(configOMDB.getOmdbData(imdbId))
-    if (!imdbResponse.ok) {
-      throw new Error(`OMDB API error: ${imdbResponse.statusText}`)
+    if (!imdbResponse) {
+      throw new Error(`OMDB API error:`)
     }
 
-    const imdbData = await imdbResponse.json()
     if (!tvInfo) {
       throw new Error("No data received")
     }
@@ -62,7 +63,7 @@ export default async function layout({
       <section>
         <ContentDetails
           backdropPoster={`https://image.tmdb.org/t/p/w1280${tvInfo.backdrop_path}`}
-          poster={`https://image.tmdb.org/t/p/w500${tvInfo.poster_path}`}
+          poster={`https://image.tmdb.org/t/p/w300${tvInfo.poster_path}`}
           title={tvInfo.name}
           date={tvInfo.first_air_date}
           genres={tvInfo.genres.map((genres: { name: string }) => genres.name)}
@@ -72,20 +73,41 @@ export default async function layout({
           production={tvInfo.production_companies.map(
             (prod: { name: string }) => prod.name
           )}
-          imdbData={imdbData}
+          imdbData={imdbResponse}
+          type={tvInfo.type}
+          seasons={tvInfo.number_of_seasons}
+          episodes={tvInfo.number_of_episodes}
+          watchProvider={tvInfo["watch/providers"].results}
+          imdbRating={
+            imdbResponse.imdbRating || imdbResponse.ratings["imdb"].rating
+          }
+          imdbVotes={
+            imdbResponse.imdbVotes || imdbResponse.ratings["imdb"].votes
+          }
         />
+        <div className="mx-auto max-w-[1600px]">
+          <VideoList videos={response.results} />
+        </div>
 
         <div
           style={{
             backgroundImage:
               "linear-gradient(to right, rgba(255, 255, 255, 0.9) 0%, rgba(240, 240, 240, 0.9) 100%)",
           }}
-          className=""
+          className="pb-14"
         >
-          <div className="mx-auto flex max-w-[1600px] gap-4 p-10">
-            <ContentSidebar
+          <div className="mx-auto flex max-w-[1600px] flex-col gap-4 p-4 lg:p-10">
+            <div className="flex w-full flex-col gap-4">
+              <div className="">
+                <NavLinks id={tvID} links={links} />
+              </div>
+              <div className="rounded-lg bg-white p-4 shadow-md">
+                {children}
+              </div>
+            </div>
+            {/* <ContentSidebar
               rating={tvInfo.vote_average}
-              imdbRatings={imdbData}
+              imdbRatings={imdbResponse}
               voteCount={tvInfo.vote_count}
               popularity={tvInfo.popularity}
               type={tvInfo.type}
@@ -95,15 +117,7 @@ export default async function layout({
               network={tvInfo.networks}
               externalIds={tvInfo.external_ids}
               watchProvider={tvInfo["watch/providers"].results}
-            />
-            <div className="flex w-full max-w-[1290px] flex-col gap-4">
-              <div className="">
-                <NavLinks id={tvID} links={links} />
-              </div>
-              <div className="rounded-lg bg-white p-4 shadow-md">
-                {children}
-              </div>
-            </div>
+            /> */}
           </div>
         </div>
       </section>

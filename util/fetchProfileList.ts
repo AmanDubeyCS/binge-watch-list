@@ -30,6 +30,8 @@ export interface WatchListData {
   animeProgress: number
   episodes: number
   mangaProgress: number
+  mangaUpdatesID: number | string
+  // latest_chapter: number
 }
 
 export const fetchProfileList = async (

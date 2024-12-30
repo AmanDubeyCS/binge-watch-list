@@ -18,6 +18,8 @@ import {
   handleTvShowStatusChange,
 } from "@/util/contentStatusChange"
 import { DataStore, useDataStore } from "@/store/allDataStore"
+import Image from "next/image"
+import { checkdata } from "@/util/fetchFromMangaUpdates"
 
 const platformLogos = {
   pc: <Icon.windowsIcon className="size-4" />,
@@ -147,11 +149,15 @@ export default function Card({
         )
         break
       case "manga":
+        const muId = await checkdata(String(id))
+        const muID = typeof muId === "number" ? muId.toString() : undefined
         await handleMangaStatusChange(
           session.user.id,
           id,
           selectedStatus,
-          details
+          details,
+          undefined,
+          muID
         )
         break
       default:
@@ -178,108 +184,157 @@ export default function Card({
   }
 
   return (
-    <div
-      onClick={handleClick}
-      className={`flex w-[150px] h-[220px] md:h-[245px] md:w-[360px] cursor-pointer items-center justify-start overflow-hidden rounded-md bg-white md:p-2 shadow-md duration-300 hover:scale-105`}
-    >
-      <div className="group flex h-full gap-2">
-        <div
-          className={`relative w-[150px] md:w-[140px] shrink-0 overflow-hidden rounded-lg`}
-        >
-          {!pathname.includes("profile") ? (
-            <div className="opacity-0 group-hover:opacity-100">
+    <>
+      <div
+        onClick={handleClick}
+        className={`hidden h-[245px] w-[360px] cursor-pointer items-center justify-start overflow-hidden rounded-md bg-white shadow-md duration-300 hover:scale-105 md:p-2 lg:flex`}
+      >
+        <div className="group flex h-full gap-2">
+          <div
+            className={`relative w-[140px] shrink-0 overflow-hidden rounded-lg`}
+          >
+            {!pathname.includes("profile") ? (
+              <div className="opacity-0 group-hover:opacity-100">
+                <WatchlistRibbon
+                  onStatusChange={handleStatusChange}
+                  currentStatus={watchStatus}
+                  statuses={status}
+                />
+              </div>
+            ) : (
               <WatchlistRibbon
                 onStatusChange={handleStatusChange}
                 currentStatus={watchStatus}
                 statuses={status}
+                onRemoveData={handleRemoveData}
               />
-            </div>
-          ) : (
-            <WatchlistRibbon
-              onStatusChange={handleStatusChange}
-              currentStatus={watchStatus}
-              statuses={status}
-              onRemoveData={handleRemoveData}
+            )}
+            <ImageLoader
+              src={coverImage}
+              alt={name}
+              fallback={
+                <div
+                  className={`flex h-auto w-[140px] items-center justify-center bg-white text-center text-black`}
+                >
+                  <p>Image not available</p>
+                </div>
+              }
             />
-          )}
-          <ImageLoader
-            src={coverImage}
-            alt={name}
-            fallback={
-              <div
-                className={`flex h-auto w-[140px] items-center justify-center bg-white text-center text-black`}
-              >
-                <p>Image not available</p>
+          </div>
+          <div className="flex-1">
+            {tag && mediaType !== "game" && (
+              <div className="mb-2 w-fit rounded-lg border border-blue-700 px-2 py-1 text-sm font-medium uppercase text-black">
+                {tag}
               </div>
-            }
-          />
-        </div>
-        <div className="flex-1 hidden md:block">
-          {tag && mediaType !== "game" && (
-            <div className="mb-2 w-fit rounded-lg border border-blue-700 px-2 py-1 text-sm font-medium uppercase text-black">
-              {tag}
-            </div>
-          )}
-          {mediaType === "game" && (
-            <div className="mb-2 flex w-fit gap-2 rounded-lg border border-blue-700 px-2 py-1 text-sm font-medium uppercase text-black">
-              {platforms?.map(
-                (item: { platform: { id: number; slug: string } }) => (
-                  <div key={item.platform.id} className="platform-icon">
-                    {
-                      platformLogos[
-                        item.platform.slug as keyof typeof platformLogos
-                      ]
-                    }
-                  </div>
-                )
+            )}
+            {mediaType === "game" && (
+              <div className="mb-2 flex w-fit gap-2 rounded-lg border border-blue-700 px-2 py-1 text-sm font-medium uppercase text-black">
+                {platforms?.map(
+                  (item: { platform: { id: number; slug: string } }) => (
+                    <div key={item.platform.id} className="platform-icon">
+                      {
+                        platformLogos[
+                          item.platform.slug as keyof typeof platformLogos
+                        ]
+                      }
+                    </div>
+                  )
+                )}
+              </div>
+            )}
+            <h3 className="mb-2 line-clamp-2 text-wrap text-base font-semibold text-gray-800">
+              {name}
+            </h3>
+            <div className="mb-2 flex items-center">
+              <Star className="mr-1 size-5 fill-current text-yellow-500" />
+              <span className="mr-2 text-lg font-semibold text-gray-800">
+                {voteAverage > 0 ? voteAverage.toFixed(1) : "N/A"}
+              </span>
+              {mediaType !== "manga" && (
+                <span className="text-sm text-gray-600">
+                  ({voteCount > 0 ? formatNumber(voteCount) : "N/A"} votes)
+                </span>
               )}
             </div>
-          )}
-          <h3 className="mb-2 line-clamp-2 text-wrap text-base font-semibold text-gray-800">
-            {name}
-          </h3>
-          <div className="mb-2 flex items-center">
-            <Star className="mr-1 size-5 fill-current text-yellow-500" />
-            <span className="mr-2 text-lg font-semibold text-gray-800">
-              {voteAverage > 0 ? voteAverage.toFixed(1) : "N/A"}
-            </span>
-            {mediaType !== "manga" && (
-              <span className="text-sm text-gray-600">
-                ({voteCount > 0 ? formatNumber(voteCount) : "N/A"} votes)
+            <div className="mb-3 flex items-center">
+              <span className="mr-2 text-sm font-medium text-gray-700">
+                {mediaType === "manga"
+                  ? "Follows:"
+                  : mediaType === "anime"
+                    ? "Ranking:"
+                    : "Popularity:"}
               </span>
-            )}
-          </div>
-          <div className="mb-3 flex items-center">
-            <span className="mr-2 text-sm font-medium text-gray-700">
-              {mediaType === "manga"
-                ? "Follows:"
-                : mediaType === "anime"
-                  ? "Ranking:"
-                  : "Popularity:"}
-            </span>
-            <span className="text-sm font-semibold text-gray-800">
-              #{Math.round(numbers) || "N/A"}
-            </span>
-          </div>
-          <div className="mb-2 flex flex-wrap gap-1.5">
-            {genre.slice(0, 3).map((genreId: any) => (
-              <div
-                key={genreId}
-                className={cn(
-                  "rounded-lg border bg-gray-100 p-1 text-xs text-black duration-300 hover:scale-110 hover:border-gray-500"
-                )}
-              >
-                {genreId || "Unknown"}
-              </div>
-            ))}
-            {genre.length > 3 && (
-              <p className="rounded-lg border bg-gray-100 p-1 text-xs text-black duration-300 hover:scale-110 hover:border-gray-500">
-                +{genre.length - 3}
-              </p>
-            )}
+              <span className="text-sm font-semibold text-gray-800">
+                #{Math.round(numbers) || "N/A"}
+              </span>
+            </div>
+            <div className="mb-2 flex flex-wrap gap-1.5">
+              {genre.slice(0, 3).map((genreId: any) => (
+                <div
+                  key={genreId}
+                  className={cn(
+                    "rounded-lg border bg-gray-100 p-1 text-xs text-black duration-300 hover:scale-110 hover:border-gray-500"
+                  )}
+                >
+                  {genreId || "Unknown"}
+                </div>
+              ))}
+              {genre.length > 3 && (
+                <p className="rounded-lg border bg-gray-100 p-1 text-xs text-black duration-300 hover:scale-110 hover:border-gray-500">
+                  +{genre.length - 3}
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+      <div
+        onClick={handleClick}
+        className={cn(
+          "mx-auto block w-[165px] max-w-sm overflow-hidden rounded-xl lg:hidden",
+          (pathname.includes("/discover") ||
+            pathname.includes("/search") ||
+            pathname.includes("/profile")) &&
+            "w-full"
+        )}
+      >
+        <div className={`relative shrink-0 overflow-hidden rounded-lg`}>
+          <WatchlistRibbon
+            onStatusChange={handleStatusChange}
+            currentStatus={watchStatus}
+            statuses={status}
+          />
+
+          <Image
+            src={coverImage}
+            alt={name}
+            width={200}
+            height={200}
+            className={cn(
+              "h-[240px] w-[165px] rounded-xl object-cover",
+              (pathname.includes("/discover") ||
+                pathname.includes("/search") ||
+                pathname.includes("/profile")) &&
+                "aspect-[2/3] size-full"
+            )}
+          />
+        </div>
+        <div className="py-4">
+          <h2 className="mb-2 line-clamp-2 h-[48px] text-wrap text-base font-semibold">
+            {name}
+          </h2>
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-gray-500">{tag}</span>
+            <div className="flex items-center">
+              <Star className="mr-1 size-4 text-yellow-400" />
+              <span className="text-sm font-semibold">
+                {voteAverage > 0 ? voteAverage.toFixed(1) : "N/A"}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   )
 }

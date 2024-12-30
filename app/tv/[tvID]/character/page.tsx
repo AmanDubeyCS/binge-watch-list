@@ -18,6 +18,9 @@ interface Actor {
   character: string
   credit_id: string
   order: number
+  roles: {
+    character: string
+  }[]
 }
 
 export default async function page({ params }: { params: { tvID: number } }) {
@@ -50,7 +53,7 @@ export default async function page({ params }: { params: { tvID: number } }) {
                 {character.name}
               </h2>
               <p className="mb-2 text-sm text-gray-500">
-                <span>As {character.character}</span>
+                <span>As {character.roles[0].character}</span>
               </p>
               <div className="flex items-center justify-between">
                 <span className="rounded-full bg-indigo-100 px-2 py-1 text-xs font-semibold text-indigo-600">

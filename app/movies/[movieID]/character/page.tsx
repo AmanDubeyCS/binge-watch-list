@@ -29,13 +29,13 @@ export default async function page({
   const data = await fetchFromTMDB(configTMDB.getSingleMovieCast(movieID))
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-2 py-4">
+    <div className="grid grid-cols-2 items-center justify-center gap-2 py-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
       {data &&
         data.cast.map((character: Actor) => (
           <Link
             key={character.id}
             href={`/person/${character.id}`}
-            className="w-56 cursor-pointer overflow-hidden rounded-xl bg-white shadow-md"
+            className="size-full cursor-pointer overflow-hidden rounded-xl bg-white shadow-md"
           >
             <div className="relative h-64">
               <Image

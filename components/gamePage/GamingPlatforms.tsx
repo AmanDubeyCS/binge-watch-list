@@ -34,7 +34,7 @@ export default function GamingPlatforms() {
   const [openDialog, setOpenDialog] = useState<number | null>(null)
 
   return (
-    <section className="px-4 py-8">
+    <section>
       <h2 className="mb-6 text-3xl font-bold">Gaming Platforms</h2>
       <div className="hide-scrollbar flex gap-6 overflow-x-scroll">
         {platformData.results.map((platform) =>

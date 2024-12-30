@@ -49,8 +49,8 @@ export default async function page({
     dropped: { label: "Dropped", icon: <ThumbsDown size={14} /> },
   }
   return (
-    <div className="container mx-auto px-4 py-8 text-black">
-      <div className="flex flex-wrap justify-center gap-6">
+    <div className="container mx-auto text-black">
+      <div className="flex flex-wrap justify-center gap-3">
         {data?.results?.map((movie: Movie) => (
           <TVShowCard
             key={movie.id}

@@ -1,7 +1,6 @@
 import { config } from "@/apiConfig"
 import { ContentDetails } from "@/components/common/ContentDetails"
 import NavLinks from "@/components/common/NavLinks"
-import { SidebarDetails } from "@/components/mangaPage/SidebarDetails"
 import { fetchFromMangaDex } from "@/util/fetchFromTMDB"
 import React, { ReactElement } from "react"
 
@@ -42,6 +41,39 @@ export default async function layout({
       (data: { type: string }) => data.type === "cover_art"
     )
 
+    const platformReadOrBuy = [
+      {
+        id: mangaInfo.attributes.links.raw,
+        name: "Official Raw",
+        url: `${mangaInfo.attributes.links.raw}`,
+      },
+      {
+        id: mangaInfo.attributes.links.engtl,
+        name: "Official Engilsh",
+        url: `${mangaInfo.attributes.links.engtl}`,
+      },
+      {
+        id: mangaInfo.attributes.links.amz,
+        name: "Amazon",
+        url: `${mangaInfo.attributes.links.amz}`,
+      },
+      {
+        id: mangaInfo.attributes.links.bw,
+        name: "Book Walker",
+        url: `https://bookwalker.jp/${mangaInfo.attributes.links.bw}`,
+      },
+      {
+        id: mangaInfo.attributes.links.cdj,
+        name: "CDJapan",
+        url: `${mangaInfo.attributes.links.cdj}`,
+      },
+      {
+        id: mangaInfo.attributes.links.ebj,
+        name: "eBookJapan",
+        url: `${mangaInfo.attributes.links.ebj}`,
+      },
+    ]
+
     return (
       <main>
         <ContentDetails
@@ -75,6 +107,7 @@ export default async function layout({
                 artist.attributes.name
             )}
           status={mangaInfo.attributes.status}
+          readProviders={platformReadOrBuy}
           type="manga"
         />
 
@@ -83,14 +116,10 @@ export default async function layout({
             backgroundImage:
               "linear-gradient(to right, rgba(255, 255, 255, 0.9) 0%, rgba(240, 240, 240, 0.9) 100%)",
           }}
-          className=""
+          className="pb-14"
         >
-          <div className="mx-auto flex max-w-[1600px] gap-4 p-10">
-            <SidebarDetails
-              mangaInfo={mangaInfo}
-              statistics={statistics.statistics[mangaId]}
-            />
-            <div className="flex w-full max-w-[1290px] flex-col gap-4">
+          <div className="mx-auto flex max-w-[1600px] gap-4 lg:p-10">
+            <div className="flex w-full flex-col gap-4">
               <div className="">
                 <NavLinks id={`${mangaID}/${slug}`} links={links} />
               </div>
@@ -105,7 +134,5 @@ export default async function layout({
   } catch (error) {
     console.error("Error fetching manga data:", error)
     return <div>Error fetching manga data.</div>
-    // console.error("Error fetching manga data:", error)
-    // return <div>Error fetching manga data.</div>
   }
 }

@@ -5,7 +5,8 @@ import React from "react"
 
 export default function BookmarkTag({ mangaID }: { mangaID: string }) {
   const { data } = useDataStore() as DataStore
-  const status = data.filter((data: {id: string}) => data.id === mangaID)[0]?.readStatus
+  const status = data.filter((data: { id: string }) => data.id === mangaID)[0]
+    ?.readStatus
   const bookStatuses = {
     reading: { label: "Reading", icon: <Eye size={20} /> },
     planning: { label: "Plan to Read", icon: <Clock size={14} /> },

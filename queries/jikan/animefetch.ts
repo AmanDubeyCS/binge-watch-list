@@ -2,11 +2,11 @@ import { BASE_URL_ANIME, config } from "@/apiConfig"
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 
-export const useAnimeSerch = (animeID: string) => {
+export const useAnimeSerch = (title: string) => {
   return useQuery({
-    queryKey: ["searchedAnime", animeID],
+    queryKey: ["searchedAnime", title],
     queryFn: async () => {
-      const response = await axios.get(config.getSearchedAnime(animeID))
+      const response = await axios.get(config.getSearchedAnime(title))
       return response.data.data
     },
   })

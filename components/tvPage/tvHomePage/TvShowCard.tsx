@@ -117,7 +117,7 @@ export default function TVShowCard({
   return (
     <div
       onClick={handleClick}
-      className={`shrink-0 flex h-[245px] w-[360px] cursor-pointer items-center justify-start overflow-hidden rounded-md bg-white p-2 shadow-md duration-300 hover:scale-105`}
+      className={`flex h-[245px] w-[360px] shrink-0 cursor-pointer items-center justify-start overflow-hidden rounded-md bg-white p-2 shadow-md duration-300 hover:scale-105`}
     >
       <div className="group flex h-full gap-2">
         <div

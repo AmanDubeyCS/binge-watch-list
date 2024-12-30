@@ -3,6 +3,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { useFetchGames } from "@/queries/RAWG/gameFetch"
 import { Game } from "@/app/games/page"
 import Card from "../common/Card"
+import { gameStatuses } from "../common/ListContent"
 
 export function ListOfGames() {
   const router = useRouter()
@@ -51,7 +52,7 @@ export function ListOfGames() {
   return (
     <div className="-z-10">
       {data && data.results && (
-        <div className="grid grid-cols-2 gap-3 p-6 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 p-2 sm:grid-cols-3 md:p-6 2xl:grid-cols-4">
           {data.results.map((game: Game) => (
             <Card
               key={game.id}
@@ -65,6 +66,7 @@ export function ListOfGames() {
               numbers={10}
               platforms={game.parent_platforms}
               mediaType="game"
+              status={gameStatuses}
               statusData={[]}
             />
           ))}
@@ -78,7 +80,7 @@ export function ListOfGames() {
         >
           Previous
         </button>
-        <div className="flex items-center justify-center space-x-2">
+        <div className="hidden items-center justify-center space-x-2 md:flex">
           {getPageNumbers().map((page, index) => (
             <button
               key={index}

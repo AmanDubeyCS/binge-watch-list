@@ -4,18 +4,18 @@ import { ProfileCard } from "./Card"
 import { cn } from "@/lib/utils"
 
 interface WatchListData {
-  id: number | string // Unique identifier for the anime
-  name: string // Title of the anime
-  coverImage: string // URL of the anime's cover image
-  genre: string[] // Array of genres associated with the anime
-  numbers: number // Some numerical value (e.g., episode count)
-  status: string // User's current status with the anime (e.g., "watching")
+  id: number | string
+  name: string
+  coverImage: string
+  genre: string[]
+  numbers: number
+  status: string
   watchStatus?: string
   readStatus?: string
   gameStatus?: string
-  tag: string // Additional tag or label (e.g., "Currently Airing")
-  voteAverage: number // Average user rating for the anime
-  voteCount: number // Total number of votes or ratings
+  tag: string
+  voteAverage: number
+  voteCount: number
   remarks: string
   progress: string
   episodeCount: number
@@ -32,6 +32,9 @@ interface WatchListData {
   animeProgress: number
   episodes: number
   mangaProgress: number
+  mangaUpdatesID: number | string
+  latest_chapter?: number
+  last_updated?: any
 }
 
 export default function ContentTab({
@@ -65,9 +68,9 @@ export default function ContentTab({
 
   return (
     <div>
-      <div className="mb-10 gap-6 flex flex-col md:flex-row justify-between">
+      <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row">
         <h2 className="text-2xl font-bold">{title}</h2>
-        <div className="flex gap-3 h-[35px] overflow-scroll hide-scrollbar">
+        <div className="hide-scrollbar flex h-[35px] gap-3 overflow-scroll">
           <span
             onClick={() => handleClick("All")}
             className={cn(
@@ -91,7 +94,7 @@ export default function ContentTab({
           ))}
         </div>
       </div>
-      <div className="grid grid-cols-3 md:grid-cols-4 gap-3 md:flex flex-wrap">
+      <div className="mx-auto grid w-fit grid-cols-2 gap-3 p-2 pb-20 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {filteredData.map((data) => (
           <ProfileCard
             key={data.id}
@@ -106,7 +109,7 @@ export default function ContentTab({
             voteAverage={data.vote_average || data.voteAverage}
             voteCount={data.vote_count || data.voteCount}
             genre={
-              Array.isArray(data.genres)
+              Array.isArray(data.genres) && mediaType !== "manga"
                 ? data.genres.map((genre: any) =>
                     typeof genre === "string" ? genre : genre.name
                   )
@@ -123,7 +126,9 @@ export default function ContentTab({
             platforms={data.platforms}
             animeprogress={data.animeProgress}
             episodes={data.episodes}
+            chapters={data.latest_chapter}
             mangaProgress={data.mangaProgress}
+            lastUpdated={data.last_updated?.as_string}
           />
         ))}
       </div>

@@ -35,7 +35,7 @@ export default async function MoviesPage() {
   }
 
   return (
-    <main className="mx-auto flex max-w-[1600px] flex-col gap-10 px-8 pb-10">
+    <main className="mx-auto flex max-w-[1600px] flex-col gap-10 px-4 pb-10 md:px-8">
       {trendingTv && (
         <ListCards
           tvData={trendingTv.results}

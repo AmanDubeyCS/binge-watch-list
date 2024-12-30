@@ -35,21 +35,23 @@ export function Overview({
           </div>
           <ul className="hide-scrollbar flex w-full gap-5 divide-y divide-gray-200 overflow-scroll p-3">
             {movieData &&
-              movieData.slice(0, 5).map((data: any) => (
-                <TVShowCard
-                  key={data.id}
-                  id={data.id}
-                  name={data.name}
-                  coverImage={data.coverImage}
-                  tag={data.tag}
-                  voteAverage={data.voteAverage}
-                  voteCount={data.voteCount}
-                  genre={data.genre}
-                  numbers={data.numbers}
-                  mediaType={data.collection}
-                  statusData={[]}
-                />
-              ))}
+              movieData
+                .slice(0, 5)
+                .map((data: any) => (
+                  <TVShowCard
+                    key={data.id}
+                    id={data.id}
+                    name={data.name}
+                    coverImage={data.coverImage}
+                    tag={data.tag}
+                    voteAverage={data.voteAverage}
+                    voteCount={data.voteCount}
+                    genre={data.genre}
+                    numbers={data.numbers}
+                    mediaType={data.collection}
+                    statusData={[]}
+                  />
+                ))}
             {movieData.length < 4 &&
               Array.from({ length: Math.round(5 - movieData.length) }).map(
                 (_, i) => (

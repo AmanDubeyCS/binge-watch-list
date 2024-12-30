@@ -79,7 +79,7 @@ export const WatchlistRibbon: React.FC<WatchlistRibbonProps> = ({
       <DropdownMenuContent
         onClick={(e) => e.stopPropagation()}
         align="start"
-        className="z-50 grid w-[340px] grid-cols-2 gap-2 bg-white p-2 text-black"
+        className="z-50 grid w-[165px] gap-2 bg-white p-2 text-black md:w-[340px] md:grid-cols-2"
       >
         {Object.entries(statuses).map(([key, { label, icon }]) => (
           <DropdownMenuItem

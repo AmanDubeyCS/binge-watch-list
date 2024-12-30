@@ -14,7 +14,7 @@ interface Achievement {
 export function GameAchievements({ gameId }: { gameId: number }) {
   const { data } = useGameAchivements(gameId)
   return (
-    <div className="container mx-auto rounded-md bg-white px-4 py-8 text-black">
+    <div className="rounded-md bg-white px-4 py-8 text-black">
       {data && data.results && (
         <>
           <h1 className="mb-6 flex items-center justify-center text-3xl font-bold">
@@ -22,7 +22,7 @@ export function GameAchievements({ gameId }: { gameId: number }) {
             Achievements
           </h1>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
             {data.results.map((achievement: Achievement) => (
               <div
                 key={achievement.id}

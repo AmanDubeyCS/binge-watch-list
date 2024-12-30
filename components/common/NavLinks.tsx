@@ -25,7 +25,7 @@ export default function NavLinks({
 
   return (
     <div className="w-full">
-      <ul className="flex w-full max-w-[1600px] flex-wrap border-b border-gray-200">
+      <ul className="hide-scrollbar mt-4 flex w-full max-w-[1600px] overflow-scroll border-b border-gray-200">
         {links.map((link) => (
           <li key={link.name} className="-mb-px mr-1">
             <Link
@@ -41,7 +41,7 @@ export default function NavLinks({
                   : "text-gray-500 hover:text-gray-700"
               }`}
             >
-              <span className="hidden md:inline">{link.name}</span>
+              <span className="inline">{link.name}</span>
             </Link>
           </li>
         ))}

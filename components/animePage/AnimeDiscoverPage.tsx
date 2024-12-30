@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import { ChevronDown, X } from "lucide-react"
+import { ChevronDown, CircleX, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useRouter, useSearchParams } from "next/navigation"
 import { ListOfAnimes } from "./ListOfAnimes"
@@ -61,7 +61,7 @@ const DropdownMultiSelect = ({
       <p className="py-2.5 text-[15px] font-semibold text-gray-600">{title}</p>
       <div
         onClick={() => setIsOpen((prev) => !prev)}
-        className="flex h-[38px] w-[170px] cursor-pointer items-center gap-2 rounded-md border bg-white px-4 py-3 capitalize shadow-sm"
+        className="flex h-[38px] w-[160px] cursor-pointer items-center gap-2 rounded-full border border-blue-300 bg-white px-4 py-3 capitalize shadow-sm lg:w-[170px]"
       >
         {Array.isArray(selectedItems) ? (
           selectedItems.length > 0 ? (
@@ -124,6 +124,7 @@ export function AnimeDiscoverPage({ animeGenres }: any) {
   const [status, setStatus] = useState("")
   const [releaseYear, setReleaseYear] = useState("")
   const [type, setType] = useState("")
+  const [showFilter, setShowFilter] = useState(false)
 
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -248,12 +249,26 @@ export function AnimeDiscoverPage({ animeGenres }: any) {
 
   return (
     <div className="mx-auto max-w-[1600px]">
+      <div
+        className={cn(
+          "w-fit bg-gray-300 p-4 lg:hidden",
+          !showFilter && "hidden"
+        )}
+        onClick={() => setShowFilter((prev) => !prev)}
+      >
+        Show filter
+      </div>
       <div>
-        <div className="p-6">
-          <div className="flex justify-center gap-4 rounded-md bg-[rgb(237,241,245)] p-5">
+        <div className={cn("p-2 lg:p-6", showFilter && "hidden lg:block")}>
+          <div className="flex justify-between px-8 py-4 lg:hidden">
+            <p>Filters</p>
+            <CircleX onClick={() => setShowFilter((prev) => !prev)} />
+          </div>
+          <div className="flex flex-wrap justify-center gap-4 rounded-md">
             <DropdownMultiSelect
               title="Genres"
               items={genresList}
+              placeholder="Any"
               selectedItems={genres.map(
                 (genre) =>
                   genresList.find((g: { mal_id: number }) => g.mal_id === genre)
@@ -267,6 +282,7 @@ export function AnimeDiscoverPage({ animeGenres }: any) {
             <DropdownMultiSelect
               title="demographics"
               items={demographicsList}
+              placeholder="Any"
               selectedItems={demographics.map(
                 (genre) =>
                   demographicsList.find(
@@ -281,6 +297,7 @@ export function AnimeDiscoverPage({ animeGenres }: any) {
             <DropdownMultiSelect
               title="Year"
               items={years}
+              placeholder="Any"
               selectedItems={years.find((o) => o.mal_id === releaseYear)?.name}
               onSelect={(item: string) => setReleaseYear(item)}
             />
@@ -288,12 +305,14 @@ export function AnimeDiscoverPage({ animeGenres }: any) {
             <DropdownMultiSelect
               title="Sort By"
               items={orderBy}
+              placeholder="Any"
               selectedItems={orderBy.find((o) => o.mal_id === sortBy)?.name}
               onSelect={(item: string) => setSortBy(item)}
             />
             <DropdownMultiSelect
               title="Format"
               items={format}
+              placeholder="Any"
               selectedItems={format.find((o) => o.mal_id === type)?.name}
               onSelect={(item: string) => setType(item)}
             />
@@ -301,6 +320,7 @@ export function AnimeDiscoverPage({ animeGenres }: any) {
             <DropdownMultiSelect
               title="Status"
               items={statusOptions}
+              placeholder="Any"
               selectedItems={
                 statusOptions.find((o) => o.mal_id === status)?.name
               }
@@ -310,19 +330,13 @@ export function AnimeDiscoverPage({ animeGenres }: any) {
             <DropdownMultiSelect
               title="Certification"
               items={certificationOptions}
+              placeholder="Any"
               selectedItems={
                 certificationOptions.find((o) => o.mal_id === certification)
                   ?.name
               }
               onSelect={(item: string) => setCertification(item)}
             />
-
-            <button
-              onClick={handleSearch}
-              className="mt-[42px] flex h-[40px] w-[200px] items-center justify-center rounded-md bg-blue-600 font-bold text-white"
-            >
-              Search
-            </button>
           </div>
 
           {hasActiveFilters && (
@@ -441,6 +455,14 @@ export function AnimeDiscoverPage({ animeGenres }: any) {
                 </button>
               </div>
             </div>
+          )}
+          {hasActiveFilters && (
+            <button
+              onClick={handleSearch}
+              className="mt-4 flex h-[40px] w-full items-center justify-center rounded-md bg-blue-600 font-bold text-white"
+            >
+              Search
+            </button>
           )}
         </div>
       </div>

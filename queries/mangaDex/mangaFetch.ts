@@ -95,8 +95,23 @@ export const useMangaFetch = ({ limit, offset, title }: Props) => {
           url: config.getMangaList({ limit, offset, title }),
         },
       })
-      const data = response.data.data
-      return data
+      const mangaData = response.data.data
+
+      const data = mangaData
+        .map((data: MangaItem) => `manga[]=${data.id}`)
+        .join("&")
+
+      const ratingsResponse = await axios.get(
+        `https://api.mangadex.org/statistics/manga?${data}`
+      )
+
+      const ratingsData = ratingsResponse.data.statistics
+
+      const mergedData = mangaData.map((manga: MangaItem) => ({
+        ...manga,
+        rating: ratingsData[manga.id] || {},
+      }))
+      return mergedData
     },
   })
 }

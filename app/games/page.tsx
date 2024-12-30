@@ -95,7 +95,7 @@ export default async function page() {
   const gamesList = await response.json()
 
   return (
-    <main className="mx-auto flex max-w-[1600px] flex-col gap-5 px-8 pb-10 text-black">
+    <main className="mx-auto flex max-w-[1600px] flex-col gap-5 px-4 pb-10 text-black md:px-8">
       <ListCards
         gameData={gamesList.results}
         title="Popular Games"

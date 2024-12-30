@@ -26,4 +26,5 @@ export interface ImdbData {
   Type: string
   totalSeasons: string
   Response: string
+  certification: string
 }

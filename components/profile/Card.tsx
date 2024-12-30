@@ -26,6 +26,7 @@ import {
   handleMovieStatusChange,
   handleTvShowStatusChange,
 } from "@/util/contentStatusChange"
+import { Dialog, DialogContent } from "../ui/dialog"
 
 interface TVShowCardProps {
   id: number | string
@@ -46,6 +47,8 @@ interface TVShowCardProps {
   platforms?: any
   animeprogress?: any
   mangaProgress?: any
+  chapters?: number
+  lastUpdated?: string
 }
 
 export function ProfileCard({
@@ -66,11 +69,13 @@ export function ProfileCard({
   platforms,
   animeprogress,
   mangaProgress,
+  chapters,
+  lastUpdated,
 }: TVShowCardProps) {
   const { data: session } = useSession()
   const [isEditing, setIsEditing] = useState(false)
   const [manProgress, setManProgress] = useState(mangaProgress)
-  const [remarks, setRemarks] = useState(remark)
+  const [remarks, setRemarks] = useState(remark || "")
   const [tvProgress, settvProgress] = useState(showProgress)
   const [aniProgress, setAniProgress] = useState(animeprogress)
   const [barProgress, setBarProgress] = useState(0)
@@ -95,32 +100,56 @@ export function ProfileCard({
           Number(id),
           status,
           details,
-          remarks,
+          remarks
         )
         break
       case "tv":
-        await handleTvShowStatusChange(session.user.id, Number(id), status, {
-          ...details,
-          tvProgress,
-        }, remarks)
+        await handleTvShowStatusChange(
+          session.user.id,
+          Number(id),
+          status,
+          {
+            ...details,
+            tvProgress,
+          },
+          remarks
+        )
         break
       case "anime":
-        await handleAnimeStatusChange(session.user.id, Number(id), status, {
-          ...details,
-          aniProgress,
-        }, remarks)
+        await handleAnimeStatusChange(
+          session.user.id,
+          Number(id),
+          status,
+          {
+            ...details,
+            aniProgress,
+          },
+          remarks
+        )
         break
       case "game":
-        await handleGameStatusChange(session.user.id, Number(id), status, {
-          ...details,
-          platforms,
-        }, remarks)
+        await handleGameStatusChange(
+          session.user.id,
+          Number(id),
+          status,
+          {
+            ...details,
+            platforms,
+          },
+          remarks
+        )
         break
       case "manga":
-        await handleMangaStatusChange(session.user.id, id, status, {
-          ...details,
-          mgProgress: manProgress,
-        }, remarks)
+        await handleMangaStatusChange(
+          session.user.id,
+          id,
+          status,
+          {
+            ...details,
+            mgProgress: manProgress,
+          },
+          remarks
+        )
         break
       default:
         console.error("Invalid media type")
@@ -168,6 +197,10 @@ export function ProfileCard({
       const progress = (aniProgress / episodes) * 100
       setBarProgress(progress)
       return
+    } else if (mediaType === "manga" && chapters) {
+      const progress = (manProgress / chapters) * 100
+      setBarProgress(progress)
+      return
     }
 
     if (!showProgress || !seasons) return
@@ -202,10 +235,18 @@ export function ProfileCard({
 
   useEffect(() => {
     setProgressData()
-  }, [tvProgress, aniProgress, setProgressData])
+  }, [tvProgress, aniProgress, manProgress, setProgressData])
+
+  const clearProgress = () => {
+    setManProgress(mangaProgress)
+    settvProgress(showProgress)
+    setAniProgress(animeprogress)
+    setRemarks(remark)
+    setIsEditing(false)
+  }
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-2 rounded-xl border p-2 shadow-sm lg:relative">
       <Card
         key={id}
         id={id}
@@ -234,17 +275,17 @@ export function ProfileCard({
         mediaType === "manga") && (
         <div className="mx-auto w-full max-w-md overflow-hidden rounded-xl bg-white shadow-md">
           <div className="p-1">
-            <div className="relative h-16 overflow-hidden rounded-lg bg-gray-200">
+            <div className="relative h-10 overflow-hidden rounded-lg bg-gray-200 lg:h-16">
               <div
                 className="absolute left-0 top-0 h-full bg-blue-500 bg-opacity-30 transition-all duration-300 ease-in-out"
                 style={{ width: `${barProgress}%` }}
               />
               <div className="absolute left-0 top-0 flex size-full items-center justify-between px-4">
-                <div className="z-10 text-xl font-bold text-gray-800">
+                <div className="z-10 text-base font-bold text-gray-800 lg:text-xl">
                   {mediaType === "tv"
                     ? tvProgress
                     : mediaType === "manga"
-                      ? `CH-${manProgress.toString().length < 2 ? `0${manProgress}` : manProgress}`
+                      ? `CH-${manProgress.toString().length < 2 ? `0${manProgress}` : manProgress}${chapters === undefined ? "" : `/${chapters}+`}`
                       : `E-${aniProgress?.toString().length < 2 ? `0${aniProgress}` : aniProgress}/${episodes}`}
                 </div>
                 <div className="flex items-center space-x-2">
@@ -271,7 +312,80 @@ export function ProfileCard({
             </div>
           </div>
           {isEditing && (
-            <div className="border-t bg-gray-50 p-4">
+            <Dialog open={isEditing} onOpenChange={() => clearProgress()}>
+              <DialogContent className="w-fit max-w-[1200px] bg-white text-black">
+                <div className="border-t bg-gray-50 p-4 lg:w-[360px]">
+                  <div className="space-y-4">
+                    <div className="flex space-x-4">
+                      {mediaType === "tv" && (
+                        <SeasonEpisodeCounter
+                          seasons={seasons}
+                          initialValue={String(tvProgress)}
+                          setProgress={(progress: string) =>
+                            settvProgress(progress)
+                          }
+                        />
+                      )}
+                      {mediaType === "anime" && (
+                        <AnimeEpisodesCounter
+                          progress={aniProgress}
+                          epiodes={episodes}
+                          setAniProgress={(data: number) =>
+                            setAniProgress(data)
+                          }
+                        />
+                      )}
+                      {mediaType === "manga" && (
+                        <div className="flex w-full flex-col justify-center gap-2">
+                          <label htmlFor="chapterInput">Enter Chpters</label>
+                          <input
+                            id="chapterInput"
+                            type="number"
+                            name=""
+                            value={manProgress}
+                            className="w-full border bg-white"
+                            onChange={(e) => setManProgress(e.target.value)}
+                          />
+                        </div>
+                      )}
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="remarks"
+                        className="text-md mb-1 block font-bold text-gray-700"
+                      >
+                        Remarks
+                      </label>
+                      <textarea
+                        id="remarks"
+                        value={remark}
+                        onChange={(e) => setRemarks(e.target.value)}
+                        className="w-full rounded-md border"
+                      />
+                    </div>
+                    <div className="flex justify-end space-x-2">
+                      {/* <button
+                        onClick={() => {
+                          setIsEditing(false), settvProgress(showProgress)
+                        }}
+                        className="rounded-lg bg-white px-3 py-2 font-bold shadow-md transition-all duration-200 hover:scale-105"
+                      >
+                        CANCEL
+                      </button> */}
+                      <button
+                        onClick={() => toggleEditMode()}
+                        className="rounded-lg bg-blue-400 px-5 py-2 font-bold text-white shadow-md transition-all duration-200 hover:scale-105"
+                      >
+                        SAVE
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+          )}
+          {/* {isEditing && (
+            <div className="absolute top-0 z-50 border-t bg-gray-50 p-4 lg:w-[360px]">
               <div className="space-y-4">
                 <div className="flex space-x-4">
                   {mediaType === "tv" && (
@@ -336,8 +450,14 @@ export function ProfileCard({
                 </div>
               </div>
             </div>
-          )}
+          )} */}
         </div>
+      )}
+      {mediaType === "manga" && lastUpdated && (
+        <p className="rounded-md bg-blue-100 px-2 text-sm">
+          Last chapter Updated:{" "}
+          {lastUpdated.match(/^[A-Za-z]+\s\d{1,2}[a-z]{2},\s\d{4}/)}
+        </p>
       )}
     </div>
 

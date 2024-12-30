@@ -26,7 +26,7 @@ export const ImageLoader: React.FC<ImageLoaderProps> = ({
       onError={handleError}
       width={300}
       height={300}
-      className="h-full min-h-[210px] object-cover"
+      className="h-full object-cover md:min-h-[210px]"
     />
   ) : (
     fallback || null

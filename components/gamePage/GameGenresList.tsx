@@ -4,8 +4,8 @@ import Link from "next/link"
 
 export function GameGenresList() {
   return (
-    <section className="py-12 text-black">
-      <div className="container mx-auto px-4">
+    <section className="py-12">
+      <div className="">
         <h2 className="mb-6 text-3xl font-bold">Popular Categories</h2>
         <div className="hide-scrollbar overflow-x-scroll">
           <div

@@ -38,6 +38,33 @@ export const genreMap = {
   10752: "War",
 }
 
+export const tvStatuses = {
+  watching: { label: "Watching", icon: <Eye size={14} /> },
+  planning: { label: "Plan to Watch", icon: <Clock size={14} /> },
+  completed: { label: "Completed", icon: <CircleCheckBig size={14} /> },
+  dropped: { label: "Dropped", icon: <ThumbsDown size={14} /> },
+}
+
+export const movieStatuses = {
+  completed: { label: "I've seen this", icon: <CircleCheckBig size={14} /> },
+  planning: { label: "Plan to Watch", icon: <Clock size={14} /> },
+  dropped: { label: "Dropped", icon: <ThumbsDown size={14} /> },
+}
+
+export const bookStatuses = {
+  reading: { label: "Reading", icon: <Eye size={14} /> },
+  planning: { label: "Plan to Read", icon: <Clock size={14} /> },
+  completed: { label: "Completed", icon: <CircleCheckBig size={14} /> },
+  dropped: { label: "Dropped", icon: <ThumbsDown size={14} /> },
+}
+
+export const gameStatuses = {
+  playing: { label: "Playing", icon: <Gamepad2 size={14} /> },
+  planning: { label: "Want to play", icon: <Clock size={14} /> },
+  completed: { label: "Completed", icon: <CircleCheckBig size={14} /> },
+  dropped: { label: "Dropped", icon: <ThumbsDown size={14} /> },
+}
+
 export function ListCards({
   tvData,
   movieData,
@@ -65,36 +92,9 @@ export function ListCards({
       index === self.findIndex((t) => t.mal_id === item.mal_id)
   )
 
-  const tvStatuses = {
-    watching: { label: "Watching", icon: <Eye size={14} /> },
-    planning: { label: "Plan to Watch", icon: <Clock size={14} /> },
-    completed: { label: "Completed", icon: <CircleCheckBig size={14} /> },
-    dropped: { label: "Dropped", icon: <ThumbsDown size={14} /> },
-  }
-
-  const movieStatuses = {
-    completed: { label: "I've seen this", icon: <CircleCheckBig size={14} /> },
-    planning: { label: "Plan to Watch", icon: <Clock size={14} /> },
-    dropped: { label: "Dropped", icon: <ThumbsDown size={14} /> },
-  }
-
-  const bookStatuses = {
-    reading: { label: "Reading", icon: <Eye size={14} /> },
-    planning: { label: "Plan to Read", icon: <Clock size={14} /> },
-    completed: { label: "Completed", icon: <CircleCheckBig size={14} /> },
-    dropped: { label: "Dropped", icon: <ThumbsDown size={14} /> },
-  }
-
-  const gameStatuses = {
-    playing: { label: "Playing", icon: <Gamepad2 size={14} /> },
-    planning: { label: "Want to play", icon: <Clock size={14} /> },
-    completed: { label: "Completed", icon: <CircleCheckBig size={14} /> },
-    dropped: { label: "Dropped", icon: <ThumbsDown size={14} /> },
-  }
-
   return (
     <section>
-      <h2 className="mb-4 flex items-center text-2xl font-semibold text-gray-900">
+      <h2 className="mb-4 flex items-center text-2xl font-semibold">
         {/* <Tv className="mr-2" /> */}
         {titleIcon}
         {title}
@@ -169,7 +169,7 @@ export function ListCards({
                 id={anime.mal_id}
                 name={anime.title_english || anime.title}
                 coverImage={anime.images.webp.image_url}
-                tag={anime.status}
+                tag={anime.type}
                 voteAverage={anime.score}
                 voteCount={anime.scored_by}
                 genre={anime.genres.map((genres) => genres.name)}
@@ -203,7 +203,7 @@ export function ListCards({
                     manga.attributes?.title.ja ||
                     manga.attributes?.title["ja-ro"]
                   }
-                  coverImage={`https://uploads.mangadex.org/covers/${manga.id}/${image[0].attributes.fileName}.256.jpg`}
+                  coverImage={`https://mangadex.org/covers/${manga.id}/${image[0].attributes.fileName}.256.jpg`}
                   tag={manga.attributes.status}
                   voteAverage={manga.rating.rating.average}
                   voteCount={0}

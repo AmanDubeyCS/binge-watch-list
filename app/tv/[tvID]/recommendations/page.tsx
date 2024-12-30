@@ -47,27 +47,25 @@ export default async function page({ params }: { params: { tvID: number } }) {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 text-black">
-      <div className="flex flex-wrap justify-center gap-6">
-        {data?.results?.map((tv: TvShow) => (
-          <Card
-            key={tv.id}
-            id={tv.id}
-            name={tv.name}
-            coverImage={`https://image.tmdb.org/t/p/w300/${tv.poster_path}.webp`}
-            tag={tv.first_air_date}
-            voteAverage={tv.vote_average}
-            voteCount={tv.vote_count}
-            genre={tv.genre_ids.map(
-              (genres) => genreMap[genres as keyof typeof genreMap]
-            )}
-            numbers={tv.popularity}
-            mediaType="tv"
-            status={tvStatuses}
-            statusData={[]}
-          />
-        ))}
-      </div>
+    <div className="flex flex-wrap justify-center gap-6">
+      {data?.results?.map((tv: TvShow) => (
+        <Card
+          key={tv.id}
+          id={tv.id}
+          name={tv.name}
+          coverImage={`https://image.tmdb.org/t/p/w300/${tv.poster_path}.webp`}
+          tag={tv.first_air_date}
+          voteAverage={tv.vote_average}
+          voteCount={tv.vote_count}
+          genre={tv.genre_ids.map(
+            (genres) => genreMap[genres as keyof typeof genreMap]
+          )}
+          numbers={tv.popularity}
+          mediaType="tv"
+          status={tvStatuses}
+          statusData={[]}
+        />
+      ))}
     </div>
   )
 }

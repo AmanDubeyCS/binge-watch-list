@@ -1,15 +1,6 @@
-import { cn } from "@/lib/utils"
 import { ImdbData } from "@/types/ImdbType"
 import { formatNumber } from "@/util/formatNumber"
-import {
-  Film,
-  Info,
-  Tag,
-  Tv,
-  CircleDollarSign,
-  Hourglass,
-  Languages,
-} from "lucide-react"
+
 import React from "react"
 
 const tmdbLanguageMap = {
@@ -226,31 +217,31 @@ export function ContentSidebar({
     return `${hours}h ${remainingMinutes}min`
   }
   return (
-    <div className="w-full max-w-[310px] shrink-0 space-y-6 text-black">
-      <section className="rounded-lg bg-white p-6 shadow-md">
+    <div className="w-full max-w-[310px] shrink-0 gap-4 space-y-6 text-black">
+      {/* <section className="rounded-lg bg-white p-6 shadow-md">
         <h2 className="mb-4 text-2xl font-bold">Ratings</h2>
 
-        <div className="grid grid-cols-2 gap-2">
+        <div className="flex gap-2 shrink-0">
           {ratings.map((rating, index) => {
             if (rating.rating !== "N/A") {
               return (
                 <div
                   key={index}
                   className={cn(
-                    "flex min-w-[120px] flex-col items-center gap-1 rounded-md border p-3",
+                    "flex  items-center gap-1 rounded-md border p-3",
                     rating.bgColor
                   )}
                 >
-                  <div className="flex flex-col items-center gap-2">
+                  <div className="flex items-center gap-2">
                     <img
                       src={rating.logo}
                       alt=""
                       style={{
                         width: "full",
-                        height: "30px",
+                        height: "20px",
                       }}
                     />
-                    <div className="text-[25px] font-bold">
+                    <div className="text-[15px] font-bold">
                       {rating.rating}
                       <span className="text-base font-bold">
                         {rating.name.includes("DB")
@@ -262,15 +253,15 @@ export function ContentSidebar({
                       </span>
                     </div>
                   </div>
-                  <div className="text-xs text-zinc-500">{rating.votes}</div>
+                  <div className="text-xs text-zinc-500">({rating.votes})</div>
                 </div>
               )
             }
           })}
         </div>
-      </section>
+      </section> */}
 
-      <section className="rounded-lg bg-white p-6 shadow-md">
+      {/* <section className="rounded-lg bg-white p-6 shadow-md w-[310px] shrink-0">
         <h2 className="mb-4 text-2xl font-bold">More Info</h2>
         <p className="flex items-center text-gray-700">
           <Tv className="mr-2 size-4 text-blue-500" />
@@ -327,9 +318,9 @@ export function ContentSidebar({
             </span>
           </p>
         )}
-      </section>
+      </section> */}
 
-      <section className="rounded-lg bg-white p-6 shadow-md">
+      <section className="w-[310px] shrink-0 rounded-lg bg-white p-6 shadow-md">
         <h2 className="mb-4 text-2xl font-bold">External Links</h2>
         <ul className="flex flex-wrap gap-4">
           <a
@@ -376,7 +367,7 @@ export function ContentSidebar({
       </section>
 
       {watchProvider["IN"]?.flatrate?.length ? (
-        <section className="rounded-lg bg-white p-6 shadow-md">
+        <section className="w-[310px] shrink-0 rounded-lg bg-white p-6 shadow-md">
           <h2 className="mb-4 text-2xl font-bold">Streaming Platforms</h2>
           <ul className="flex gap-4">
             {watchProvider["IN"]?.flatrate?.map((provider) => (
