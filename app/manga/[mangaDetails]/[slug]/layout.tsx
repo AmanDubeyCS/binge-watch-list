@@ -78,8 +78,8 @@ export default async function layout({
       <main>
         <ContentDetails
           id={mangaID}
-          backdropPoster={`https://mangadex.org/covers/${mangaInfo.id}/${image[0]?.attributes?.fileName}`}
-          poster={`https://mangadex.org/covers/${mangaInfo.id}/${image[0]?.attributes?.fileName}`}
+          backdropPoster={`/api/mangaImage/${mangaID}/${image[0].attributes.fileName}`}
+          poster={`/api/mangaImage/${mangaID}/${image[0].attributes.fileName}`}
           title={mangaInfo.attributes.title.en}
           date={mangaInfo.attributes.year}
           genres={mangaInfo.attributes.tags

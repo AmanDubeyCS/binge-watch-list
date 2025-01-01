@@ -7,7 +7,7 @@ export async function GET(
   const { mangaId, imageId } = params
 
   // Construct the Mangadex URL
-  const imageUrl = `https://mangadex.org/covers/${mangaId}/${imageId}.256.jpg `
+  const imageUrl = `https://mangadex.org/covers/${mangaId}/${imageId}`
 
   try {
     const response = await fetch(imageUrl)
