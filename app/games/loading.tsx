@@ -1,6 +1,7 @@
-import { Skeleton } from "@/components/ui/skeleton"
+import { Skeleton } from '@/components/ui/skeleton'
+import React from 'react'
 
-const Loading = () => {
+export default function loading() {
   return (
     <>
     <section className="mx-auto flex flex-col max-w-[1600px] px-8 pb-10">
@@ -99,5 +100,3 @@ const Loading = () => {
     </>
   )
 }
-
-export default Loading

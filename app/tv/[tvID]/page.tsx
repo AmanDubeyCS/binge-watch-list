@@ -13,51 +13,56 @@ export default async function SingleTvPage({
   const tvID = params.tvID
   try {
     const tvInfo: Show = await fetchFromTMDB(configTMDB.getSingleTv({ tvID }))
+    if (!tvInfo) {
+      return <div>loading</div>
+    }
     return (
       <div className="min-h-screen">
         <div className="mx-auto">
           <div className="space-y-8">
-            <section>
-              <h2 className="mb-4 text-2xl font-semibold">Last Episode</h2>
-              <div className="flex flex-col overflow-hidden rounded-lg bg-white shadow-md sm:flex-row">
-                <Image
-                  src={`https://image.tmdb.org/t/p/w500${tvInfo.last_episode_to_air.still_path}`}
-                  alt="Last Episode Still"
-                  width={500}
-                  height={281}
-                  className="h-auto object-cover sm:w-[150px]"
-                />
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold">
-                    {tvInfo.last_episode_to_air.name}
-                  </h3>
-                  <p className="text-gray-600">
-                    Season {tvInfo.last_episode_to_air.season_number}, Episode{" "}
-                    {tvInfo.last_episode_to_air.episode_number} (
-                    {tvInfo.last_episode_to_air.episode_type})
-                  </p>
-                  <p className="my-2 hidden md:flex">
-                    {tvInfo.last_episode_to_air.overview}
-                  </p>
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <Calendar className="size-4" />
-                    <span>Aired: {tvInfo.last_episode_to_air.air_date}</span>
-                  </div>
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <Clock className="size-4" />
-                    <span>
-                      Runtime: {tvInfo.last_episode_to_air.runtime} minutes
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <Star className="size-4 text-yellow-400" />
-                    <span>
-                      Rating: {tvInfo.last_episode_to_air.vote_average}/10
-                    </span>
+            {tvInfo.last_episode_to_air && (
+              <section>
+                <h2 className="mb-4 text-2xl font-semibold">Last Episode</h2>
+                <div className="flex flex-col overflow-hidden rounded-lg bg-white shadow-md sm:flex-row">
+                  <Image
+                    src={`https://image.tmdb.org/t/p/w500${tvInfo.last_episode_to_air.still_path}`}
+                    alt="Last Episode Still"
+                    width={500}
+                    height={281}
+                    className="h-auto object-cover sm:w-[150px]"
+                  />
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold">
+                      {tvInfo.last_episode_to_air.name}
+                    </h3>
+                    <p className="text-gray-600">
+                      Season {tvInfo.last_episode_to_air.season_number}, Episode{" "}
+                      {tvInfo.last_episode_to_air.episode_number} (
+                      {tvInfo.last_episode_to_air.episode_type})
+                    </p>
+                    <p className="my-2 hidden md:flex">
+                      {tvInfo.last_episode_to_air.overview}
+                    </p>
+                    <div className="flex items-center space-x-2 text-sm text-gray-600">
+                      <Calendar className="size-4" />
+                      <span>Aired: {tvInfo.last_episode_to_air.air_date}</span>
+                    </div>
+                    <div className="flex items-center space-x-2 text-sm text-gray-600">
+                      <Clock className="size-4" />
+                      <span>
+                        Runtime: {tvInfo.last_episode_to_air.runtime} minutes
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-2 text-sm text-gray-600">
+                      <Star className="size-4 text-yellow-400" />
+                      <span>
+                        Rating: {tvInfo.last_episode_to_air.vote_average}/10
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </section>
+              </section>
+            )}
 
             <section>
               <h2 className="mb-4 text-2xl font-semibold">Seasons</h2>

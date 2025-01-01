@@ -47,16 +47,11 @@ export default async function Layout({
       configTMDB.getSingleMovie({ movieID })
     )
     const response = await fetchFromTMDB(configTMDB.getMovieVideos(movieID))
-    const imdbId = movieInfo.external_ids.imdb_id
+    const imdbId = movieInfo.external_ids?.imdb_id || null
+    let imdbResponse = null
 
-    if (!imdbId) {
-      throw new Error("IMDB ID not found")
-    }
-
-    const imdbResponse = await getIMDBData(imdbId, movieInfo.release_date)
-
-    if (!movieInfo) {
-      throw new Error("No data received")
+    if (imdbId) {
+      imdbResponse = await getIMDBData(imdbId, movieInfo.release_date)
     }
 
     const navLinks = links.filter((t) => {
@@ -66,7 +61,6 @@ export default async function Layout({
       return true
     })
 
-    // console.log(imdbResponse)
     return (
       <section>
         <ContentDetails
@@ -90,10 +84,10 @@ export default async function Layout({
           revenue={movieInfo.revenue}
           watchProvider={movieInfo["watch/providers"].results}
           imdbRating={
-            imdbResponse.imdbRating || imdbResponse.ratings["imdb"].rating
+            imdbResponse?.imdbRating || imdbResponse?.ratings["imdb"]?.rating
           }
           imdbVotes={
-            imdbResponse.imdbVotes || imdbResponse.ratings["imdb"].votes
+            imdbResponse?.imdbVotes || imdbResponse?.ratings["imdb"]?.votes
           }
         />
 

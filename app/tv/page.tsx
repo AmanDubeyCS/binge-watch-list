@@ -1,7 +1,7 @@
 import React from "react"
 
 import { configTMDB } from "@/apiConfig"
-import { TvProviders } from "@/components/tvPage/tvHomePage/TvProviders"
+// import { TvProviders } from "@/components/tvPage/tvHomePage/TvProviders"
 import { TvGenresList } from "@/components/tvPage/tvHomePage/TvGenresList"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
 import { Tv } from "lucide-react"
@@ -50,7 +50,7 @@ export default async function MoviesPage() {
           titleIcon={<Tv className="mr-2" />}
         />
       )}
-      {tvProviders && <TvProviders TvProviders={tvProviders.results} />}
+      {/* {tvProviders && <TvProviders TvProviders={tvProviders.results} />} */}
       {tvGenres && (
         <TvGenresList categorys={tvGenres.genres} genraImage={tvGenraList} />
       )}

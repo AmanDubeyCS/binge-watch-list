@@ -43,20 +43,13 @@ export default async function layout({
   const tvID = params.tvID
   try {
     const tvInfo = await fetchFromTMDB(configTMDB.getSingleTv({ tvID }))
-    const imdbId = tvInfo.external_ids.imdb_id
     const response = await fetchFromTMDB(configTMDB.getTvVideos(tvID))
 
-    if (!imdbId) {
-      throw new Error("IMDB ID not found")
-    }
-    const imdbResponse = await getIMDBData(imdbId, tvInfo.first_air_date)
+    const imdbId = tvInfo.external_ids?.imdb_id || null
+    let imdbResponse = null
 
-    if (!imdbResponse) {
-      throw new Error(`OMDB API error:`)
-    }
-
-    if (!tvInfo) {
-      throw new Error("No data received")
+    if (imdbId) {
+      imdbResponse = await getIMDBData(imdbId, tvInfo.first_air_date)
     }
 
     return (
@@ -79,10 +72,10 @@ export default async function layout({
           episodes={tvInfo.number_of_episodes}
           watchProvider={tvInfo["watch/providers"].results}
           imdbRating={
-            imdbResponse.imdbRating || imdbResponse.ratings["imdb"].rating
+            imdbResponse?.imdbRating || imdbResponse?.ratings["imdb"]?.rating
           }
           imdbVotes={
-            imdbResponse.imdbVotes || imdbResponse.ratings["imdb"].votes
+            imdbResponse?.imdbVotes || imdbResponse?.ratings["imdb"]?.votes
           }
         />
         <div className="mx-auto max-w-[1600px]">
@@ -123,7 +116,7 @@ export default async function layout({
       </section>
     )
   } catch (error) {
-    console.error("Error fetching movies data:", error)
+    console.error("Error fetching tv data:", error)
     return <div>Error: Failed to fetch movies data.</div>
   }
 }

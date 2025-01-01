@@ -203,7 +203,7 @@ export function ListCards({
                     manga.attributes?.title.ja ||
                     manga.attributes?.title["ja-ro"]
                   }
-                  coverImage={`https://mangadex.org/covers/${manga.id}/${image[0].attributes.fileName}.256.jpg`}
+                  coverImage={`/api/mangaImage/${manga.id}/${image[0].attributes.fileName}`}
                   tag={manga.attributes.status}
                   voteAverage={manga.rating.rating.average}
                   voteCount={0}

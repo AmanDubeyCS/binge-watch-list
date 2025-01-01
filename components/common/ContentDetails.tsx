@@ -350,7 +350,7 @@ export function ContentDetails({
                   Add to Watchlist
                 </button>
 
-                {watchProvider && watchProvider["IN"] && (
+                {/* {watchProvider && watchProvider["IN"] && (
                   <button className="flex h-fit w-[200px] items-center justify-start gap-2 rounded-lg bg-gray-800 p-1 pr-6">
                     <div className="min-w-[45px]">
                       <img
@@ -368,7 +368,7 @@ export function ContentDetails({
                       </span>
                     </div>
                   </button>
-                )}
+                )} */}
                 {readProviders &&
                   readProviders.map(
                     (platform: any) =>
@@ -597,7 +597,7 @@ export function ContentDetails({
                 Add to Watchlist
               </button>
 
-              {watchProvider && (
+              {/* {watchProvider && (
                 <button className="flex h-fit w-full items-center justify-center gap-2 rounded-lg bg-gray-800 p-1 pr-6">
                   <img
                     src={`https://image.tmdb.org/t/p/original${watchProvider["IN"]?.flatrate[0]?.logo_path}`}
@@ -613,7 +613,7 @@ export function ContentDetails({
                     </span>
                   </div>
                 </button>
-              )}
+              )} */}
               {readProviders &&
                 readProviders.map(
                   (platform: any) =>
