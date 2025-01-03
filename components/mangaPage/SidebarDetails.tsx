@@ -1,5 +1,4 @@
 import { Manga } from "@/types/manga/singleManga"
-import { BarChart2, Book, Film, Info, Languages, Star, Tag } from "lucide-react"
 import React from "react"
 import { Icon } from "../icons"
 import Link from "next/link"
@@ -160,7 +159,7 @@ export function SidebarDetails({
 
   return (
     <div className="w-[450px] space-y-6 text-black">
-      <section className="rounded-lg bg-white p-6 shadow-md">
+      {/* <section className="rounded-lg bg-white p-6 shadow-md">
         <h2 className="mb-4 text-2xl font-bold">Ratings</h2>
         <div className="mb-2 flex items-center">
           <Star className="mr-2 size-6 text-yellow-400" />
@@ -176,9 +175,9 @@ export function SidebarDetails({
             {statistics.follows}
           </p>
         </div>
-      </section>
+      </section> */}
 
-      <section className="rounded-lg bg-white p-6 shadow-md">
+      {/* <section className="rounded-lg bg-white p-6 shadow-md">
         <h2 className="mb-4 text-2xl font-bold">More Info</h2>
         <p className="flex items-center text-gray-700">
           <Book className="mr-2 size-4 text-blue-500" />
@@ -211,7 +210,7 @@ export function SidebarDetails({
             ]
           }
         </p>
-      </section>
+      </section> */}
 
       <section className="rounded-lg bg-white p-6 shadow-md">
         <h2 className="mb-4 text-2xl font-bold">Read or Buy</h2>
@@ -234,7 +233,7 @@ export function SidebarDetails({
         </ul>
       </section>
 
-      <section className="rounded-lg bg-white p-6 shadow-md">
+      {/* <section className="rounded-lg bg-white p-6 shadow-md">
         <h2 className="mb-4 text-2xl font-bold">External Links</h2>
         <ul className="flex flex-wrap gap-2">
           <Link
@@ -262,9 +261,9 @@ export function SidebarDetails({
               )
           )}
         </ul>
-      </section>
+      </section> */}
 
-      <section className="rounded-lg bg-white p-6 shadow-md">
+      {/* <section className="rounded-lg bg-white p-6 shadow-md">
         <h2 className="mb-4 text-2xl font-bold">Alternative Titles</h2>
         <div className="flex flex-col gap-1">
           {mangaInfo.attributes.altTitles.map((title, index: number) => (
@@ -280,7 +279,7 @@ export function SidebarDetails({
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
     </div>
   )
 }

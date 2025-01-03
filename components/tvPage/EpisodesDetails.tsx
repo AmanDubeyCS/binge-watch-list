@@ -1,3 +1,4 @@
+"use client"
 import { Calendar, ChevronDown, ChevronUp, Star } from "lucide-react"
 import React, { useState } from "react"
 import { EpisodesList } from "./EpisodesList"

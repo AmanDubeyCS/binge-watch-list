@@ -121,3 +121,17 @@ export const useSeasonEpisodes = (seriesId: number, seasonId: number) => {
     },
   })
 }
+
+export const useTvSearch = (query: string) => {
+  return useQuery({
+    queryKey: ["TvSearch", query],
+    queryFn: async () => {
+      const response = await axios.get("/api/proxy", {
+        params: {
+          url: configTMDB.searchTvShow(query),
+        },
+      })
+      return response.data.results
+    },
+  })
+}

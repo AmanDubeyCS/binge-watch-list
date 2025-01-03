@@ -22,14 +22,14 @@ export default function SideBarDetails({
         imdbData?.Ratings?.find(
           (r: { Source: string; Value: string }) =>
             r.Source === "Internet Movie Database"
-        )?.Value.slice(0, 3) || "N/A",
+        )?.Value.slice(0, 3) || "--/--",
     },
     {
       name: "MAL",
       logo: "https://upload.wikimedia.org/wikipedia/commons/9/9b/MyAnimeList_favicon.svg",
       votes: `${formatNumber(animeInfo.scored_by)} votes`,
       bgColor: `bg-green-100`,
-      rating: animeInfo.score ? animeInfo.score.toFixed(1) : "N/A",
+      rating: animeInfo.score ? animeInfo.score.toFixed(1) : "--/--",
     },
   ]
 
@@ -60,7 +60,7 @@ export default function SideBarDetails({
                   <div className="text-[25px] font-bold">
                     {rating.rating}
                     <span className="text-base font-bold">
-                      {rating.rating !== "N/A" && "/10"}
+                      {rating.rating !== "--/--" && "/10"}
                     </span>
                   </div>
                 </div>

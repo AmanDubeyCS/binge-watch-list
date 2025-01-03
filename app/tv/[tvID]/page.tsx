@@ -1,8 +1,9 @@
+import { configTMDB } from "@/apiConfig"
+import { Show } from "@/types/tv/singleTvType"
+import { fetchFromTMDB } from "@/util/fetchFromTMDB"
+import { Calendar, Clock, Star } from "lucide-react"
+import Image from "next/image"
 import React from "react"
-import { singleTvFetch } from "@/queries/TMDB/TV/tvFetch"
-
-import { TvInfoPage } from "@/components/tvPage/TvInfoPage"
-import { configOMDB } from "@/apiConfig"
 
 export default async function SingleTvPage({
   params,
@@ -11,27 +12,173 @@ export default async function SingleTvPage({
 }) {
   const tvID = params.tvID
   try {
-    const response = await singleTvFetch({ tvID })
-    const imdbId = response.external_ids.imdb_id
-
-    if (!imdbId) {
-      throw new Error("IMDB ID not found")
+    const tvInfo: Show = await fetchFromTMDB(configTMDB.getSingleTv({ tvID }))
+    if (!tvInfo) {
+      return <div>loading</div>
     }
+    return (
+      <div className="min-h-screen">
+        <div className="mx-auto">
+          <div className="space-y-8">
+            {tvInfo.last_episode_to_air && (
+              <section>
+                <h2 className="mb-4 text-2xl font-semibold">Last Episode</h2>
+                <div className="flex flex-col overflow-hidden rounded-lg bg-white shadow-md sm:flex-row">
+                  <Image
+                    src={`https://image.tmdb.org/t/p/w500${tvInfo.last_episode_to_air.still_path}`}
+                    alt="Last Episode Still"
+                    width={500}
+                    height={281}
+                    className="h-auto object-cover sm:w-[150px]"
+                  />
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold">
+                      {tvInfo.last_episode_to_air.name}
+                    </h3>
+                    <p className="text-gray-600">
+                      Season {tvInfo.last_episode_to_air.season_number}, Episode{" "}
+                      {tvInfo.last_episode_to_air.episode_number} (
+                      {tvInfo.last_episode_to_air.episode_type})
+                    </p>
+                    <p className="my-2 hidden md:flex">
+                      {tvInfo.last_episode_to_air.overview}
+                    </p>
+                    <div className="flex items-center space-x-2 text-sm text-gray-600">
+                      <Calendar className="size-4" />
+                      <span>Aired: {tvInfo.last_episode_to_air.air_date}</span>
+                    </div>
+                    <div className="flex items-center space-x-2 text-sm text-gray-600">
+                      <Clock className="size-4" />
+                      <span>
+                        Runtime: {tvInfo.last_episode_to_air.runtime} minutes
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-2 text-sm text-gray-600">
+                      <Star className="size-4 text-yellow-400" />
+                      <span>
+                        Rating: {tvInfo.last_episode_to_air.vote_average}/10
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            )}
 
-    const imdbResponse = await fetch(configOMDB.getOmdbData(imdbId))
-    if (!imdbResponse.ok) {
-      throw new Error(`OMDB API error: ${imdbResponse.statusText}`)
-    }
+            <section>
+              <h2 className="mb-4 text-2xl font-semibold">Seasons</h2>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                {tvInfo.seasons.map((season) => (
+                  <div
+                    key={season.id}
+                    className="rounded-lg bg-white shadow-md"
+                  >
+                    <Image
+                      src={`https://image.tmdb.org/t/p/w300${season.poster_path}`}
+                      alt={`Season ${season.name} Poster`}
+                      width={300}
+                      height={450}
+                      className="h-auto w-full rounded-lg"
+                    />
+                    <div className="p-4">
+                      <div className="flex justify-between gap-4">
+                        <h3 className="text-lg font-semibold">{season.name}</h3>
+                        <p> {season.vote_average}/10</p>
+                      </div>
+                      <div className="flex justify-between gap-2">
+                        <p className="text-gray-600">{season.air_date}</p>
+                        <p> {season.episode_count} Episodes</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
 
-    const imdbData = await imdbResponse.json()
+            <section className="flex gap-10">
+              <div>
+                <h2 className="mb-4 text-2xl font-semibold">Networks</h2>
+                <div className="flex flex-wrap gap-2">
+                  {tvInfo.networks.map((network) => (
+                    <div
+                      key={network.id}
+                      className="rounded-full px-2 py-1 text-sm text-blue-800"
+                    >
+                      {network.logo_path ? (
+                        <Image
+                          src={`https://image.tmdb.org/t/p/w300${network.logo_path}`}
+                          alt={`Season ${network.name} Poster`}
+                          width={300}
+                          height={450}
+                          className="h-auto w-[150px] object-cover"
+                        />
+                      ) : (
+                        <p>{network.name}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
 
-    if (!response) {
-      throw new Error("No data received")
-    }
+              <div>
+                <h2 className="mb-4 text-2xl font-semibold">
+                  Production Companies
+                </h2>
+                <div className="flex flex-wrap gap-2">
+                  {tvInfo.production_companies.map((company) => (
+                    <div
+                      key={company.id}
+                      className="rounded-full text-sm text-gray-800"
+                    >
+                      {company.logo_path ? (
+                        <Image
+                          src={`https://image.tmdb.org/t/p/w300${company.logo_path}`}
+                          alt={`Season ${company.name} Poster`}
+                          width={300}
+                          height={450}
+                          className="h-auto w-[150px] object-cover"
+                        />
+                      ) : (
+                        <p>{company.name}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
 
-    const tvData = response
-
-    return <TvInfoPage tvInfo={tvData} tvID={tvID} imdbData={imdbData} />
+            <section>
+              <h2 className="mb-4 text-2xl font-semibold">
+                Additional Information
+              </h2>
+              <div className="">
+                <div className="flex flex-col gap-2">
+                  <div className="flex gap-2">
+                    <p className="font-semibold">Status</p>
+                    <p>{tvInfo.status}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <p className="font-semibold">Original Language</p>
+                    <p>{tvInfo.original_language}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <p className="font-semibold">First Air Date</p>
+                    <p>{tvInfo.first_air_date}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <p className="font-semibold">Last Air Date</p>
+                    <p>{tvInfo.last_air_date || "N/A"}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <p className="font-semibold">Number of Seasons</p>
+                    <p>{tvInfo.number_of_seasons}</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    )
   } catch (error) {
     console.error("Error fetching movies data:", error)
     return <div>Error: Failed to fetch movies data.</div>

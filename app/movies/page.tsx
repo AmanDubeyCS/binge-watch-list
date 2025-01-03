@@ -1,11 +1,11 @@
 import React from "react"
 
-import { CurrentlyTrending } from "@/components/tvPage/tvHomePage/CurrentlyTrending"
 import { configTMDB } from "@/apiConfig"
-import { TvProviders } from "@/components/tvPage/tvHomePage/TvProviders"
+// import { TvProviders } from "@/components/tvPage/tvHomePage/TvProviders"
 import { TvGenresList } from "@/components/tvPage/tvHomePage/TvGenresList"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
 import { Tv } from "lucide-react"
+import { ListCards } from "@/components/common/ListContent"
 
 export default async function MoviesPage() {
   const [trendingMovies, popularMovies, movieProviders, movieGenres] =
@@ -39,22 +39,22 @@ export default async function MoviesPage() {
   }
 
   return (
-    <main className="mx-auto flex max-w-[1600px] flex-col gap-10 px-8 pb-10">
+    <main className="mx-auto flex max-w-[1600px] flex-col gap-10 px-4 pb-10 md:px-8">
       {trendingMovies && (
-        <CurrentlyTrending
+        <ListCards
           movieData={trendingMovies.results}
           title="Currently Trending"
           titleIcon={<Tv className="mr-2" />}
         />
       )}
       {popularMovies && (
-        <CurrentlyTrending
+        <ListCards
           movieData={popularMovies.results}
           title="Popular on Movie"
           titleIcon={<Tv className="mr-2" />}
         />
       )}
-      {movieProviders && <TvProviders TvProviders={movieProviders.results} />}
+      {/* {movieProviders && <TvProviders TvProviders={movieProviders.results} />} */}
       {movieGenres && (
         <TvGenresList
           categorys={movieGenres.genres}

@@ -1,10 +1,9 @@
 import { config, configRAWG, configTMDB } from "@/apiConfig"
-import { GameCard } from "@/components/gamePage/GameCard"
-import { CurrentlyTrending } from "@/components/tvPage/tvHomePage/CurrentlyTrending"
+import { ListCards } from "@/components/common/ListContent"
 import { fetchTopManhua } from "@/queries/mangaDex/mangaFetch"
 import { fetchFromJikan } from "@/util/fetchFromJikan"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
-import { BookOpen, Tv } from "lucide-react"
+import { BookOpen, Clapperboard, Gamepad2, Tv } from "lucide-react"
 import React from "react"
 
 export default async function page() {
@@ -16,16 +15,16 @@ export default async function page() {
   const topManhua = await fetchTopManhua()
 
   return (
-    <main className="mx-auto flex max-w-[1600px] flex-col gap-10 px-8 pb-10">
+    <main className="mx-auto flex max-w-[1600px] flex-col gap-10 p-2 pb-16 md:px-8">
       {popularMovies && (
-        <CurrentlyTrending
+        <ListCards
           movieData={popularMovies.results}
           title="Popular Movie"
-          titleIcon={<Tv className="mr-2" />}
+          titleIcon={<Clapperboard className="mr-2" />}
         />
       )}
       {PopularTV && (
-        <CurrentlyTrending
+        <ListCards
           tvData={PopularTV.results}
           title="Popular TV"
           titleIcon={<Tv className="mr-2" />}
@@ -33,37 +32,23 @@ export default async function page() {
       )}
 
       {trendingAnime?.data?.length > 0 && (
-        <CurrentlyTrending
+        <ListCards
           animeData={trendingAnime.data}
-          title="Currently Airing"
+          title="Airing Anime"
           titleIcon={<Tv className="mr-2" />}
         />
       )}
-      <div>
-        <h2 className="mb-6 text-3xl font-bold">Popular Games</h2>
-        <div className="hide-scrollbar w-full overflow-x-scroll whitespace-nowrap">
-          <div className="grid w-[3400px] grid-cols-10 gap-3 py-3 pr-5">
-            {gamesList &&
-              gamesList.results.map((game: any) => (
-                <GameCard
-                  key={game.id}
-                  id={game.id}
-                  title={game.name}
-                  image={game.background_image}
-                  rating={game.rating * 2}
-                  platforms={game.parent_platforms}
-                  release={game.released}
-                  genres={game.genres}
-                  tags={game.tags}
-                  grade={game.ratings}
-                />
-              ))}
-          </div>
-        </div>
-      </div>
+
+      {gamesList.results.length > 0 && (
+        <ListCards
+          gameData={gamesList.results}
+          title="Popular Games"
+          titleIcon={<Gamepad2 className="mr-2" />}
+        />
+      )}
 
       {topManhua && (
-        <CurrentlyTrending
+        <ListCards
           mangaData={topManhua}
           title="Top Manhua"
           titleIcon={<BookOpen className="mr-2" />}

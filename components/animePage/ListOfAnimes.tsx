@@ -3,8 +3,9 @@ import React from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useFetchAnime } from "@/queries/jikan/animefetch"
 import { AnimeData } from "@/types/anime/animeTypes"
-import TVShowCard from "../tvPage/tvHomePage/TvShowCard"
 import { DataStore, useDataStore } from "@/store/allDataStore"
+import Card from "../common/Card"
+import { tvStatuses } from "../common/ListContent"
 
 export function ListOfAnimes() {
   const router = useRouter()
@@ -50,19 +51,20 @@ export function ListOfAnimes() {
     <div>
       {data && data.data && (
         <>
-          <div className="grid gap-3 p-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 p-2 sm:grid-cols-3 md:p-6 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
             {data.data.map((anime: AnimeData) => (
-              <TVShowCard
+              <Card
                 key={anime.mal_id}
                 id={anime.mal_id}
                 name={anime.title_english || anime.title}
                 coverImage={anime.images.webp.image_url}
-                tag={anime.status}
+                tag={anime.type}
                 voteAverage={anime.score}
                 voteCount={anime.scored_by}
                 genre={anime.genres.map((genres) => genres.name)}
                 numbers={anime.rank}
                 mediaType="anime"
+                status={tvStatuses}
                 statusData={listData}
                 episodes={anime.episodes}
                 showStatus={anime.status}
@@ -77,7 +79,7 @@ export function ListOfAnimes() {
             >
               Previous
             </button>
-            <div className="flex items-center justify-center space-x-2">
+            <div className="hidden items-center justify-center space-x-2 md:flex">
               {getPageNumbers().map((page, index) => (
                 <button
                   key={index}

@@ -7,9 +7,7 @@ import ChipTabs from "../ChipTabs"
 import { Overview } from "../tvPage/Overview"
 import { CastDetails } from "./CastDetails"
 import { MovieCollection } from "./MovieCollection"
-import { Reviews } from "./Reviews"
 import { Recommendations } from "./Recommendations"
-import { Pictures } from "./Pictures"
 import { MovieDetails } from "@/types/movie/singleMovie"
 import { ImdbData } from "@/types/ImdbType"
 
@@ -44,12 +42,8 @@ export default function MovieInfoPage({
         ) : (
           <MovieCollection collectionId={null} />
         )
-      case "Reviews":
-        return movieId && <Reviews movieId={movieId} />
       case "Recommendations":
         return movieId && <Recommendations movieId={movieId} />
-      case "Media":
-        return movieId && <Pictures movieId={movieId} />
       default:
         return <Overview trailer={movieInfo.videos.results} />
     }

@@ -1,5 +1,5 @@
-import { useMovieReviews } from "@/queries/TMDB/movies/moviesFetch"
-import { useEffect, useState } from "react"
+"use client"
+import { useState } from "react"
 import { Star, Calendar, ChevronDown, ChevronUp } from "lucide-react"
 import React from "react"
 
@@ -18,15 +18,8 @@ interface Review {
   url: string
 }
 
-export function Reviews({ movieId }: { movieId: number }) {
-  const { data } = useMovieReviews(movieId)
-
-  useEffect(() => {
-    if (data?.results) {
-      setReviews(data.results)
-    }
-  }, [data])
-  const [reviews, setReviews] = useState<Review[]>([])
+export function Reviews({ data }: { data: any }) {
+  const [reviews, setReviews] = useState<Review[]>(data)
   const [sortBy, setSortBy] = useState("newest")
   const [expandedReviews, setExpandedReviews] = useState<Set<string>>(new Set())
 

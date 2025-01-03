@@ -1,8 +1,9 @@
 import React from "react"
-import { GameCard } from "./GameCard"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useFetchGames } from "@/queries/RAWG/gameFetch"
 import { Game } from "@/app/games/page"
+import Card from "../common/Card"
+import { gameStatuses } from "../common/ListContent"
 
 export function ListOfGames() {
   const router = useRouter()
@@ -44,23 +45,29 @@ export function ListOfGames() {
   }
 
   if (isLoading) return <p>Loading...</p>
+  if (!data) {
+    return <div>no data</div>
+  }
 
   return (
     <div className="-z-10">
       {data && data.results && (
-        <div className="grid gap-3 p-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+        <div className="grid grid-cols-2 gap-3 p-2 sm:grid-cols-3 md:p-6 2xl:grid-cols-4">
           {data.results.map((game: Game) => (
-            <GameCard
+            <Card
               key={game.id}
               id={game.id}
-              title={game.name}
-              image={game.background_image}
-              rating={game.rating * 2}
+              name={game.name}
+              coverImage={game.background_image}
+              tag={game.released}
+              voteAverage={game.rating * 2}
+              voteCount={game.ratings_count}
+              genre={game.genres.map((g: { name: string }) => g.name)}
+              numbers={10}
               platforms={game.parent_platforms}
-              release={game.released}
-              genres={game.genres}
-              tags={game.tags}
-              grade={game.ratings}
+              mediaType="game"
+              status={gameStatuses}
+              statusData={[]}
             />
           ))}
         </div>
@@ -73,7 +80,7 @@ export function ListOfGames() {
         >
           Previous
         </button>
-        <div className="flex items-center justify-center space-x-2">
+        <div className="hidden items-center justify-center space-x-2 md:flex">
           {getPageNumbers().map((page, index) => (
             <button
               key={index}

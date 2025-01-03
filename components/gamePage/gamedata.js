@@ -1,8 +1,8 @@
 export const orderOptions = [
   { slug: "relevance", name: "Relevance" },
   { slug: "-rating", name: "Rating" },
-  { slug: "name", name: "Name" },
-  { slug: "release-date", name: "Release date" },
+  { slug: "-name", name: "Name" },
+  { slug: "-released", name: "Release date" },
   { slug: "-added", name: "Popularity" },
 ]
 

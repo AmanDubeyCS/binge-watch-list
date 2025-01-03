@@ -1,10 +1,10 @@
 "use client"
 import { useFetchMedia } from "@/queries/TMDB/movies/moviesFetch"
 import React from "react"
-import TVShowCard from "../tvPage/tvHomePage/TvShowCard"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { TvShow } from "@/types/tv/tvListType"
 import { DataStore, useDataStore } from "@/store/allDataStore"
+import Card from "../common/Card"
 
 export interface Movie {
   adult: boolean
@@ -99,10 +99,10 @@ export function ListOfMovies() {
     <div>
       {data && data.results && (
         <>
-          <div className="grid gap-3 p-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 p-2 sm:grid-cols-3 md:p-6 2xl:grid-cols-4">
             {type === "movie"
               ? data.results.map((movie: Movie) => (
-                  <TVShowCard
+                  <Card
                     key={movie.id}
                     id={movie.id}
                     name={movie.title || movie.original_title}
@@ -115,15 +115,16 @@ export function ListOfMovies() {
                     )}
                     numbers={movie.popularity}
                     mediaType="movie"
-                    statusData={watchData}
+                    status={""}
+                    statusData={[]}
                   />
                 ))
               : data.results.map((tv: TvShow) => (
-                  <TVShowCard
+                  <Card
                     key={tv.id}
                     id={tv.id}
                     name={tv.name}
-                    coverImage={`https://image.tmdb.org/t/p/w300/${tv.poster_path}`}
+                    coverImage={`https://image.tmdb.org/t/p/w300/${tv.poster_path}.webp`}
                     tag={tv.first_air_date}
                     voteAverage={tv.vote_average}
                     voteCount={tv.vote_count}
@@ -132,7 +133,8 @@ export function ListOfMovies() {
                     )}
                     numbers={tv.popularity}
                     mediaType="tv"
-                    statusData={watchData}
+                    status={""}
+                    statusData={[]}
                   />
                 ))}
           </div>

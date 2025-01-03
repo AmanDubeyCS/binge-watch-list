@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import { ChevronDown, X } from "lucide-react"
+import { ChevronDown, CircleX, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { ListOfMovies } from "./ListOfMovies"
@@ -113,7 +113,7 @@ const DropdownMultiSelect = ({
       <p className="py-2.5 text-[15px] font-semibold text-gray-600">{title}</p>
       <div
         onClick={() => setIsOpen((prev) => !prev)}
-        className="flex h-[38px] w-[170px] cursor-pointer items-center gap-2 rounded-md border bg-white px-4 py-3 capitalize shadow-sm"
+        className="flex h-[38px] w-[160px] cursor-pointer items-center gap-2 rounded-full border border-blue-300 bg-white px-4 py-3 capitalize shadow-sm lg:w-[170px]"
       >
         {Array.isArray(selectedItems) ? (
           selectedItems.length > 0 ? (
@@ -128,14 +128,14 @@ const DropdownMultiSelect = ({
               )}
             </>
           ) : (
-            <p className="text-[13px] text-gray-500">{placeholder}</p>
+            <p className="text-[13px] text-gray-500">Any</p>
           )
         ) : selectedItems ? (
           <p className="line-clamp-1 text-nowrap rounded-md bg-[rgb(221,230,238)] p-2 py-1 text-xs text-gray-600">
             {selectedItems}
           </p>
         ) : (
-          <p className="text-[13px] text-gray-500">{placeholder}</p>
+          <p className="text-[13px] text-gray-500">Any</p>
         )}
         <ChevronDown className="ml-auto h-4 w-5 text-gray-800" />
       </div>
@@ -220,6 +220,7 @@ export function MovieDiscoverPage({
   const [releaseTo, setReleaseTo] = useState("")
   const [certification, setCertification] = useState<string[]>([])
   const [availabilities, setAvaliabilities] = useState<string[]>([])
+  const [showFilter, setShowFilter] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -350,9 +351,22 @@ export function MovieDiscoverPage({
     availabilities.length > 0
   return (
     <div className="mx-auto max-w-[1600px]">
+      <div
+        className={cn(
+          "w-fit bg-gray-300 p-4 lg:hidden",
+          !showFilter && "hidden"
+        )}
+        onClick={() => setShowFilter((prev) => !prev)}
+      >
+        Show filter
+      </div>
       <div>
-        <div className="p-6">
-          <div className="flex justify-center gap-4 rounded-md bg-[rgb(237,241,245)] p-5">
+        <div className={cn("p-2 lg:p-6", showFilter && "hidden lg:block")}>
+          <div className="flex justify-between px-8 py-4 lg:hidden">
+            <p>Filters</p>
+            <CircleX onClick={() => setShowFilter((prev) => !prev)} />
+          </div>
+          <div className="flex flex-wrap justify-center gap-4 rounded-md">
             <DropdownMultiSelect
               title="Where To Watch"
               items={sortedProviders}
@@ -447,7 +461,7 @@ export function MovieDiscoverPage({
               </p>
               <div
                 onClick={() => setIsOpen((prev) => !prev)}
-                className="flex h-[38px] w-[170px] cursor-pointer items-center gap-2 rounded-md border bg-white px-4 py-3 capitalize shadow-sm"
+                className="flex h-[38px] w-[160px] cursor-pointer items-center gap-2 rounded-full border border-blue-300 bg-white px-4 py-3 capitalize shadow-sm lg:w-[170px]"
               >
                 <p className="text-[13px] text-gray-500">Any</p>
 
@@ -487,32 +501,6 @@ export function MovieDiscoverPage({
                 handleMultiSelect(item, availabilities, setAvaliabilities)
               }
             />
-
-            {/* <div className="relative">
-              <p className="py-2.5 text-[15px] font-semibold text-gray-600">
-                keywords
-              </p>
-              <div
-                onClick={() => setIsOpen((prev) => !prev)}
-                className="flex h-[38px] w-[170px] cursor-pointer items-center gap-2 rounded-md border bg-white px-4 py-3 capitalize shadow-sm"
-              >
-                <p className="text-[13px] text-gray-500">Any</p>
-
-                <ChevronDown className="ml-auto h-4 w-5 text-gray-800" />
-              </div>
-              {isOpen && (
-                <div className="hide-scrollbar absolute right-0 z-20 mt-2 max-h-[400px] w-fit min-w-[170px] origin-top-right gap-1.5 overflow-scroll rounded-md bg-white p-1 shadow-lg ring-1 ring-black ring-opacity-5">
-                  <input type="text" name="" id="" />
-                </div>
-              )}
-            </div> */}
-
-            <button
-              onClick={handleSearch}
-              className="mt-[42px] flex h-[40px] w-[200px] items-center justify-center rounded-md bg-blue-600 font-bold text-white"
-            >
-              Search
-            </button>
           </div>
 
           {hasActiveFilters && (
@@ -603,6 +591,12 @@ export function MovieDiscoverPage({
               </div>
             </div>
           )}
+          <button
+            onClick={handleSearch}
+            className="mt-4 flex h-[40px] w-full items-center justify-center rounded-md bg-blue-600 font-bold text-white"
+          >
+            Search
+          </button>
         </div>
       </div>
       <ListOfMovies />

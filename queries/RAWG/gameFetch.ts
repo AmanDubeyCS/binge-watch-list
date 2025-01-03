@@ -61,3 +61,15 @@ export const useFetchGames = () => {
     queryFn: () => fetchGames(currentParams),
   })
 }
+
+export const useSearchGame = (query: string) => {
+  return useQuery({
+    queryKey: ["serchGames", query],
+    queryFn: async () => {
+      const response = await axios.get(
+        `https://api.rawg.io/api/games?search=${query}&page_size=16&key=8cab7bf982914def93b785fd17458c49`
+      )
+      return response.data.results
+    },
+  })
+}

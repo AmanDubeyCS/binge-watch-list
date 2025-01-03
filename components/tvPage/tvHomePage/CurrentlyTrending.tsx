@@ -83,7 +83,7 @@ export function CurrentlyTrending({
                   key={tv.id}
                   id={tv.id}
                   name={tv.name}
-                  coverImage={`https://image.tmdb.org/t/p/w300/${tv.poster_path}`}
+                  coverImage={`https://image.tmdb.org/t/p/w300/${tv.poster_path}.webp`}
                   tag={tv.first_air_date}
                   voteAverage={tv.vote_average}
                   voteCount={tv.vote_count}
@@ -170,7 +170,7 @@ export function CurrentlyTrending({
                     manga.attributes?.title.ja ||
                     manga.attributes?.title["ja-ro"]
                   }
-                  coverImage={`https://mangadex.org/covers/${manga.id}/${image[0].attributes.fileName}`}
+                  coverImage={`https://uploads.mangadex.org/covers/${manga.id}/${image[0].attributes.fileName}.256.jpg`}
                   tag={manga.attributes.status}
                   voteAverage={manga.rating.rating.average}
                   voteCount={0}

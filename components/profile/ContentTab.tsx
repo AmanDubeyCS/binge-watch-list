@@ -1,22 +1,40 @@
 "use client"
 import React, { useState } from "react"
-import { Card } from "./Card"
+import { ProfileCard } from "./Card"
 import { cn } from "@/lib/utils"
 
 interface WatchListData {
-  id: number | string // Unique identifier for the anime
-  name: string // Title of the anime
-  coverImage: string // URL of the anime's cover image
-  genre: string[] // Array of genres associated with the anime
-  numbers: number // Some numerical value (e.g., episode count)
-  status: string // User's current status with the anime (e.g., "watching")
-  tag: string // Additional tag or label (e.g., "Currently Airing")
-  voteAverage: number // Average user rating for the anime
-  voteCount: number // Total number of votes or ratings
+  id: number | string
+  name: string
+  coverImage: string
+  genre: string[]
+  numbers: number
+  status: string
+  watchStatus?: string
+  readStatus?: string
+  gameStatus?: string
+  tag: string
+  voteAverage: number
+  voteCount: number
   remarks: string
   progress: string
   episodeCount: number
   showStatus: string
+  WatchStatus: any
+  poster_path: string
+  vote_average: number
+  vote_count: number
+  genres: string[]
+  popularity: number
+  tvProgress: string
+  seasons: any
+  platforms: any
+  animeProgress: number
+  episodes: number
+  mangaProgress: number
+  mangaUpdatesID: number | string
+  latest_chapter?: number
+  last_updated?: any
 }
 
 export default function ContentTab({
@@ -38,17 +56,21 @@ export default function ContentTab({
     if (filter === "All") {
       setFilteredData(data)
     } else {
-      const filterdData = data.filter(
-        (data: { status: string }) => data.status === filter
+      const filteredData = data.filter(
+        (item: WatchListData) =>
+          item.watchStatus === filter ||
+          item.readStatus === filter ||
+          item.gameStatus === filter
       )
-      setFilteredData(filterdData)
+      setFilteredData(filteredData)
     }
   }
+
   return (
     <div>
-      <div className="mb-10 flex h-[35px] justify-between">
-        <h2 className="mb-6 text-2xl font-bold">{title}</h2>
-        <div className="flex gap-3">
+      <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row">
+        <h2 className="text-2xl font-bold">{title}</h2>
+        <div className="hide-scrollbar flex h-[35px] gap-3 overflow-scroll">
           <span
             onClick={() => handleClick("All")}
             className={cn(
@@ -72,24 +94,41 @@ export default function ContentTab({
           ))}
         </div>
       </div>
-      <div className="flex flex-wrap gap-3">
+      <div className="mx-auto grid w-fit grid-cols-2 gap-3 p-2 pb-20 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {filteredData.map((data) => (
-          <Card
+          <ProfileCard
             key={data.id}
             id={data.id}
             name={data.name}
-            coverImage={data.coverImage}
-            firstAirDate={data.tag}
-            voteAverage={data.voteAverage}
-            voteCount={data.voteCount}
-            genreIds={data.genre}
-            popularity={data.numbers}
+            coverImage={
+              data.poster_path
+                ? `https://image.tmdb.org/t/p/w300/${data.poster_path}.webp`
+                : data.coverImage
+            }
+            tag={data.tag}
+            voteAverage={data.vote_average || data.voteAverage}
+            voteCount={data.vote_count || data.voteCount}
+            genre={
+              Array.isArray(data.genres) && mediaType !== "manga"
+                ? data.genres.map((genre: any) =>
+                    typeof genre === "string" ? genre : genre.name
+                  )
+                : data.genre
+            }
+            numbers={data.popularity || data.numbers}
             mediaType={mediaType}
-            status={data.status}
-            remarks={data.remarks}
-            progress={data.progress}
-            episodes={data.episodeCount}
-            showStatus={data.showStatus}
+            status={
+              data.watchStatus || data.readStatus || data.gameStatus || ""
+            }
+            remark={data.remarks}
+            showProgress={data.tvProgress}
+            seasons={data.seasons}
+            platforms={data.platforms}
+            animeprogress={data.animeProgress}
+            episodes={data.episodes}
+            chapters={data.latest_chapter}
+            mangaProgress={data.mangaProgress}
+            lastUpdated={data.last_updated?.as_string}
           />
         ))}
       </div>

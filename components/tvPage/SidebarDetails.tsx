@@ -124,7 +124,6 @@ export function SideBarDetails({
   rating,
   imdbRatings,
   voteCount,
-  popularity,
   type,
   numberOfSeasons,
   numberOfEpisodes,

@@ -92,3 +92,31 @@ export const useFetchMedia = (
     },
   })
 }
+
+export const useMovieSearch = (query: string) => {
+  return useQuery({
+    queryKey: ["MovieSerch", query],
+    queryFn: async () => {
+      const response = await axios.get("/api/proxy", {
+        params: {
+          url: configTMDB.searchMovie(query),
+        },
+      })
+      return response.data.results
+    },
+  })
+}
+
+export const useSingleMovie = (movieID: number) => {
+  return useQuery({
+    queryKey: ["MovieID", movieID],
+    queryFn: async () => {
+      const response = await axios.get("/api/proxy", {
+        params: {
+          url: configTMDB.getSingleMovieProfile(movieID),
+        },
+      })
+      return response.data.reults
+    },
+  })
+}

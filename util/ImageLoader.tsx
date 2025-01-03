@@ -21,12 +21,12 @@ export const ImageLoader: React.FC<ImageLoaderProps> = ({
 
   return isLoaded ? (
     <Image
-      src={src}
+      src={src ? src : ""}
       alt={alt}
       onError={handleError}
       width={300}
       height={300}
-      className="h-full"
+      className="h-full object-cover md:min-h-[210px]"
     />
   ) : (
     fallback || null

@@ -7,12 +7,41 @@ function sanitizeResponseUrls(data: any): any {
   return data
 }
 
+const CACHE_DURATION = 60 * 5
+const cache = new Map<string, { data: any; expires: number }>()
+
+function getCachedResponse(cacheKey: string): any | null {
+  const cached = cache.get(cacheKey)
+  if (cached && cached.expires > Date.now()) {
+    return cached.data
+  }
+  // Remove expired cache
+  if (cached) cache.delete(cacheKey)
+  return null
+}
+
+function setCachedResponse(cacheKey: string, data: any): void {
+  cache.set(cacheKey, { data, expires: Date.now() + CACHE_DURATION * 1000 })
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const url = searchParams.get("url")
 
   if (!url) {
     return NextResponse.json({ error: "URL is required" }, { status: 400 })
+  }
+
+  const cacheKey = url
+
+  // Check in-memory cache
+  const cachedResponse = getCachedResponse(cacheKey)
+  if (cachedResponse) {
+    return NextResponse.json(cachedResponse, {
+      headers: {
+        "Cache-Control": "public, s-maxage=300, stale-while-revalidate=60",
+      },
+    })
   }
 
   // Extract headers and query params from the request
@@ -37,6 +66,7 @@ export async function GET(request: Request) {
         params,
       }
     )
+    setCachedResponse(cacheKey, response.data)
 
     const sanitizedData = sanitizeResponseUrls(response.data)
     return NextResponse.json(sanitizedData)

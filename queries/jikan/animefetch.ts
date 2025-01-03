@@ -2,11 +2,11 @@ import { BASE_URL_ANIME, config } from "@/apiConfig"
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 
-export const useAnimeSerch = (animeID: string) => {
+export const useAnimeSerch = (title: string) => {
   return useQuery({
-    queryKey: ["searchedAnime", animeID],
+    queryKey: ["searchedAnime", title],
     queryFn: async () => {
-      const response = await axios.get(config.getSearchedAnime(animeID))
+      const response = await axios.get(config.getSearchedAnime(title))
       return response.data.data
     },
   })
@@ -78,7 +78,7 @@ export const useFetchAnime = (currentParams: Record<string, string>) => {
     queryFn: async () => {
       const queryString = new URLSearchParams({ ...currentParams }).toString()
       const response = await fetch(
-        `${BASE_URL_ANIME}/anime?limit=24&${queryString}`
+        `${BASE_URL_ANIME}/anime?limit=24&sort=desc&${queryString}`
       )
       if (!response.ok) throw new Error("Error fetching media")
       return response.json()

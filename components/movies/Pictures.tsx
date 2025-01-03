@@ -1,4 +1,4 @@
-import { useMovieImages } from "@/queries/TMDB/movies/moviesFetch"
+"use client"
 import { useState } from "react"
 
 interface MediaItem {
@@ -11,19 +11,12 @@ interface MediaItem {
   width: number
 }
 
-// interface MediaData {
-//   backdrops: MediaItem[]
-//   logos: MediaItem[]
-//   posters: MediaItem[]
-// }
-
-export function Pictures({ movieId }: { movieId: number }) {
-  const { data } = useMovieImages(movieId)
+export function Pictures({ data }: { data: any }) {
   const [activeTab, setActiveTab] = useState("backdrops")
 
   const renderMediaItems = (items: MediaItem[]) => {
     return (
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {items?.map((item, index) => (
           <div
             key={index}
@@ -34,17 +27,6 @@ export function Pictures({ movieId }: { movieId: number }) {
               alt={`Media item ${index + 1}`}
               className="h-auto w-full object-cover"
             />
-            <div className="p-4">
-              <p className="text-sm text-gray-600">Votes: {item.vote_count}</p>
-              <p className="text-sm text-gray-600">
-                Rating: {item.vote_average.toFixed(1)}
-              </p>
-              {item.iso_639_1 && (
-                <p className="text-sm text-gray-600">
-                  Language: {item.iso_639_1.toUpperCase()}
-                </p>
-              )}
-            </div>
           </div>
         ))}
       </div>

@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useRef, useState } from "react"
-import { X, Check, ChevronDown, ChevronRight } from "lucide-react"
+import { X, Check, ChevronDown, ChevronRight, CircleX } from "lucide-react"
 import { ListOfGames } from "./ListOfGames"
 import { useRouter, useSearchParams } from "next/navigation"
 import {
@@ -11,6 +11,7 @@ import {
   storesOption,
   years,
 } from "./gamedata"
+import { cn } from "@/lib/utils"
 
 interface Option {
   id: number
@@ -65,7 +66,7 @@ const DropdownMultiSelect = ({
       <p className="py-2.5 text-[15px] font-semibold text-gray-600">{title}</p>
       <div
         onClick={() => setIsOpen((prev) => !prev)}
-        className="flex h-[38px] w-[170px] cursor-pointer items-center gap-2 rounded-md border bg-white px-4 py-3 capitalize shadow-sm"
+        className="flex h-[38px] w-[160px] cursor-pointer items-center gap-2 rounded-full border border-blue-300 bg-white px-4 py-3 capitalize shadow-sm lg:w-[170px]"
       >
         {Array.isArray(selectedItems) ? (
           selectedItems.length > 0 ? (
@@ -185,11 +186,12 @@ const DropdownMultiSelect = ({
 }
 export function GameDiscoverPage() {
   const [search, setSearchTerm] = useState("")
-  const [order, setSelectedOrder] = useState("")
+  const [ordering, setSelectedOrder] = useState("")
   const [genres, setSelectedGenres] = useState<string[]>([])
   const [platforms, setSelectedPlatforms] = useState<number[]>([])
   const [stores, setSelectedStore] = useState<number[]>([])
   const [release, setReleaseDates] = useState("")
+  const [showFilter, setShowFilter] = useState(false)
   const router = useRouter()
 
   const searchParams = useSearchParams()
@@ -273,7 +275,7 @@ export function GameDiscoverPage() {
   const handleSearch = () => {
     const params = new URLSearchParams({
       ...(search && { search }),
-      ...(order && { order }),
+      ...(ordering && { ordering }),
       ...(genres.length > 0 && { genres: genres.join(",") }),
       ...(stores.length > 0 && { stores: stores.join(",") }),
       ...(platforms.length > 0 && { platforms: platforms.join(",") }),
@@ -285,7 +287,7 @@ export function GameDiscoverPage() {
 
   const hasActiveFilters =
     search ||
-    order ||
+    ordering ||
     stores.length > 0 ||
     genres.length > 0 ||
     platforms.length > 0 ||
@@ -300,10 +302,23 @@ export function GameDiscoverPage() {
   // }, [search, order, genres, platforms, release, stores]);
   return (
     <div className="mx-auto max-w-[1600px]">
+      <div
+        className={cn(
+          "w-fit bg-gray-300 p-4 lg:hidden",
+          !showFilter && "hidden"
+        )}
+        onClick={() => setShowFilter((prev) => !prev)}
+      >
+        Show filter
+      </div>
       <div>
-        <div className="p-6">
-          <div className="flex justify-center gap-4 rounded-md bg-[rgb(237,241,245)] p-5">
-            <div className="flex-1">
+        <div className={cn("p-2 lg:p-6", showFilter && "hidden lg:block")}>
+          <div className="flex justify-between px-8 py-4 lg:hidden">
+            <p>Filters</p>
+            <CircleX onClick={() => setShowFilter((prev) => !prev)} />
+          </div>
+          <div className="flex flex-wrap justify-center gap-4 rounded-md">
+            {/* <div className="flex-1">
               <p className="py-2.5 text-[15px] font-semibold text-gray-600">
                 Search
               </p>
@@ -313,13 +328,13 @@ export function GameDiscoverPage() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="h-[40px] w-full rounded-md border p-2"
               />
-            </div>
+            </div> */}
 
             <DropdownMultiSelect
               title="Order by"
               placeholder="Ex: Relevence"
               options={orderOptions}
-              selectedItems={order}
+              selectedItems={ordering}
               onSelect={(value: string | number) =>
                 setSelectedOrder(value as string)
               }
@@ -372,13 +387,6 @@ export function GameDiscoverPage() {
                 )
               }
             />
-
-            <button
-              onClick={handleSearch}
-              className="mt-[42px] flex h-[40px] w-[200px] items-center justify-center rounded-md bg-blue-600 font-bold text-white"
-            >
-              Search
-            </button>
           </div>
 
           {hasActiveFilters && (
@@ -393,12 +401,12 @@ export function GameDiscoverPage() {
                     />
                   </div>
                 )}
-                {order && (
+                {ordering && (
                   <div className="flex items-center gap-1 rounded-md bg-[#3DB4F2] px-2 py-1 text-xs font-semibold text-white">
-                    {orderOptions.find((o) => o.slug === order)?.name}
+                    {orderOptions.find((o) => o.slug === ordering)?.name}
                     <X
                       className="ml-1 size-3 cursor-pointer"
-                      onClick={() => removeFilter("order", order)}
+                      onClick={() => removeFilter("order", ordering)}
                     />
                   </div>
                 )}
@@ -461,6 +469,14 @@ export function GameDiscoverPage() {
                 </button>
               </div>
             </div>
+          )}
+          {hasActiveFilters && (
+            <button
+              onClick={handleSearch}
+              className="mt-4 flex h-[40px] w-full items-center justify-center rounded-md bg-blue-600 font-bold text-white"
+            >
+              Search
+            </button>
           )}
         </div>
       </div>

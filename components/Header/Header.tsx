@@ -1,64 +1,124 @@
 "use client"
 import Link from "next/link"
-import React from "react"
-import { CircleUserRound, Search } from "lucide-react"
+import React, { useState } from "react"
+import {
+  BookText,
+  Cat,
+  CircleUserRound,
+  Clapperboard,
+  Gamepad2,
+  House,
+  Search,
+  Tv,
+} from "lucide-react"
 import { useSession } from "next-auth/react"
+import { cn } from "@/lib/utils"
+import { usePathname } from "next/navigation"
+
+const links = [
+  {
+    name: "HOME",
+    link: "/home",
+    logo: <House width={41} />,
+  },
+  {
+    name: "MANGA",
+    link: "/manga",
+    logo: <BookText width={41} />,
+  },
+  {
+    name: "ANIME",
+    link: "/anime",
+    logo: <Cat width={41} />,
+  },
+  {
+    name: "TV",
+    link: "/tv",
+    logo: <Tv width={41} />,
+  },
+  {
+    name: "MOVIES",
+    link: "/movies",
+    logo: <Clapperboard width={41} />,
+  },
+  {
+    name: "GAMES",
+    link: "/games",
+    logo: <Gamepad2 width={41} />,
+  },
+]
+
+const otherLinks = [
+  {
+    name: "PROFILE",
+    link: "/profile",
+    logo: <CircleUserRound width={41} />,
+  },
+  {
+    name: "SEARCH",
+    link: "/search",
+    logo: <Search width={41} />,
+  },
+]
 
 export default function Header() {
+  const pathname = usePathname()
   const { data: session } = useSession()
+  const [activeLink, setActiveLink] = useState(pathname)
   return (
-    <div className="mx-auto flex h-[72px] max-w-[1600px] items-center justify-between px-10 text-black">
+    <div className="mx-auto flex h-[72px] max-w-[1600px] items-center justify-between p-2 text-black md:px-10">
       <div>LOGO</div>
-      <div className="flex gap-3">
+      <div className="fixed bottom-0 left-0 z-[100000] flex w-full bg-white p-2 md:relative md:flex md:max-w-[600px]">
+        {links.map((link) => (
+          <Link
+            key={link.name}
+            href={link.link}
+            onClick={() => setActiveLink(link.link)}
+            className={cn(
+              "text-neutrals-800 flex flex-1 flex-col items-center justify-center gap-2 text-[11px] font-medium leading-[normal] hover:text-orange-400 md:text-[15px]",
+              activeLink === link.link && "text-orange-400"
+            )}
+          >
+            {link.logo}
+            {link.name}
+          </Link>
+        ))}
+
         <Link
-          href={"/home"}
-          className="text-neutrals-800 flex items-center justify-center gap-1 p-2 text-lg font-medium leading-[normal] hover:text-orange-400"
+          href={`/profile/${session?.user?.id}`}
+          onClick={() => setActiveLink(`/profile/${session?.user?.id}`)}
+          className={cn(
+            "text-neutrals-800 flex flex-col items-center justify-center gap-2 px-3 text-[11px] font-medium leading-[normal] hover:text-orange-400 md:hidden md:text-[15px]",
+            activeLink === `/profile/${session?.user?.id}` && "text-orange-400"
+          )}
         >
-          Home
+          <CircleUserRound width={41} />
+          PROFILE
         </Link>
-        <Link
-          href={"/manga"}
-          className="text-neutrals-800 flex items-center justify-center gap-1 p-2 text-lg font-medium leading-[normal] hover:text-orange-400"
-        >
-          Manga
-        </Link>
-        <Link
-          href={"/anime"}
-          className="text-neutrals-800 flex items-center justify-center gap-1 p-2 text-lg font-medium leading-[normal] hover:text-orange-400"
-        >
-          Anime
-        </Link>
-        <Link
-          href={"/tv"}
-          className="text-neutrals-800 flex items-center justify-center gap-1 p-2 text-lg font-medium leading-[normal] hover:text-orange-400"
-        >
-          TV Shows
-        </Link>
-        <Link
-          href={"/movies"}
-          className="text-neutrals-800 flex items-center justify-center gap-1 p-2 text-lg font-medium leading-[normal] hover:text-orange-400"
-        >
-          Movies
-        </Link>
-        <Link
-          href={"/games"}
-          className="text-neutrals-800 flex items-center justify-center gap-1 p-2 text-lg font-medium leading-[normal] hover:text-orange-400"
-        >
-          Games
-        </Link>
-        {/* <Link
-          href={"/books"}
-          className="text-neutrals-800 flex items-center justify-center gap-1 p-2 text-lg font-medium leading-[normal] hover:text-orange-400"
-        >
-          Books
-        </Link> */}
       </div>
+
       <div className="flex gap-3">
-        <Link href={"/profile"}>
-          <Search />
+        <Link
+          href={"/search"}
+          onClick={() => setActiveLink("/search")}
+          className={cn(
+            "text-neutrals-800 flex flex-col items-center justify-center gap-2 px-3 text-[15px] font-medium leading-[normal] hover:text-orange-400",
+            activeLink === `/search` && "text-orange-400"
+          )}
+        >
+          <Search width={41} />
+          <span className="hidden md:flex">SEARCH</span>
         </Link>
-        <Link href={`/profile/${session?.user?.id}`}>
-          <CircleUserRound />
+        <Link
+          href={session?.user?.id ? `/profile/${session?.user?.id}` : `/login`}
+          onClick={() => setActiveLink(`/profile/${session?.user?.id}`)}
+          className={cn(
+            "text-neutrals-800 hidden flex-col items-center justify-center gap-2 px-3 text-[15px] font-medium leading-[normal] hover:text-orange-400 md:flex",
+            activeLink === `/profile/${session?.user?.id}` && "text-orange-400"
+          )}
+        >
+          <CircleUserRound width={41} />
+          PROFILE
         </Link>
       </div>
     </div>
