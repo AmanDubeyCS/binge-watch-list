@@ -23,7 +23,7 @@ export function GoogleSignIn() {
           profile_pic_url: user.photoURL,
         })
         if (result && result.status === 200) {
-          router.replace("/profile")
+          router.replace("/home")
         } else if (result && result.status === 401) {
           console.log("error")
         }
@@ -39,7 +39,7 @@ export function GoogleSignIn() {
       className="flex w-full items-center justify-center rounded-lg border border-gray-300 py-2 transition hover:bg-gray-50"
     >
       <img
-        src="https://commons.wikimedia.org/wiki/Category:Google_SVG_logos#/media/File:Google_%22G%22_logo.svg"
+        src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA"
         alt="Google"
         className="mr-2 size-5"
       />

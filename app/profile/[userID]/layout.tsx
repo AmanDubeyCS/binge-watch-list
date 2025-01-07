@@ -1,3 +1,4 @@
+import LogoutButton from "@/components/auth/LogoutButton"
 import { EditProfileDialog } from "@/components/profile/EditProfile"
 import { ProfileNav } from "@/components/profile/ProfileNav"
 import { fetchUserData } from "@/util/fetchUserInfo"
@@ -104,6 +105,7 @@ export default async function Layout({
                 </div>
               </div>
             </div>
+            <LogoutButton />
             <EditProfileDialog initialData={serializedData} />
           </div>
         </div>

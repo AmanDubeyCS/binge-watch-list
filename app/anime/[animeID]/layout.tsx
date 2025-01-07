@@ -79,13 +79,20 @@ export default async function layout({
       animeData?.data.type
     )
 
-    const animeDataFromTMDB = await dataTMDB(cleanNames, animeData?.data.type)
-    const imdbId = animeDataFromTMDB.external_ids.imdb_id
+    let animeDataFromTMDB = null
+    let imdbResponse = null
 
-    const imdbResponse = await getIMDBData(
-      imdbId,
-      animeDataFromTMDB.first_air_date
-    )
+    if (cleanNames) {
+      animeDataFromTMDB = await dataTMDB(cleanNames, animeData?.data.type)
+      const imdbId = animeDataFromTMDB?.external_ids?.imdb_id
+
+      if (imdbId) {
+        imdbResponse = await getIMDBData(
+          imdbId,
+          animeDataFromTMDB.first_air_date
+        )
+      }
+    }
 
     const animeInfo = animeData.data
 
@@ -100,6 +107,7 @@ export default async function layout({
       <>
         <section>
           <ContentDetails
+            id={animeID}
             backdropPoster={
               `https://image.tmdb.org/t/p/w1280${animeDataFromTMDB?.backdrop_path}` ||
               animeInfo.images.webp.large_image_url
@@ -119,16 +127,17 @@ export default async function layout({
             producer={animeInfo.producers.map(
               (prod: { name: string }) => prod.name
             )}
-            imdbData={imdbResponse}
+            imdbData={imdbResponse || null}
             type={animeInfo.type}
             episodes={animeInfo.episodes}
             imdbRating={
-              imdbResponse?.imdbRating || imdbResponse?.ratings["imdb"].rating
+              imdbResponse?.imdbRating || imdbResponse?.ratings["imdb"]?.rating
             }
             imdbVotes={
-              imdbResponse?.imdbVotes || imdbResponse?.ratings["imdb"].votes
+              imdbResponse?.imdbVotes || imdbResponse?.ratings["imdb"]?.votes
             }
             contentType="anime"
+            numbers={animeInfo.rank}
           />
 
           {animeInfo.trailer.embed_url && (
@@ -152,7 +161,6 @@ export default async function layout({
             className="pb-14"
           >
             <div className="mx-auto flex max-w-[1600px] gap-4 lg:p-10">
-              {/* <SideBarDetails animeInfo={animeInfo} imdbData={imdbResponse} /> */}
               <div className="flex w-full flex-col gap-4">
                 <div className="">
                   <NavLinks id={animeID} links={navLinks} />

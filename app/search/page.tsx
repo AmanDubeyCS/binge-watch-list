@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import SearchType from "@/components/common/SearchType"
 
 const searchOptions = [
@@ -13,13 +13,15 @@ const searchOptions = [
 ]
 
 export default function SearchPage() {
+  const searchParams = useSearchParams()
   const [searchType, setSearchType] = useState("show")
   const [query, setQuery] = useState("")
   const router = useRouter()
 
   useEffect(() => {
-    router.push(`/search?type=${searchType}`)
-  }, [searchType])
+    setQuery(searchParams.get("q") || "")
+    setSearchType(searchParams.get("type") || "show")
+  }, [searchParams])
 
   useEffect(() => {
     if (query.length > 0) {
@@ -27,7 +29,7 @@ export default function SearchPage() {
     } else if (query.length === 0) {
       router.push(`/search?type=${searchType}`)
     }
-  }, [query])
+  }, [query, searchType])
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-100 to-white">
@@ -74,7 +76,7 @@ export default function SearchPage() {
           </form>
         </div>
       </div>
-      {/* Placeholder for search results */}
+
       <SearchType />
     </div>
   )

@@ -4,7 +4,7 @@ import SearchManga from "../mangaPage/SearchManga"
 import SearchAnime from "../animePage/SearchAnime"
 import SearchMovie from "../movies/SearchMovie"
 import SearchTv from "../tvPage/SearchTv"
-import SearchGame from "../gamePage/SearchGame"
+import { SearchGame } from "../gamePage/SearchGame"
 
 export default function SearchType() {
   const searchParams = useSearchParams()
@@ -22,6 +22,5 @@ export default function SearchType() {
         return <SearchGame />
     }
   }
-  console.log(searchParams.get("type"), searchParams.get("q"))
   return <div className="size-full rounded-lg">{renderContent()}</div>
 }

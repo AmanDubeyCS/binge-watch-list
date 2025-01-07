@@ -67,7 +67,6 @@ export function ListOfGames() {
               platforms={game.parent_platforms}
               mediaType="game"
               status={gameStatuses}
-              statusData={[]}
             />
           ))}
         </div>

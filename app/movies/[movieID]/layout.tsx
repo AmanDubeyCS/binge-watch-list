@@ -64,6 +64,7 @@ export default async function Layout({
     return (
       <section>
         <ContentDetails
+          id={movieID}
           backdropPoster={`https://image.tmdb.org/t/p/w1280${movieInfo.backdrop_path}`}
           poster={`https://image.tmdb.org/t/p/w500${movieInfo.poster_path}`}
           title={movieInfo.title}
@@ -89,6 +90,8 @@ export default async function Layout({
           imdbVotes={
             imdbResponse?.imdbVotes || imdbResponse?.ratings["imdb"]?.votes
           }
+          contentType="movie"
+          numbers={movieInfo.popularity}
         />
 
         <div className="mx-auto max-w-[1600px]">

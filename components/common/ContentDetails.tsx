@@ -1,14 +1,15 @@
 import React from "react"
 import Image from "next/image"
-import { Info, Plus, Star } from "lucide-react"
+import { Info, Star } from "lucide-react"
 import { ImdbData } from "@/types/ImdbType"
 import { formatNumber } from "@/util/formatNumber"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { Icon } from "../icons"
+import BookmarkTag from "./BookmarkTag"
 
 interface ContentDetailsProps {
-  id?: number | string
+  id: number | string
   backdropPoster: string
   poster: string
   title: string
@@ -33,6 +34,9 @@ interface ContentDetailsProps {
   imdbVotes?: any
   contentType?: string
   readProviders?: any
+  numbers?: number
+  platforms?: any
+  muID?: string
 }
 
 function formatAmount(num: number) {
@@ -93,6 +97,9 @@ export function ContentDetails({
   imdbVotes,
   contentType,
   readProviders,
+  numbers,
+  platforms,
+  muID,
 }: ContentDetailsProps) {
   const ratings = [
     {
@@ -138,7 +145,7 @@ export function ContentDetails({
   return (
     <>
       <section
-        className="hidden sm:block"
+        className="hidden md:block"
         style={{
           borderBottom: "1px solid var(--primaryColor)",
           backgroundPosition: "left calc((50vw - 170px) - 340px) top",
@@ -161,7 +168,7 @@ export function ContentDetails({
                 alt="image"
                 width={600}
                 height={500}
-                className="size-auto max-w-[300px] rounded-lg lg:h-auto"
+                className="size-auto max-w-[300px] rounded-lg md:h-full md:min-w-[300px]"
               />
             </div>
             <div className="flex flex-col gap-4 overflow-y-auto px-4">
@@ -345,10 +352,20 @@ export function ContentDetails({
               </div>
 
               <div className="flex flex-wrap gap-4">
-                <button className="flex w-full max-w-[200px] items-center justify-center gap-2 rounded-lg bg-white px-6 py-3 text-sm text-black transition-colors hover:bg-gray-200 md:w-auto md:text-base">
-                  <Plus className="size-5" />
-                  Add to Watchlist
-                </button>
+                <BookmarkTag
+                  id={id}
+                  contentType={contentType}
+                  name={title}
+                  coverImage={poster}
+                  tag={date}
+                  voteAverage={rating}
+                  voteCount={voteCount}
+                  numbers={numbers}
+                  genre={genres}
+                  Episodes={episodes}
+                  platforms={platforms}
+                  muID={muID}
+                />
 
                 {/* {watchProvider && watchProvider["IN"] && (
                   <button className="flex h-fit w-[200px] items-center justify-start gap-2 rounded-lg bg-gray-800 p-1 pr-6">
@@ -396,7 +413,7 @@ export function ContentDetails({
       </section>
 
       <section
-        className="relative bg-[#1f1f34]/[0.6] bg-blend-multiply sm:hidden"
+        className="relative bg-[#1f1f34]/[0.6] bg-blend-multiply md:hidden"
         style={{
           backgroundImage: `url(${backdropPoster})`,
           backgroundPosition: "center",
@@ -411,7 +428,7 @@ export function ContentDetails({
             alt={`${title} poster`}
             width={300}
             height={450}
-            className="mx-auto mb-6 h-auto w-full max-w-[300px] rounded-lg object-cover shadow-lg"
+            className="mx-auto mb-6 h-auto w-full max-w-[250px] rounded-lg object-cover shadow-lg"
           />
           <div className="mx-auto flex max-w-[450px] flex-col items-center justify-center gap-4">
             <div className="flex flex-col items-center justify-center gap-1">
@@ -529,7 +546,7 @@ export function ContentDetails({
               </div>
             )}
 
-            <div>
+            <div className="w-[-webkit-fill-available]">
               <p className="mb-2 text-lg font-bold text-white">Overview</p>
               <p className="line-clamp-4 text-sm text-gray-300">{overview}</p>
             </div>
@@ -592,10 +609,22 @@ export function ContentDetails({
             </div>
 
             <div className="flex w-full flex-wrap gap-4">
-              <button className="flex w-full items-center justify-center gap-2 rounded-lg bg-white px-6 py-3 text-sm text-black transition-colors hover:bg-gray-200 md:w-auto md:text-base">
-                <Plus className="size-5" />
-                Add to Watchlist
-              </button>
+              <div className="w-full">
+                <BookmarkTag
+                  id={id}
+                  contentType={contentType}
+                  name={title}
+                  coverImage={poster}
+                  tag={date}
+                  voteAverage={rating}
+                  voteCount={voteCount}
+                  numbers={numbers}
+                  genre={genres}
+                  Episodes={episodes}
+                  platforms={platforms}
+                  muID={muID}
+                />
+              </div>
 
               {/* {watchProvider && (
                 <button className="flex h-fit w-full items-center justify-center gap-2 rounded-lg bg-gray-800 p-1 pr-6">

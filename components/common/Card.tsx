@@ -18,7 +18,6 @@ import {
   handleTvShowStatusChange,
 } from "@/util/contentStatusChange"
 import { DataStore, useDataStore } from "@/store/allDataStore"
-import Image from "next/image"
 import { checkdata } from "@/util/fetchFromMangaUpdates"
 
 const platformLogos = {
@@ -47,8 +46,7 @@ interface TVShowCardProps {
   voteCount: number
   genre: any
   numbers: number
-  mediaType?: string
-  statusData?: any
+  mediaType: string
   episodes?: any
   showStatus?: any
   platforms?: any
@@ -66,7 +64,6 @@ export default function Card({
   genre,
   numbers,
   mediaType,
-  statusData,
   episodes,
   platforms,
   status,
@@ -75,33 +72,32 @@ export default function Card({
   const { data: session } = useSession()
   const router = useRouter()
   const pathname = usePathname()
+  const { data, upsertItem, removeFromWatchlist } = useDataStore() as DataStore
 
   const handleClick = () => {
-    if (mediaType === "movie") {
-      router.push(`/movies/${id}`)
-    } else if (mediaType === "tv") {
-      router.push(`/tv/${id}`)
-    } else if (mediaType === "anime") {
-      router.push(`/anime/${id}`)
-    } else if (mediaType === "manga") {
-      router.push(`/manga/${id}`)
-    } else if (mediaType === "game") {
-      router.push(`/games/${id}`)
-    } else {
-      router.push(`${pathname}/${id}`)
+    const routes: Record<string, string> = {
+      movie: `/movies/${id}`,
+      tv: `/tv/${id}`,
+      anime: `/anime/${id}`,
+      manga: `/manga/${id}`,
+      game: `/games/${id}`,
     }
+
+    router.push(routes[mediaType] || `${pathname}/${id}`)
   }
 
   const watchStatus = useMemo(() => {
     if (profileCardStatus) return profileCardStatus
-    else {
-      return (
-        statusData.find((item: { id: number | string }) => item.id === id)
-          ?.status || null
-      )
-    }
-  }, [statusData, id, profileCardStatus])
+    const status = data?.find((item: { id: number | string }) => item.id === id)
+    // console.log(status)
+    return mediaType === "manga"
+      ? status?.readStatus
+      : mediaType === "game"
+        ? status?.gameStatus
+        : status?.watchStatus || null
+  }, [data])
 
+  // console.log(data)
   const handleStatusChange = async (selectedStatus: string) => {
     if (!session?.user?.id || !mediaType) return
 
@@ -115,43 +111,24 @@ export default function Card({
       genre,
     }
 
-    switch (mediaType) {
-      case "movie":
-        await handleMovieStatusChange(
-          session.user.id,
-          Number(id),
-          selectedStatus,
-          details
-        )
-        break
-      case "tv":
-        await handleTvShowStatusChange(
-          session.user.id,
-          Number(id),
-          selectedStatus,
-          details
-        )
-        break
-      case "anime":
-        await handleAnimeStatusChange(
-          session.user.id,
-          Number(id),
-          selectedStatus,
-          { ...details, episodes }
-        )
-        break
-      case "game":
-        await handleGameStatusChange(
-          session.user.id,
-          Number(id),
-          selectedStatus,
-          { ...details, platforms }
-        )
-        break
-      case "manga":
+    if (mediaType === "manga") {
+      upsertItem({ id, readStatus: selectedStatus, ...details })
+    } else if (mediaType === "game") {
+      upsertItem({ id, gameStatus: selectedStatus, ...details })
+    } else {
+      upsertItem({ id, watchStatus: selectedStatus, ...details })
+    }
+
+    const handlers: Record<string, Function> = {
+      movie: handleMovieStatusChange,
+      tv: handleTvShowStatusChange,
+      anime: handleAnimeStatusChange,
+      game: handleGameStatusChange,
+      manga: async () => {
         const muId = await checkdata(String(id))
         const muID = typeof muId === "number" ? muId.toString() : undefined
-        await handleMangaStatusChange(
+        upsertItem({ ...details, id, selectedStatus, muID })
+        return handleMangaStatusChange(
           session.user.id,
           id,
           selectedStatus,
@@ -159,24 +136,29 @@ export default function Card({
           undefined,
           muID
         )
-        break
-      default:
-        console.error("Invalid media type")
+      },
     }
+
+    await handlers[mediaType]?.(
+      session.user.id,
+      mediaType === "manga" ? id : Number(id),
+      selectedStatus,
+      mediaType === "anime"
+        ? { ...details, episodes }
+        : mediaType === "game"
+          ? { ...details, platforms }
+          : details
+    )
   }
 
   const handleRemoveData = () => {
     if (!session?.user?.id || !mediaType) return
 
     const docRef = doc(db, "users", session.user.id, mediaType, id.toString())
-
     deleteDoc(docRef)
       .then(() => {
         console.log(`Document with ID ${id} deleted successfully!`)
-        ;(useDataStore.getState() as DataStore).removeFromWatchlist(
-          id,
-          mediaType
-        )
+        removeFromWatchlist(id, mediaType)
       })
       .catch((error) => {
         console.error("Error removing data:", error)
@@ -295,7 +277,8 @@ export default function Card({
           "mx-auto block w-[165px] max-w-sm overflow-hidden rounded-xl lg:hidden",
           (pathname.includes("/discover") ||
             pathname.includes("/search") ||
-            pathname.includes("/profile")) &&
+            pathname.includes("/profile") ||
+            pathname.includes("/recommendations")) &&
             "w-full"
         )}
       >
@@ -306,18 +289,24 @@ export default function Card({
             statuses={status}
           />
 
-          <Image
+          <ImageLoader
             src={coverImage}
             alt={name}
-            width={200}
-            height={200}
             className={cn(
               "h-[240px] w-[165px] rounded-xl object-cover",
               (pathname.includes("/discover") ||
                 pathname.includes("/search") ||
-                pathname.includes("/profile")) &&
+                pathname.includes("/profile") ||
+                pathname.includes("/recommendations")) &&
                 "aspect-[2/3] size-full"
             )}
+            fallback={
+              <div
+                className={`flex h-auto w-[140px] items-center justify-center bg-white text-center text-black`}
+              >
+                <p>Image not available</p>
+              </div>
+            }
           />
         </div>
         <div className="py-4">

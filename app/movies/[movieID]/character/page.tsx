@@ -29,7 +29,7 @@ export default async function page({
   const data = await fetchFromTMDB(configTMDB.getSingleMovieCast(movieID))
 
   return (
-    <div className="grid grid-cols-2 items-center justify-center gap-2 py-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+    <div className="grid grid-cols-2 items-center justify-center gap-2 px-2 py-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
       {data &&
         data.cast.map((character: Actor) => (
           <Link
@@ -56,11 +56,11 @@ export default async function page({
               <p className="mb-2 text-sm text-gray-500">
                 <span>As {character.character}</span>
               </p>
-              <div className="flex items-center justify-between">
+              {/* <div className="flex items-center justify-between">
                 <span className="rounded-full bg-indigo-100 px-2 py-1 text-xs font-semibold text-indigo-600">
                   {character.popularity} popularity
                 </span>
-              </div>
+              </div> */}
             </div>
           </Link>
         ))}

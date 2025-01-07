@@ -101,9 +101,11 @@ export const useMangaFetch = ({ limit, offset, title }: Props) => {
         .map((data: MangaItem) => `manga[]=${data.id}`)
         .join("&")
 
-      const ratingsResponse = await axios.get(
-        `https://api.mangadex.org/statistics/manga?${data}`
-      )
+      const ratingsResponse = await axios.get("/api/proxy", {
+        params: {
+          url: `https://api.mangadex.org/statistics/manga?${data}`,
+        },
+      })
 
       const ratingsData = ratingsResponse.data.statistics
 

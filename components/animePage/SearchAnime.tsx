@@ -1,36 +1,41 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { useSearchParams } from "next/navigation"
-import { useAnimeSerch } from "@/queries/jikan/animefetch"
 import Card from "../common/Card"
 import { AnimeData } from "@/types/anime/animeTypes"
 import { tvStatuses } from "../common/ListContent"
+import { useDebounce } from "@/util/debouncing"
+import { useSearchData } from "@/queries/search"
+import { LoadingCard } from "../LoadingCard"
 
 export default function SearchAnime() {
   const searchParams = useSearchParams()
-  const [debouncedSearch, setDebouncedSearch] = useState("")
 
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedSearch(searchParams.get("q") || "")
-    }, 300)
+  const debouncedQuery = useDebounce(searchParams.get("q") || "")
 
-    return () => {
-      clearTimeout(handler)
-    }
-  }, [searchParams])
+  const {
+    data: animeData,
+    isLoading,
+    error,
+  } = useSearchData("anime", debouncedQuery)
 
-  const { data, error, isLoading } = useAnimeSerch(debouncedSearch)
-
-  const uniqueData = data?.filter(
+  const uniqueData = animeData?.data?.filter(
     (item: any, index: number, self: any[]) =>
-      index === self.findIndex((t: {mal_id: number}) => t.mal_id === item.mal_id)
+      index ===
+      self.findIndex((t: { mal_id: number }) => t.mal_id === item.mal_id)
   )
 
   if (error) return <p>Error: {error.message}</p>
   return (
     <>
+      {isLoading && (
+        <div className="mx-auto flex max-w-[1600px] flex-wrap gap-4">
+          {Array.from({ length: 16 }, (_, i) => (
+            <LoadingCard key={i} />
+          ))}
+        </div>
+      )}
       <div className="mx-auto flex max-w-[1600px] justify-center gap-2">
-        {!isLoading && uniqueData && (
+        {uniqueData && (
           <div
             style={{
               width: `${Math.round((uniqueData?.length || 0) / 2) * 375}px`,
@@ -50,7 +55,6 @@ export default function SearchAnime() {
                 numbers={anime.rank}
                 mediaType="anime"
                 status={tvStatuses}
-                statusData={[]}
                 episodes={anime.episodes}
                 showStatus={anime.status}
               />

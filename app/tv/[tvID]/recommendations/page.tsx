@@ -47,7 +47,7 @@ export default async function page({ params }: { params: { tvID: number } }) {
   }
 
   return (
-    <div className="flex flex-wrap justify-center gap-6">
+    <div className="grid grid-cols-2 gap-3 p-2 sm:grid-cols-3 md:p-6 2xl:grid-cols-4">
       {data?.results?.map((tv: TvShow) => (
         <Card
           key={tv.id}
@@ -63,7 +63,6 @@ export default async function page({ params }: { params: { tvID: number } }) {
           numbers={tv.popularity}
           mediaType="tv"
           status={tvStatuses}
-          statusData={[]}
         />
       ))}
     </div>

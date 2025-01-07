@@ -73,7 +73,7 @@ export default async function layout({
         url: `${mangaInfo.attributes.links.ebj}`,
       },
     ]
-
+    // console.log(statistics.statistics[mangaId].follows)
     return (
       <main>
         <ContentDetails
@@ -109,6 +109,9 @@ export default async function layout({
           status={mangaInfo.attributes.status}
           readProviders={platformReadOrBuy}
           type="manga"
+          contentType="manga"
+          muID={String(slug)}
+          numbers={statistics.statistics[mangaId].follows}
         />
 
         <div
@@ -120,9 +123,7 @@ export default async function layout({
         >
           <div className="mx-auto flex max-w-[1600px] gap-4 lg:p-10">
             <div className="flex w-full flex-col gap-4">
-              <div className="">
-                <NavLinks id={`${mangaID}/${slug}`} links={links} />
-              </div>
+              <NavLinks id={`${mangaID}/${slug}`} links={links} />
               <div className="rounded-lg bg-white p-4 shadow-md">
                 {children}
               </div>

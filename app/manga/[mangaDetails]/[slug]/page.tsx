@@ -31,7 +31,6 @@ export default async function page({ params }: { params: any }) {
   }
   return (
     <div className="flex flex-col gap-10">
-      {/* <div dangerouslySetInnerHTML={{ __html: MUData.description }} /> */}
       <div className="space-y-8">
         <div>
           <h3 className="mb-4 text-xl font-semibold">Tags</h3>

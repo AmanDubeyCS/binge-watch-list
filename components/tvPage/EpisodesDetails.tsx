@@ -18,7 +18,7 @@ export function EpisodesDetails({
     setExpandedSeason(expandedSeason === seasonNumber ? null : seasonNumber)
   }
   return (
-    <div className="container mx-auto px-4 py-8 text-black">
+    <div className="text-black">
       <div className="space-y-6">
         {seasons.map((season) => (
           <div

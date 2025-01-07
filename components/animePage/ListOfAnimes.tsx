@@ -65,7 +65,6 @@ export function ListOfAnimes() {
                 numbers={anime.rank}
                 mediaType="anime"
                 status={tvStatuses}
-                statusData={listData}
                 episodes={anime.episodes}
                 showStatus={anime.status}
               />

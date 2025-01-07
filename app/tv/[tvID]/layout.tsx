@@ -55,6 +55,7 @@ export default async function layout({
     return (
       <section>
         <ContentDetails
+          id={tvID}
           backdropPoster={`https://image.tmdb.org/t/p/w1280${tvInfo.backdrop_path}`}
           poster={`https://image.tmdb.org/t/p/w300${tvInfo.poster_path}`}
           title={tvInfo.name}
@@ -77,6 +78,8 @@ export default async function layout({
           imdbVotes={
             imdbResponse?.imdbVotes || imdbResponse?.ratings["imdb"]?.votes
           }
+          contentType="tv"
+          numbers={tvInfo.popularity}
         />
         <div className="mx-auto max-w-[1600px]">
           <VideoList videos={response.results} />
@@ -89,14 +92,12 @@ export default async function layout({
           }}
           className="pb-14"
         >
-          <div className="mx-auto flex max-w-[1600px] flex-col gap-4 p-4 lg:p-10">
+          <div className="mx-auto flex max-w-[1600px] gap-4 lg:p-10">
             <div className="flex w-full flex-col gap-4">
               <div className="">
                 <NavLinks id={tvID} links={links} />
               </div>
-              <div className="rounded-lg bg-white p-4 shadow-md">
-                {children}
-              </div>
+              <div>{children}</div>
             </div>
             {/* <ContentSidebar
               rating={tvInfo.vote_average}

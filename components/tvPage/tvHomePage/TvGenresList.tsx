@@ -27,8 +27,8 @@ export function TvGenresList({
   return (
     <section className="py-12">
       <div className="mx-auto">
-        <h2 className="mb-6 text-3xl font-bold">Popular Categories</h2>
-        <div className="hide-scrollbar overflow-x-scroll">
+        <h2 className="mb-6 px-4 text-3xl font-bold">Popular Categories</h2>
+        <div className="hide-scrollbar overflow-x-scroll px-4">
           <div
             style={{ width: `${Math.round(categorys.length / 2) * 270}px` }}
             className="flex flex-wrap gap-5"
