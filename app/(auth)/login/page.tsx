@@ -11,11 +11,13 @@ export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
   const loginWithEmail = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
+    setIsLoading(true)
     try {
       const result = await signInWithEmailAndPassword(auth, email, password)
       const user = result.user
@@ -28,8 +30,10 @@ export default function LoginPage() {
           name: user.displayName,
         })
         if (result && result.status === 200) {
+          setIsLoading(false)
           router.replace("/home")
         } else if (result && result.status === 401) {
+          setIsLoading(false)
           console.log("error")
         }
       }
@@ -41,6 +45,7 @@ export default function LoginPage() {
 
   return (
     <>
+      {isLoading && <div className="size-full">please wait...</div>}
       <div className="flex min-h-screen items-center justify-center bg-gray-100">
         <div className="w-full max-w-sm rounded-lg bg-white p-8 shadow-md">
           <h2 className="mb-6 text-center text-2xl font-bold text-gray-800">
@@ -90,7 +95,7 @@ export default function LoginPage() {
                 type="submit"
                 className="hover:bg-primary-700 w-full rounded-lg bg-blue-600 px-6 py-3 text-white transition-colors"
               >
-                Create Account
+                Login
               </button>
             </form>
 

@@ -37,7 +37,7 @@ interface ContentDetailsProps {
   genre: string[]
   episodes: number
   platforms: any
-  muID: number | string
+  muID: string
 }
 
 export default function BookmarkTag({
@@ -53,7 +53,7 @@ export default function BookmarkTag({
   episodes,
   platforms,
   muID,
-}: any) {
+}: ContentDetailsProps) {
   const router = useRouter()
   const { data, upsertItem } = useDataStore() as DataStore
   const { data: session } = useSession()
@@ -175,7 +175,7 @@ export default function BookmarkTag({
         <DropdownMenuContent
           onClick={(e) => e.stopPropagation()}
           align="start"
-          className="z-50 grid w-[165px] gap-2 bg-white p-2 text-black md:w-[340px] md:grid-cols-2"
+          className="z-50 grid grid-cols-2 gap-2 bg-white p-2 text-black"
         >
           {Object.entries(statuses).map(([key, { label, icon }]) => (
             <DropdownMenuItem

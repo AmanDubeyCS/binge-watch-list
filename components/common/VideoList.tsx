@@ -39,7 +39,7 @@ export default function VideoList({ videos }: { videos: Video[] }) {
             className="aspect-video size-full rounded-lg"
           ></iframe>
 
-          <div className="hide-scrollbar flex max-h-[640px] max-w-[1200px] gap-4 overflow-scroll lg:flex-col">
+          <div className="hide-scrollbar flex max-h-[640px] max-w-[1200px] justify-center gap-4 overflow-scroll lg:flex-col">
             {trailers.map((video) => (
               <div
                 key={video.key}
@@ -49,7 +49,7 @@ export default function VideoList({ videos }: { videos: Video[] }) {
                 <img
                   src={`https://img.youtube.com/vi/${video.key}/0.jpg`}
                   alt={video.name}
-                  className="h-auto w-[180px] rounded-md object-cover lg:w-auto"
+                  className="h-auto w-[120px] rounded-md object-cover md:w-[180px] lg:w-auto"
                 />
               </div>
             ))}
@@ -62,7 +62,7 @@ export default function VideoList({ videos }: { videos: Video[] }) {
                 <img
                   src={`https://img.youtube.com/vi/${video.key}/0.jpg`}
                   alt={video.name}
-                  className="h-auto w-[180px] rounded-md object-cover lg:w-auto"
+                  className="h-auto w-[120px] rounded-md object-cover md:w-[180px] lg:w-auto"
                 />
               </div>
             ))}

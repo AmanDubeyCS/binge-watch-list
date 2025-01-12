@@ -34,14 +34,9 @@ export default function SearchAnime() {
           ))}
         </div>
       )}
-      <div className="mx-auto flex max-w-[1600px] justify-center gap-2">
-        {uniqueData && (
-          <div
-            style={{
-              width: `${Math.round((uniqueData?.length || 0) / 2) * 375}px`,
-            }}
-            className="flex flex-wrap gap-3 py-3 pr-5"
-          >
+      <div className="mx-auto flex max-w-[1600px] items-center justify-center gap-2">
+        {!isLoading && (
+          <div className="grid grid-cols-3 gap-3 p-3 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {uniqueData.map((anime: AnimeData) => (
               <Card
                 key={anime.mal_id}

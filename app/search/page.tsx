@@ -29,7 +29,7 @@ export default function SearchPage() {
     } else if (query.length === 0) {
       router.push(`/search?type=${searchType}`)
     }
-  }, [query, searchType])
+  }, [query, searchType, router])
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-100 to-white">

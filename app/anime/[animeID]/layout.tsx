@@ -70,112 +70,104 @@ export default async function layout({
   params: { animeID: number }
   children: ReactElement
 }) {
-  try {
-    const animeID = params.animeID
-    const animeData = await fetchFromJikan(config.getSingleAnime(animeID), 0)
+  const animeID = params.animeID
+  const animeData = await fetchFromJikan(config.getSingleAnime(animeID), 0)
 
-    const cleanNames = extractAnimeName(
-      animeData?.data.title_english || animeData?.data.title,
-      animeData?.data.type
-    )
+  const cleanNames = extractAnimeName(
+    animeData?.data.title_english || animeData?.data.title,
+    animeData?.data.type
+  )
 
-    let animeDataFromTMDB = null
-    let imdbResponse = null
+  let animeDataFromTMDB = null
+  let imdbResponse = null
 
-    if (cleanNames) {
-      animeDataFromTMDB = await dataTMDB(cleanNames, animeData?.data.type)
-      const imdbId = animeDataFromTMDB?.external_ids?.imdb_id
+  if (cleanNames) {
+    animeDataFromTMDB = await dataTMDB(cleanNames, animeData?.data.type)
+    const imdbId = animeDataFromTMDB?.external_ids?.imdb_id
 
-      if (imdbId) {
-        imdbResponse = await getIMDBData(
-          imdbId,
-          animeDataFromTMDB.first_air_date
-        )
-      }
+    if (imdbId) {
+      imdbResponse = await getIMDBData(imdbId, animeDataFromTMDB.first_air_date)
     }
+  }
 
-    const animeInfo = animeData.data
+  const animeInfo = animeData.data
 
-    const navLinks = links.filter((t) => {
-      if (animeData?.data.type === "Movie" && t.name === "Episodes") {
-        return false
-      }
-      return true
-    })
+  const navLinks = links.filter((t) => {
+    if (animeData?.data.type === "Movie" && t.name === "Episodes") {
+      return false
+    }
+    return true
+  })
 
-    return (
-      <>
-        <section>
-          <ContentDetails
-            id={animeID}
-            backdropPoster={
-              `https://image.tmdb.org/t/p/w1280${animeDataFromTMDB?.backdrop_path}` ||
-              animeInfo.images.webp.large_image_url
-            }
-            poster={animeInfo.images.webp.large_image_url}
-            title={animeInfo.title_english || animeInfo.title}
-            date={animeInfo.year}
-            genres={animeInfo.genres.map(
-              (genres: { name: string }) => genres.name
-            )}
-            rating={animeInfo.score}
-            voteCount={animeInfo.scored_by}
-            overview={animeInfo.synopsis}
-            production={animeInfo.studios.map(
-              (studio: { name: string }) => studio.name
-            )}
-            producer={animeInfo.producers.map(
-              (prod: { name: string }) => prod.name
-            )}
-            imdbData={imdbResponse || null}
-            type={animeInfo.type}
-            episodes={animeInfo.episodes}
-            imdbRating={
-              imdbResponse?.imdbRating || imdbResponse?.ratings["imdb"]?.rating
-            }
-            imdbVotes={
-              imdbResponse?.imdbVotes || imdbResponse?.ratings["imdb"]?.votes
-            }
-            contentType="anime"
-            numbers={animeInfo.rank}
-          />
-
-          {animeInfo.trailer.embed_url && (
-            <section className="mx-auto max-w-[1600px] p-6">
-              <div className="aspect-w-16 aspect-h-9">
-                <iframe
-                  src={animeInfo.trailer.embed_url}
-                  allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="aspect-video size-full rounded-lg"
-                ></iframe>
-              </div>
-            </section>
+  return (
+    <>
+      <section>
+        <ContentDetails
+          id={animeID}
+          backdropPoster={
+            `https://image.tmdb.org/t/p/w1280${animeDataFromTMDB?.backdrop_path}` ||
+            animeInfo.images.webp.large_image_url
+          }
+          poster={animeInfo.images.webp.large_image_url}
+          title={animeInfo.title_english || animeInfo.title}
+          date={animeInfo.year}
+          genres={animeInfo.genres.map(
+            (genres: { name: string }) => genres.name
           )}
+          rating={animeInfo.score}
+          voteCount={animeInfo.scored_by}
+          overview={animeInfo.synopsis}
+          production={animeInfo.studios.map(
+            (studio: { name: string }) => studio.name
+          )}
+          producer={animeInfo.producers.map(
+            (prod: { name: string }) => prod.name
+          )}
+          imdbData={imdbResponse || null}
+          type={animeInfo.type}
+          episodes={animeInfo.episodes}
+          imdbRating={
+            imdbResponse?.imdbRating || imdbResponse?.ratings["imdb"]?.rating
+          }
+          imdbVotes={
+            imdbResponse?.imdbVotes || imdbResponse?.ratings["imdb"]?.votes
+          }
+          contentType="anime"
+          numbers={animeInfo.rank}
+        />
 
-          <div
-            style={{
-              backgroundImage:
-                "linear-gradient(to right, rgba(255, 255, 255, 0.9) 0%, rgba(240, 240, 240, 0.9) 100%)",
-            }}
-            className="pb-14"
-          >
-            <div className="mx-auto flex max-w-[1600px] gap-4 lg:p-10">
-              <div className="flex w-full flex-col gap-4">
-                <div className="">
-                  <NavLinks id={animeID} links={navLinks} />
-                </div>
-                <div className="rounded-lg bg-white p-4 shadow-md">
-                  {children}
-                </div>
+        {animeInfo.trailer.embed_url && (
+          <section className="mx-auto max-w-[1600px] p-6">
+            <div className="aspect-w-16 aspect-h-9">
+              <iframe
+                src={animeInfo.trailer.embed_url}
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="aspect-video size-full rounded-lg"
+              ></iframe>
+            </div>
+          </section>
+        )}
+
+        <div
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, rgba(255, 255, 255, 0.9) 0%, rgba(240, 240, 240, 0.9) 100%)",
+          }}
+          className="pb-14"
+        >
+          <div className="mx-auto flex max-w-[1600px] gap-4 lg:p-10">
+            <div className="flex w-full flex-col gap-4">
+              <div className="">
+                <NavLinks id={animeID} links={navLinks} />
+              </div>
+              <div className="rounded-lg bg-white p-4 shadow-md">
+                {children}
               </div>
             </div>
           </div>
-        </section>
-      </>
-    )
-  } catch (error) {
-    console.error("Error fetching anime data:", error)
-    return <div>Error: Failed to fetch movies data.</div>
-  }
+        </div>
+      </section>
+    </>
+  )
 }

@@ -72,7 +72,7 @@ export default function Header() {
       <div>
         <Image src={logo} alt="logo" className="h-[50px] w-auto" />
       </div>
-      <div className="fixed bottom-0 left-0 z-[100000] flex w-full bg-white p-2 md:relative md:flex md:max-w-[600px]">
+      <div className="fixed bottom-0 left-0 z-50 flex w-full bg-white p-2 md:relative md:flex md:max-w-[600px]">
         {links.map((link) => (
           <Link
             key={link.name}
@@ -89,10 +89,10 @@ export default function Header() {
         ))}
 
         <Link
-          href={`/profile/${session?.user?.id}`}
+          href={session?.user?.id ? `/profile/${session?.user?.id}` : `/login`}
           onClick={() => setActiveLink(`/profile/${session?.user?.id}`)}
           className={cn(
-            "text-neutrals-800 flex flex-col items-center justify-center gap-2 px-3 text-[11px] font-medium leading-[normal] hover:text-orange-400 md:hidden md:text-[15px]",
+            "text-neutrals-800 flex flex-1 flex-col items-center justify-center gap-2 text-[11px] font-medium leading-[normal] hover:text-orange-400 md:hidden md:text-[15px]",
             activeLink === `/profile/${session?.user?.id}` && "text-orange-400"
           )}
         >

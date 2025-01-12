@@ -354,17 +354,17 @@ export function ContentDetails({
               <div className="flex flex-wrap gap-4">
                 <BookmarkTag
                   id={id}
-                  contentType={contentType}
+                  contentType={contentType || ""}
                   name={title}
                   coverImage={poster}
                   tag={date}
                   voteAverage={rating}
                   voteCount={voteCount}
-                  numbers={numbers}
+                  numbers={numbers || 0}
                   genre={genres}
-                  Episodes={episodes}
+                  episodes={episodes || 0}
                   platforms={platforms}
-                  muID={muID}
+                  muID={muID || ""}
                 />
 
                 {/* {watchProvider && watchProvider["IN"] && (
@@ -428,7 +428,7 @@ export function ContentDetails({
             alt={`${title} poster`}
             width={300}
             height={450}
-            className="mx-auto mb-6 h-auto w-full max-w-[250px] rounded-lg object-cover shadow-lg"
+            className="mx-auto mb-6 h-auto w-full max-w-[150px] rounded-lg object-cover shadow-lg"
           />
           <div className="mx-auto flex max-w-[450px] flex-col items-center justify-center gap-4">
             <div className="flex flex-col items-center justify-center gap-1">
@@ -477,7 +477,7 @@ export function ContentDetails({
               </div>
 
               {/* Genres */}
-              <div className="mb-4 flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2">
                 {genres.map((genre, index) => (
                   <span
                     key={index}
@@ -503,15 +503,15 @@ export function ContentDetails({
                 </div>
               </div>
             ) : (
-              <div className="flex shrink-0 flex-wrap justify-center gap-2 text-black">
+              <div className="mb-4 flex shrink-0 flex-wrap justify-center gap-4">
                 {ratings.map((rating, index) => {
                   if (rating.rating !== "N/A") {
                     return (
                       <div
                         key={index}
                         className={cn(
-                          "flex items-center gap-1 rounded-md border p-3",
-                          rating.bgColor
+                          "flex items-center gap-1"
+                          // rating.bgColor
                         )}
                       >
                         <div className="flex items-center gap-2">
@@ -520,12 +520,12 @@ export function ContentDetails({
                             alt=""
                             style={{
                               width: "full",
-                              height: "20px",
+                              height: "14px",
                             }}
                           />
-                          <div className="text-[20px] font-bold">
+                          <div className="text-[14px] font-bold">
                             {rating.rating}
-                            <span className="text-base font-bold">
+                            <span className="text-[14px] font-bold">
                               {rating.name.includes("DB")
                                 ? "/10"
                                 : rating.name === "Metacritic" &&
@@ -533,9 +533,9 @@ export function ContentDetails({
                                   ? "/100"
                                   : ""}
                             </span>
-                            <div className="text-xs text-zinc-500">
+                            {/* <div className="text-xs text-zinc-500">
                               ({rating.votes})
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                       </div>
@@ -546,11 +546,30 @@ export function ContentDetails({
               </div>
             )}
 
-            <div className="w-[-webkit-fill-available]">
-              <p className="mb-2 text-lg font-bold text-white">Overview</p>
+            <div className="flex w-full flex-wrap gap-4">
+              <div className="w-full">
+                <BookmarkTag
+                  id={id}
+                  contentType={contentType || ""}
+                  name={title}
+                  coverImage={poster}
+                  tag={date}
+                  voteAverage={rating}
+                  voteCount={voteCount}
+                  numbers={numbers || 0}
+                  genre={genres}
+                  episodes={episodes || 0}
+                  platforms={platforms}
+                  muID={muID || ""}
+                />
+              </div>
+            </div>
+
+            <div className="mt-4 w-[-webkit-fill-available]">
+              {/* <p className="mb-2 text-lg font-bold text-white">Overview</p> */}
               <p className="line-clamp-4 text-sm text-gray-300">{overview}</p>
             </div>
-            <div className="start flex w-full flex-col justify-start gap-4">
+            {/* <div className="start flex w-full flex-col justify-start gap-4">
               {imdbData?.Director && imdbData?.Director !== "N/A" && (
                 <div className="flex gap-3">
                   <h3 className="flex items-center gap-2 text-sm font-semibold">
@@ -606,9 +625,9 @@ export function ContentDetails({
                   </div>
                 </div>
               )}
-            </div>
+            </div> */}
 
-            <div className="flex w-full flex-wrap gap-4">
+            {/* <div className="flex w-full flex-wrap gap-4">
               <div className="w-full">
                 <BookmarkTag
                   id={id}
@@ -626,7 +645,7 @@ export function ContentDetails({
                 />
               </div>
 
-              {/* {watchProvider && (
+              {watchProvider && (
                 <button className="flex h-fit w-full items-center justify-center gap-2 rounded-lg bg-gray-800 p-1 pr-6">
                   <img
                     src={`https://image.tmdb.org/t/p/original${watchProvider["IN"]?.flatrate[0]?.logo_path}`}
@@ -642,7 +661,7 @@ export function ContentDetails({
                     </span>
                   </div>
                 </button>
-              )} */}
+              )}
               {readProviders &&
                 readProviders.map(
                   (platform: any) =>
@@ -663,7 +682,7 @@ export function ContentDetails({
                       </Link>
                     )
                 )}
-            </div>
+            </div> */}
           </div>
         </div>
       </section>

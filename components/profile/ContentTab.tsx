@@ -94,7 +94,7 @@ export default function ContentTab({
           ))}
         </div>
       </div>
-      <div className="mx-auto grid w-fit grid-cols-2 gap-3 p-2 pb-20 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+      <div className="mx-auto grid w-fit grid-cols-2 gap-1 pb-20 sm:grid-cols-3 sm:gap-3 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {filteredData.map((data) => (
           <ProfileCard
             key={data.id}

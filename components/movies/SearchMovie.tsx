@@ -6,16 +6,6 @@ import { useDebounce } from "@/util/debouncing"
 import { useSearchData } from "@/queries/search"
 import { LoadingCard } from "../LoadingCard"
 
-// async function fetchMovieDetails(movieID: number) {
-//   const response = await axios.get("/api/proxy", {
-//     params: {
-//       url: configTMDB.getSingleMovieProfile(movieID),
-//     },
-//   })
-
-//   return response.data
-// }
-
 interface MovieResult {
   id: number
   title: string
@@ -40,39 +30,6 @@ export default function SearchMovie() {
     error,
   } = useSearchData("movie", debouncedQuery)
 
-  // useEffect(() => {
-  //   const handler = setTimeout(() => {
-  //     setDebouncedSearch(searchParams.get("q") || "")
-  //   }, 300)
-
-  //   return () => {
-  //     clearTimeout(handler)
-  //   }
-  // }, [searchParams])
-
-  // const { data: movieData, error, isLoading } = useMovieSearch(debouncedQuery)
-
-  // useEffect(() => {
-  //   const fetchMovies = async () => {
-  //     if (movieData && movieData.length > 0) {
-  //       const promises = movieData.map(async (movie: any) => {
-  //         const movieDetails = await fetchMovieDetails(movie.id)
-  //         return { ...movie, details: movieDetails }
-  //       })
-
-  //       const updatedResults = await Promise.all(promises)
-  //       setResults(updatedResults)
-  //     }
-  //   }
-
-  //   fetchMovies()
-  // }, [movieData])
-
-  // const filteredData = results.filter((item) => {
-  //   return !item.details.keywords.keywords.some(
-  //     (keyword: { id: number }) => keyword.id === 210024
-  //   )
-  // })
   if (error) return <p>Error: {error.message}</p>
 
   return (

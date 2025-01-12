@@ -1,9 +1,8 @@
-import LogoutButton from "@/components/auth/LogoutButton"
-import { EditProfileDialog } from "@/components/profile/EditProfile"
 import { ProfileNav } from "@/components/profile/ProfileNav"
+import { ProfileSettings } from "@/components/ProfileSettings"
 import { fetchUserData } from "@/util/fetchUserInfo"
 import { Timestamp } from "firebase/firestore"
-import { Calendar } from "lucide-react"
+import { Calendar, MapPin, Lock } from "lucide-react"
 import Image from "next/image"
 import React, { ReactElement } from "react"
 
@@ -93,10 +92,12 @@ export default async function Layout({
                 </p>
               )}
               <div className="mt-4 flex flex-wrap justify-center gap-4 md:justify-start">
-                {/* <div className="flex items-center space-x-2">
-                  <MapPin className="h-5 w-5" />
-                  <span>Tokyo, Japan</span>
-                </div> */}
+                {userData.location && (
+                  <div className="flex items-center space-x-2">
+                    <MapPin className="size-5" />
+                    <span>{userData.location}</span>
+                  </div>
+                )}
                 <div className="flex items-center space-x-2">
                   <Calendar className="size-5" />
                   <span>
@@ -105,15 +106,25 @@ export default async function Layout({
                 </div>
               </div>
             </div>
-            <LogoutButton />
-            <EditProfileDialog initialData={serializedData} />
+            <ProfileSettings serializedData={serializedData} userId={userId} />
           </div>
         </div>
       </header>
-      <ProfileNav userId={userId} />
-      <div className="mx-auto max-w-[1600px] px-2 lg:px-4 lg:py-10">
-        {children}
-      </div>
+      {!userData.isPrivate ? (
+        <>
+          <ProfileNav userId={userId} />
+          <div className="mx-auto max-w-[1600px] px-2 lg:px-4 lg:py-10">
+            {children}
+          </div>
+        </>
+      ) : (
+        <div className="mx-auto flex max-w-[1600px] flex-col items-center justify-center px-2 lg:px-4 lg:py-10">
+          <div>
+            <p className="text-[32px] font-bold">Private Profile</p>
+          </div>
+          <Lock size={200} />
+        </div>
+      )}
     </div>
   )
 }

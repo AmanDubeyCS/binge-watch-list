@@ -3,14 +3,12 @@ import React from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useFetchAnime } from "@/queries/jikan/animefetch"
 import { AnimeData } from "@/types/anime/animeTypes"
-import { DataStore, useDataStore } from "@/store/allDataStore"
 import Card from "../common/Card"
 import { tvStatuses } from "../common/ListContent"
 
 export function ListOfAnimes() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { data: listData } = useDataStore() as DataStore
 
   const currentParams = Object.fromEntries(searchParams.entries())
 
