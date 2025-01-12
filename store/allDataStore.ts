@@ -32,6 +32,28 @@ export const useDataStore = create((set) => ({
       set({ error, loading: false })
     }
   },
+
+  upsertItem: (newItem: any) => {
+    set((state: any) => {
+      const existingIndex = state.data.findIndex(
+        (item: any) => String(item.id) === String(newItem.id)
+      )
+
+      if (existingIndex !== -1) {
+        // Update existing item
+        const updatedData = [...state.data]
+        updatedData[existingIndex] = {
+          ...updatedData[existingIndex],
+          ...newItem,
+        }
+        return { data: updatedData }
+      } else {
+        // Add new item
+        return { data: [...state.data, newItem] }
+      }
+    })
+  },
+
   removeFromWatchlist: (id: string | number, mediaType: string) => {
     set((state: any) => ({
       data: state.data.filter(
@@ -43,6 +65,7 @@ export const useDataStore = create((set) => ({
 
 export interface DataStore {
   data: any
+  upsertItem: (newItem: any) => void
   fetchData: (db: any, userId: string) => void
   removeFromWatchlist: (id: string | number, mediaType: string) => void
 }

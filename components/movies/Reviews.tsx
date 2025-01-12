@@ -63,7 +63,7 @@ export function Reviews({ data }: { data: any }) {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 text-black">
+    <div className="px-4 py-8 text-black">
       <div className="mb-6 flex items-center justify-between">
         <p className="text-lg">{reviews.length} reviews</p>
         <select

@@ -42,100 +42,81 @@ export default async function Layout({
   children: ReactElement
 }) {
   const { movieID } = params
-  try {
-    const movieInfo = await fetchFromTMDB(
-      configTMDB.getSingleMovie({ movieID })
-    )
-    const response = await fetchFromTMDB(configTMDB.getMovieVideos(movieID))
-    const imdbId = movieInfo.external_ids?.imdb_id || null
-    let imdbResponse = null
+  const movieInfo = await fetchFromTMDB(configTMDB.getSingleMovie({ movieID }))
+  const response = await fetchFromTMDB(configTMDB.getMovieVideos(movieID))
+  const imdbId = movieInfo.external_ids?.imdb_id || null
+  let imdbResponse = null
 
-    if (imdbId) {
-      imdbResponse = await getIMDBData(imdbId, movieInfo.release_date)
+  if (imdbId) {
+    imdbResponse = await getIMDBData(imdbId, movieInfo.release_date)
+  }
+
+  const navLinks = links.filter((t) => {
+    if (!movieInfo.belongs_to_collection && t.name === "Collection") {
+      return false
     }
+    return true
+  })
 
-    const navLinks = links.filter((t) => {
-      if (!movieInfo.belongs_to_collection && t.name === "Collection") {
-        return false
-      }
-      return true
-    })
+  return (
+    <section>
+      <ContentDetails
+        id={movieID}
+        backdropPoster={`https://image.tmdb.org/t/p/w1280${movieInfo.backdrop_path}`}
+        poster={`https://image.tmdb.org/t/p/w500${movieInfo.poster_path}`}
+        title={movieInfo.title}
+        date={movieInfo.release_date}
+        genres={movieInfo.genres.map((genres: { name: string }) => genres.name)}
+        rating={movieInfo.vote_average}
+        voteCount={movieInfo.vote_count}
+        overview={movieInfo.overview}
+        production={movieInfo.production_companies.map(
+          (prod: { name: string }) => prod.name
+        )}
+        imdbData={imdbResponse}
+        type={movieInfo.status}
+        runTime={movieInfo.runtime}
+        budget={movieInfo.budget}
+        revenue={movieInfo.revenue}
+        watchProvider={movieInfo["watch/providers"].results}
+        imdbRating={
+          imdbResponse?.imdbRating || imdbResponse?.ratings["imdb"]?.rating
+        }
+        imdbVotes={
+          imdbResponse?.imdbVotes || imdbResponse?.ratings["imdb"]?.votes
+        }
+        contentType="movie"
+        numbers={movieInfo.popularity}
+      />
 
-    return (
-      <section>
-        <ContentDetails
-          backdropPoster={`https://image.tmdb.org/t/p/w1280${movieInfo.backdrop_path}`}
-          poster={`https://image.tmdb.org/t/p/w500${movieInfo.poster_path}`}
-          title={movieInfo.title}
-          date={movieInfo.release_date}
-          genres={movieInfo.genres.map(
-            (genres: { name: string }) => genres.name
-          )}
-          rating={movieInfo.vote_average}
-          voteCount={movieInfo.vote_count}
-          overview={movieInfo.overview}
-          production={movieInfo.production_companies.map(
-            (prod: { name: string }) => prod.name
-          )}
-          imdbData={imdbResponse}
-          type={movieInfo.status}
-          runTime={movieInfo.runtime}
-          budget={movieInfo.budget}
-          revenue={movieInfo.revenue}
-          watchProvider={movieInfo["watch/providers"].results}
-          imdbRating={
-            imdbResponse?.imdbRating || imdbResponse?.ratings["imdb"]?.rating
-          }
-          imdbVotes={
-            imdbResponse?.imdbVotes || imdbResponse?.ratings["imdb"]?.votes
-          }
-        />
+      <div className="mx-auto max-w-[1600px]">
+        <VideoList videos={response.results} />
+      </div>
 
-        <div className="mx-auto max-w-[1600px]">
-          <VideoList videos={response.results} />
-        </div>
-
-        <div
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, rgba(255, 255, 255, 0.9) 0%, rgba(240, 240, 240, 0.9) 100%)",
-          }}
-          className="pb-14"
-        >
-          <div className="mx-auto flex max-w-[1600px] gap-4 lg:p-10">
-            {/* <ContentSidebar
-              rating={movieInfo.vote_average}
-              imdbRatings={imdbData}
-              voteCount={movieInfo.vote_count}
-              popularity={movieInfo.popularity}
-              type={movieInfo.status}
-              budget={movieInfo.budget}
-              revenue={movieInfo.revenue}
-              runTime={movieInfo.runtime}
-              language={movieInfo.original_language}
-              externalIds={movieInfo.external_ids}
-              watchProvider={movieInfo["watch/providers"].results}
-            /> */}
-            <div className="flex w-full flex-col gap-4">
-              <div className="">
-                <NavLinks
-                  id={movieID}
-                  links={navLinks}
-                  collectionId={
-                    movieInfo.belongs_to_collection
-                      ? movieInfo.belongs_to_collection.id
-                      : ""
-                  }
-                />
-              </div>
-              <div>{children}</div>
+      <div
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, rgba(255, 255, 255, 0.9) 0%, rgba(240, 240, 240, 0.9) 100%)",
+        }}
+        className="pb-14"
+      >
+        <div className="mx-auto flex max-w-[1600px] gap-4 lg:p-10">
+          <div className="flex w-full flex-col gap-4">
+            <div className="">
+              <NavLinks
+                id={movieID}
+                links={navLinks}
+                collectionId={
+                  movieInfo.belongs_to_collection
+                    ? movieInfo.belongs_to_collection.id
+                    : ""
+                }
+              />
             </div>
+            <div>{children}</div>
           </div>
         </div>
-      </section>
-    )
-  } catch (error) {
-    console.error("Error fetching movies data:", error)
-    return <div>Error: Failed to fetch movies data.</div>
-  }
+      </div>
+    </section>
+  )
 }

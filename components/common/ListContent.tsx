@@ -1,8 +1,6 @@
-"use client"
 import React from "react"
 import { TvShow } from "@/types/tv/tvListType"
 import { Movie } from "@/types/movie/movieListType"
-import { DataStore, useDataStore } from "@/store/allDataStore"
 import { AnimeData } from "@/types/anime/animeTypes"
 import { MangaItem } from "@/types/manga/mangaTypes"
 import Card from "./Card"
@@ -82,7 +80,6 @@ export function ListCards({
   title: string
   titleIcon: any
 }) {
-  const { data } = useDataStore() as DataStore
   const tvDataFilter = tvData?.filter(
     (tv) => tv.vote_average !== 0 && !tv.genre_ids.includes(16)
   )
@@ -94,12 +91,11 @@ export function ListCards({
 
   return (
     <section>
-      <h2 className="mb-4 flex items-center text-2xl font-semibold">
-        {/* <Tv className="mr-2" /> */}
+      <h2 className="mb-4 flex items-center px-4 text-2xl font-semibold">
         {titleIcon}
         {title}
       </h2>
-      <div className="hide-scrollbar w-full overflow-x-scroll whitespace-nowrap">
+      <div className="hide-scrollbar w-full overflow-x-scroll whitespace-nowrap px-4">
         {tvData && (
           <div
             style={{
@@ -123,7 +119,6 @@ export function ListCards({
                   numbers={tv.popularity}
                   mediaType="tv"
                   status={tvStatuses}
-                  statusData={data}
                 />
               )
             })}
@@ -151,7 +146,6 @@ export function ListCards({
                 numbers={movie.popularity}
                 mediaType="movie"
                 status={movieStatuses}
-                statusData={data}
               />
             ))}
           </div>
@@ -176,7 +170,6 @@ export function ListCards({
                 numbers={anime.rank}
                 mediaType="anime"
                 status={tvStatuses}
-                statusData={data}
                 episodes={anime.episodes}
                 showStatus={anime.status}
               />
@@ -213,7 +206,6 @@ export function ListCards({
                   numbers={manga.rating.follows}
                   mediaType="manga"
                   status={bookStatuses}
-                  statusData={data}
                 />
               )
             })}
@@ -241,7 +233,6 @@ export function ListCards({
                   platforms={game.parent_platforms}
                   mediaType="game"
                   status={gameStatuses}
-                  statusData={[]}
                 />
               )
             })}

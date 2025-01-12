@@ -3,7 +3,6 @@ import { useFetchMedia } from "@/queries/TMDB/movies/moviesFetch"
 import React from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { TvShow } from "@/types/tv/tvListType"
-import { DataStore, useDataStore } from "@/store/allDataStore"
 import Card from "../common/Card"
 
 export interface Movie {
@@ -58,7 +57,6 @@ export function ListOfMovies() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const type = pathname.includes("tv") ? "tv" : "movie"
-  const { data: watchData } = useDataStore() as DataStore
 
   const currentParams = Object.fromEntries(searchParams.entries())
 
@@ -116,7 +114,6 @@ export function ListOfMovies() {
                     numbers={movie.popularity}
                     mediaType="movie"
                     status={""}
-                    statusData={[]}
                   />
                 ))
               : data.results.map((tv: TvShow) => (
@@ -134,7 +131,6 @@ export function ListOfMovies() {
                     numbers={tv.popularity}
                     mediaType="tv"
                     status={""}
-                    statusData={[]}
                   />
                 ))}
           </div>

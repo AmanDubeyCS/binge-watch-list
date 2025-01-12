@@ -65,7 +65,6 @@ export default async function page({
             )}
             numbers={movie.popularity}
             mediaType="movie"
-            statusData={[]}
             status={movieStatuses}
           />
         ))}

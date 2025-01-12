@@ -35,39 +35,6 @@ export const authOptions: NextAuthOptions = {
         }
       },
     }),
-    // Email/Password Provider
-    // CredentialsProvider({
-    //   id: "login",
-    //   name: "Login",
-    //   credentials: {
-    //     uuid: {
-    //       label: "Token",
-    //       type: "password",
-    //       placeholder: "Enter id Token",
-    //     },
-    //     name: { lable: "Name", type: "text" },
-    //     email: { label: "Email", type: "text" },
-    //   },
-    //   async authorize(credentials) {
-    //     try {
-    //       const { uuid, name, email } = credentials as {
-    //         uuid: string
-    //         name: string
-    //         email: string
-    //       }
-
-    //       return {
-    //         id: uuid,
-    //         email: email,
-    //         name: name,
-    //         // image: photoURL,
-    //       }
-    //     } catch (error) {
-    //       console.error("Error with email/password login:", error)
-    //       return null
-    //     }
-    //   },
-    // }),
     // Google Login using Popup
     CredentialsProvider({
       id: "signinwithgoogle",

@@ -1,7 +1,8 @@
 import React from "react"
 import { BookOpen, Film, Tv, Gamepad } from "lucide-react"
-import TVShowCard from "../tvPage/tvHomePage/TvShowCard"
 import { WatchListData } from "@/util/fetchProfileList"
+import Card from "../common/Card"
+import { bookStatuses, movieStatuses, tvStatuses } from "../common/ListContent"
 
 const collectionMap = {
   manga: <BookOpen className="mr-2 size-5" />,
@@ -26,161 +27,173 @@ export function Overview({
     <div className="flex flex-wrap justify-center gap-10">
       <h2 className="mb-6 text-2xl font-bold">OVERVIEW</h2>
 
-      <div className="flex w-full flex-wrap gap-3">
-        <div className="w-full rounded-lg border border-gray-200 bg-white">
-          <div className="bg-gray-100 p-4">
-            <h3 className="flex items-center text-lg font-semibold capitalize">
-              {collectionMap["movies" as keyof typeof collectionMap]} Movies
-            </h3>
+      {movieData.length > 1 && (
+        <div className="flex w-full flex-wrap gap-3">
+          <div className="w-full rounded-lg border border-gray-200 bg-white">
+            <div className="bg-gray-100 p-4">
+              <h3 className="flex items-center text-lg font-semibold capitalize">
+                {collectionMap["movies" as keyof typeof collectionMap]} Movies
+              </h3>
+            </div>
+            <ul className="hide-scrollbar grid w-full grid-cols-2 gap-3 divide-y divide-gray-200 overflow-scroll p-2 sm:grid-cols-3 md:p-6 lg:flex lg:flex-wrap">
+              {movieData &&
+                movieData
+                  .slice(0, 4)
+                  .map((data: any) => (
+                    <Card
+                      key={data.id}
+                      id={data.id}
+                      name={data.name}
+                      coverImage={data.coverImage}
+                      tag={data.tag}
+                      voteAverage={data.voteAverage}
+                      voteCount={data.voteCount}
+                      genre={data.genre}
+                      numbers={data.numbers}
+                      mediaType="movie"
+                      profileCardStatus={data.movieStatus}
+                      status={movieStatuses}
+                    />
+                  ))}
+              {/* {movieData.length < 4 &&
+                Array.from({ length: Math.round(4 - movieData.length) }).map(
+                  (_, i) => (
+                    <div
+                      key={i}
+                      className="h-full w-full shrink-0 rounded-md border-2 border-gray-100 shadow-md lg:h-[245px] lg:w-[360px]"
+                    ></div>
+                  )
+                )} */}
+            </ul>
           </div>
-          <ul className="hide-scrollbar flex w-full gap-5 divide-y divide-gray-200 overflow-scroll p-3">
-            {movieData &&
-              movieData
-                .slice(0, 5)
-                .map((data: any) => (
-                  <TVShowCard
-                    key={data.id}
-                    id={data.id}
-                    name={data.name}
-                    coverImage={data.coverImage}
-                    tag={data.tag}
-                    voteAverage={data.voteAverage}
-                    voteCount={data.voteCount}
-                    genre={data.genre}
-                    numbers={data.numbers}
-                    mediaType={data.collection}
-                    statusData={[]}
-                  />
-                ))}
-            {movieData.length < 4 &&
-              Array.from({ length: Math.round(5 - movieData.length) }).map(
-                (_, i) => (
-                  <div
-                    key={i}
-                    className="h-[245px] w-[360px] shrink-0 rounded-md border-2 border-gray-100 shadow-md"
-                  ></div>
-                )
-              )}
-          </ul>
         </div>
-      </div>
+      )}
 
-      <div className="flex w-full flex-wrap gap-3">
-        <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
-          <div className="bg-gray-100 p-4">
-            <h3 className="flex items-center text-lg font-semibold capitalize">
-              {collectionMap["movies" as keyof typeof collectionMap]} Anime
-            </h3>
+      {animeData.length > 1 && (
+        <div className="flex w-full flex-wrap gap-3">
+          <div className="w-full rounded-lg border border-gray-200 bg-white">
+            <div className="bg-gray-100 p-4">
+              <h3 className="flex items-center text-lg font-semibold capitalize">
+                {collectionMap["movies" as keyof typeof collectionMap]} Anime
+              </h3>
+            </div>
+            <ul className="hide-scrollbar grid w-full grid-cols-2 gap-3 divide-y divide-gray-200 overflow-scroll p-2 sm:grid-cols-3 md:p-6 lg:flex lg:flex-wrap">
+              {animeData &&
+                animeData
+                  .slice(0, 4)
+                  .map((data: any) => (
+                    <Card
+                      key={data.id}
+                      id={data.id}
+                      name={data.name}
+                      coverImage={data.coverImage}
+                      tag={data.tag}
+                      voteAverage={data.voteAverage}
+                      voteCount={data.voteCount}
+                      genre={data.genre}
+                      numbers={data.numbers}
+                      mediaType="anime"
+                      profileCardStatus={data.watchStatus}
+                      status={tvStatuses}
+                    />
+                  ))}
+              {/* {animeData.length < 4 &&
+                Array.from({ length: Math.round(4 - animeData.length) }).map(
+                  (_, i) => (
+                    <div
+                      key={i}
+                      className="h-full w-full shrink-0 rounded-md border-2 border-gray-100 shadow-md lg:h-[245px] lg:w-[360px]"
+                    ></div>
+                  )
+                )} */}
+            </ul>
           </div>
-          <ul className="hide-scrollbar flex w-full gap-5 divide-y divide-gray-200 overflow-scroll p-3">
-            {animeData &&
-              animeData
-                .slice(0, 5)
-                .map((data: any) => (
-                  <TVShowCard
-                    key={data.id}
-                    id={data.id}
-                    name={data.name}
-                    coverImage={data.coverImage}
-                    tag={data.tag}
-                    voteAverage={data.voteAverage}
-                    voteCount={data.voteCount}
-                    genre={data.genre}
-                    numbers={data.numbers}
-                    mediaType={data.collection}
-                    statusData={[]}
-                  />
-                ))}
-            {animeData.length < 4 &&
-              Array.from({ length: Math.round(5 - animeData.length) }).map(
-                (_, i) => (
-                  <div
-                    key={i}
-                    className="h-[245px] w-[360px] shrink-0 rounded-md border-2 border-gray-100 shadow-md"
-                  ></div>
-                )
-              )}
-          </ul>
         </div>
-      </div>
+      )}
 
-      <div className="flex w-full flex-wrap gap-3">
-        <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
-          <div className="bg-gray-100 p-4">
-            <h3 className="flex items-center text-lg font-semibold capitalize">
-              {collectionMap["movies" as keyof typeof collectionMap]} Tv Shows
-            </h3>
+      {tvData.length > 1 && (
+        <div className="flex w-full flex-wrap gap-3">
+          <div className="w-full rounded-lg border border-gray-200 bg-white">
+            <div className="bg-gray-100 p-4">
+              <h3 className="flex items-center text-lg font-semibold capitalize">
+                {collectionMap["movies" as keyof typeof collectionMap]} Tv Shows
+              </h3>
+            </div>
+            <ul className="hide-scrollbar grid w-full grid-cols-2 gap-3 divide-y divide-gray-200 overflow-scroll p-2 sm:grid-cols-3 md:p-6 lg:flex lg:flex-wrap">
+              {tvData &&
+                tvData
+                  .slice(0, 4)
+                  .map((data: any) => (
+                    <Card
+                      key={data.id}
+                      id={data.id}
+                      name={data.name}
+                      coverImage={data.coverImage}
+                      tag={data.tag}
+                      voteAverage={data.voteAverage}
+                      voteCount={data.voteCount}
+                      genre={data.genre}
+                      numbers={data.numbers}
+                      mediaType="tv"
+                      profileCardStatus={data.watchStatus}
+                      status={tvStatuses}
+                    />
+                  ))}
+              {/* {tvData.length < 4 &&
+                Array.from({ length: Math.round(4 - tvData.length) }).map(
+                  (_, i) => (
+                    <div
+                      key={i}
+                      className="h-full w-full shrink-0 rounded-md border-2 border-gray-100 shadow-md lg:h-[245px] lg:w-[360px]"
+                    ></div>
+                  )
+                )} */}
+            </ul>
           </div>
-          <ul className="hide-scrollbar flex w-full gap-5 divide-y divide-gray-200 overflow-scroll p-3">
-            {tvData &&
-              tvData
-                .slice(0, 5)
-                .map((data: any) => (
-                  <TVShowCard
-                    key={data.id}
-                    id={data.id}
-                    name={data.name}
-                    coverImage={data.coverImage}
-                    tag={data.tag}
-                    voteAverage={data.voteAverage}
-                    voteCount={data.voteCount}
-                    genre={data.genre}
-                    numbers={data.numbers}
-                    mediaType={data.collection}
-                    statusData={[]}
-                  />
-                ))}
-            {tvData.length < 4 &&
-              Array.from({ length: Math.round(5 - tvData.length) }).map(
-                (_, i) => (
-                  <div
-                    key={i}
-                    className="h-[245px] w-[360px] shrink-0 rounded-md border-2 border-gray-100 shadow-md"
-                  ></div>
-                )
-              )}
-          </ul>
         </div>
-      </div>
+      )}
 
-      <div className="flex w-full flex-wrap gap-3">
-        <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
-          <div className="bg-gray-100 p-4">
-            <h3 className="flex items-center text-lg font-semibold capitalize">
-              {collectionMap["movies" as keyof typeof collectionMap]} Manga
-            </h3>
+      {mangaData.length > 1 && (
+        <div className="flex w-full flex-wrap gap-3">
+          <div className="w-full rounded-lg border border-gray-200 bg-white">
+            <div className="bg-gray-100 p-4">
+              <h3 className="flex items-center text-lg font-semibold capitalize">
+                {collectionMap["movies" as keyof typeof collectionMap]} Manga
+              </h3>
+            </div>
+            <ul className="hide-scrollbar grid w-full grid-cols-2 gap-3 divide-y divide-gray-200 overflow-scroll p-2 sm:grid-cols-3 md:p-6 lg:flex lg:flex-wrap">
+              {mangaData &&
+                mangaData
+                  .slice(0, 4)
+                  .map((data: any) => (
+                    <Card
+                      key={data.id}
+                      id={data.id}
+                      name={data.name}
+                      coverImage={data.coverImage}
+                      tag={data.tag}
+                      voteAverage={data.voteAverage}
+                      voteCount={data.voteCount}
+                      genre={data.genre}
+                      numbers={data.numbers}
+                      mediaType="manga"
+                      profileCardStatus={data.readStatus}
+                      status={bookStatuses}
+                    />
+                  ))}
+              {/* {mangaData.length < 4 &&
+                Array.from({ length: Math.round(4 - mangaData.length) }).map(
+                  (_, i) => (
+                    <div
+                      key={i}
+                      className="h-full w-full shrink-0 rounded-md border-2 border-gray-100 shadow-md lg:h-[245px] lg:w-[360px]"
+                    ></div>
+                  )
+                )} */}
+            </ul>
           </div>
-          <ul className="hide-scrollbar flex w-full gap-5 divide-y divide-gray-200 overflow-scroll p-3">
-            {mangaData &&
-              mangaData
-                .slice(0, 5)
-                .map((data: any) => (
-                  <TVShowCard
-                    key={data.id}
-                    id={data.id}
-                    name={data.name}
-                    coverImage={data.coverImage}
-                    tag={data.tag}
-                    voteAverage={data.voteAverage}
-                    voteCount={data.voteCount}
-                    genre={data.genre}
-                    numbers={data.numbers}
-                    mediaType={data.collection}
-                    statusData={[]}
-                  />
-                ))}
-            {mangaData.length < 4 &&
-              Array.from({ length: Math.round(5 - mangaData.length) }).map(
-                (_, i) => (
-                  <div
-                    key={i}
-                    className="h-[245px] w-[360px] shrink-0 rounded-md border-2 border-gray-100 shadow-md"
-                  ></div>
-                )
-              )}
-          </ul>
         </div>
-      </div>
+      )}
     </div>
   )
 }

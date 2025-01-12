@@ -18,7 +18,6 @@ import {
   handleTvShowStatusChange,
 } from "@/util/contentStatusChange"
 import { DataStore, useDataStore } from "@/store/allDataStore"
-import Image from "next/image"
 import { checkdata } from "@/util/fetchFromMangaUpdates"
 
 const platformLogos = {
@@ -47,13 +46,13 @@ interface TVShowCardProps {
   voteCount: number
   genre: any
   numbers: number
-  mediaType?: string
-  statusData?: any
+  mediaType: string
   episodes?: any
   showStatus?: any
   platforms?: any
   status?: any
   profileCardStatus?: any
+  userId?: boolean
 }
 
 export default function Card({
@@ -66,42 +65,42 @@ export default function Card({
   genre,
   numbers,
   mediaType,
-  statusData,
   episodes,
   platforms,
   status,
   profileCardStatus,
+  userId,
 }: TVShowCardProps) {
   const { data: session } = useSession()
   const router = useRouter()
   const pathname = usePathname()
+  const { data, upsertItem, removeFromWatchlist } = useDataStore() as DataStore
 
+  // Extract the user ID from the URL
   const handleClick = () => {
-    if (mediaType === "movie") {
-      router.push(`/movies/${id}`)
-    } else if (mediaType === "tv") {
-      router.push(`/tv/${id}`)
-    } else if (mediaType === "anime") {
-      router.push(`/anime/${id}`)
-    } else if (mediaType === "manga") {
-      router.push(`/manga/${id}`)
-    } else if (mediaType === "game") {
-      router.push(`/games/${id}`)
-    } else {
-      router.push(`${pathname}/${id}`)
+    const routes: Record<string, string> = {
+      movie: `/movies/${id}`,
+      tv: `/tv/${id}`,
+      anime: `/anime/${id}`,
+      manga: `/manga/${id}`,
+      game: `/games/${id}`,
     }
+
+    router.push(routes[mediaType] || `${pathname}/${id}`)
   }
 
   const watchStatus = useMemo(() => {
     if (profileCardStatus) return profileCardStatus
-    else {
-      return (
-        statusData.find((item: { id: number | string }) => item.id === id)
-          ?.status || null
-      )
-    }
-  }, [statusData, id, profileCardStatus])
+    const status = data?.find((item: { id: number | string }) => item.id === id)
+    // console.log(status)
+    return mediaType === "manga"
+      ? status?.readStatus
+      : mediaType === "game"
+        ? status?.gameStatus
+        : status?.watchStatus || null
+  }, [data])
 
+  // console.log(data)
   const handleStatusChange = async (selectedStatus: string) => {
     if (!session?.user?.id || !mediaType) return
 
@@ -115,43 +114,24 @@ export default function Card({
       genre,
     }
 
-    switch (mediaType) {
-      case "movie":
-        await handleMovieStatusChange(
-          session.user.id,
-          Number(id),
-          selectedStatus,
-          details
-        )
-        break
-      case "tv":
-        await handleTvShowStatusChange(
-          session.user.id,
-          Number(id),
-          selectedStatus,
-          details
-        )
-        break
-      case "anime":
-        await handleAnimeStatusChange(
-          session.user.id,
-          Number(id),
-          selectedStatus,
-          { ...details, episodes }
-        )
-        break
-      case "game":
-        await handleGameStatusChange(
-          session.user.id,
-          Number(id),
-          selectedStatus,
-          { ...details, platforms }
-        )
-        break
-      case "manga":
+    if (mediaType === "manga") {
+      upsertItem({ id, readStatus: selectedStatus, ...details })
+    } else if (mediaType === "game") {
+      upsertItem({ id, gameStatus: selectedStatus, ...details })
+    } else {
+      upsertItem({ id, watchStatus: selectedStatus, ...details })
+    }
+
+    const handlers: Record<string, Function> = {
+      movie: handleMovieStatusChange,
+      tv: handleTvShowStatusChange,
+      anime: handleAnimeStatusChange,
+      game: handleGameStatusChange,
+      manga: async () => {
         const muId = await checkdata(String(id))
         const muID = typeof muId === "number" ? muId.toString() : undefined
-        await handleMangaStatusChange(
+        upsertItem({ ...details, id, selectedStatus, muID })
+        return handleMangaStatusChange(
           session.user.id,
           id,
           selectedStatus,
@@ -159,24 +139,28 @@ export default function Card({
           undefined,
           muID
         )
-        break
-      default:
-        console.error("Invalid media type")
+      },
     }
-  }
 
+    await handlers[mediaType]?.(
+      session.user.id,
+      mediaType === "manga" ? id : Number(id),
+      selectedStatus,
+      mediaType === "anime"
+        ? { ...details, episodes }
+        : mediaType === "game"
+          ? { ...details, platforms }
+          : details
+    )
+  }
   const handleRemoveData = () => {
     if (!session?.user?.id || !mediaType) return
 
     const docRef = doc(db, "users", session.user.id, mediaType, id.toString())
-
     deleteDoc(docRef)
       .then(() => {
         console.log(`Document with ID ${id} deleted successfully!`)
-        ;(useDataStore.getState() as DataStore).removeFromWatchlist(
-          id,
-          mediaType
-        )
+        removeFromWatchlist(id, mediaType)
       })
       .catch((error) => {
         console.error("Error removing data:", error)
@@ -187,13 +171,67 @@ export default function Card({
     <>
       <div
         onClick={handleClick}
-        className={`hidden h-[245px] w-[360px] cursor-pointer items-center justify-start overflow-hidden rounded-md bg-white shadow-md duration-300 hover:scale-105 md:p-2 lg:flex`}
+        className={`hidden h-[245px] w-[360px] shrink-0 cursor-pointer items-center justify-start overflow-hidden rounded-md bg-white shadow-md duration-300 hover:scale-105 md:p-2 lg:flex`}
       >
         <div className="group flex h-full gap-2">
           <div
             className={`relative w-[140px] shrink-0 overflow-hidden rounded-lg`}
           >
-            {!pathname.includes("profile") ? (
+            {pathname.includes("profile") ? (
+              <div>
+                {!userId ? (
+                  <div
+                    className="group absolute left-0 top-0 h-[34px] w-6 cursor-pointer"
+                    role="button"
+                    aria-label="Watchlist options"
+                  >
+                    <svg
+                      width="24"
+                      height="34"
+                      viewBox="0 0 24 34"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="absolute right-0 top-0"
+                    >
+                      <path
+                        d="M24 0H0V32L12.2437 26.2926L24 31.7728V0Z"
+                        className={`${
+                          watchStatus
+                            ? "fill-blue-600"
+                            : "fill-zinc-700 group-hover:fill-zinc-600"
+                        } transition-colors duration-200`}
+                      />
+                      <path
+                        d="M24 31.7728V33.7728L12.2437 28.2926L0 34V32L12.2437 26.2926L24 31.7728Z"
+                        className="fill-black/20"
+                      />
+                    </svg>
+                    <div className="absolute right-1 top-1.5 text-zinc-200 transition-colors duration-200 group-hover:text-white">
+                      {watchStatus ? (
+                        status[watchStatus]?.icon
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                        >
+                          <path d="M18 13h-5v5c0 .55-.45 1-1 1s-1-.45-1-1v-5H6c-.55 0-1-.45-1-1s.45-1 1-1h5V6c0-.55.45-1 1-1s1 .45 1 1v5h5c.55 0 1 .45 1 1s-.45 1-1 1z" />
+                        </svg>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <WatchlistRibbon
+                    onStatusChange={handleStatusChange}
+                    currentStatus={watchStatus}
+                    statuses={status}
+                    onRemoveData={handleRemoveData}
+                  />
+                )}
+              </div>
+            ) : (
               <div className="opacity-0 group-hover:opacity-100">
                 <WatchlistRibbon
                   onStatusChange={handleStatusChange}
@@ -201,13 +239,6 @@ export default function Card({
                   statuses={status}
                 />
               </div>
-            ) : (
-              <WatchlistRibbon
-                onStatusChange={handleStatusChange}
-                currentStatus={watchStatus}
-                statuses={status}
-                onRemoveData={handleRemoveData}
-              />
             )}
             <ImageLoader
               src={coverImage}
@@ -292,35 +323,42 @@ export default function Card({
       <div
         onClick={handleClick}
         className={cn(
-          "mx-auto block w-[165px] max-w-sm overflow-hidden rounded-xl lg:hidden",
+          "mx-auto block w-[165px] max-w-sm shrink-0 overflow-hidden rounded-xl lg:hidden",
           (pathname.includes("/discover") ||
             pathname.includes("/search") ||
-            pathname.includes("/profile")) &&
+            pathname.includes("/profile") ||
+            pathname.includes("/recommendations")) &&
             "w-full"
         )}
       >
-        <div className={`relative shrink-0 overflow-hidden rounded-lg`}>
+        <div className={`relative shrink-0 overflow-hidden`}>
           <WatchlistRibbon
             onStatusChange={handleStatusChange}
             currentStatus={watchStatus}
             statuses={status}
           />
 
-          <Image
+          <ImageLoader
             src={coverImage}
             alt={name}
-            width={200}
-            height={200}
             className={cn(
-              "h-[240px] w-[165px] rounded-xl object-cover",
+              "h-[240px] w-[165px] rounded-xl rounded-b-none object-cover",
               (pathname.includes("/discover") ||
                 pathname.includes("/search") ||
-                pathname.includes("/profile")) &&
+                pathname.includes("/profile") ||
+                pathname.includes("/recommendations")) &&
                 "aspect-[2/3] size-full"
             )}
+            fallback={
+              <div
+                className={`flex h-auto w-[140px] items-center justify-center bg-white text-center text-black`}
+              >
+                <p>Image not available</p>
+              </div>
+            }
           />
         </div>
-        <div className="py-4">
+        <div className="px-2 py-4">
           <h2 className="mb-2 line-clamp-2 h-[48px] text-wrap text-base font-semibold">
             {name}
           </h2>

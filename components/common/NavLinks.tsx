@@ -3,6 +3,18 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import React, { useState } from "react"
 
+const checkLink = (lastSegment: string) => {
+  const activeLink = [
+    "review",
+    "media",
+    "character",
+    "episodes",
+    "recommendations",
+    "collection",
+    "season",
+  ].includes(lastSegment)
+  return activeLink ? lastSegment : "/"
+}
 export default function NavLinks({
   id,
   links,
@@ -13,8 +25,8 @@ export default function NavLinks({
   collectionId?: number
 }) {
   const pathname = usePathname()
-  const lastSegment = pathname.split("/").pop()
-  const [selected, setSelected] = useState(lastSegment)
+  const lastSegment = pathname.split("/").pop() || ""
+  const [selected, setSelected] = useState(checkLink(lastSegment))
   const linkTo = pathname.includes("movie")
     ? "movies"
     : pathname.includes("tv")

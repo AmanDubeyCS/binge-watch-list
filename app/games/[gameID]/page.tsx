@@ -15,6 +15,7 @@ export default async function page({ params }: { params: Props }) {
   return (
     <main>
       <ContentDetails
+        id={gameId}
         backdropPoster={gameInfo.background_image}
         poster={gameInfo.background_image}
         title={gameInfo.name}
@@ -29,6 +30,8 @@ export default async function page({ params }: { params: Props }) {
         producer={gameInfo.publishers.map((pub: { name: string }) => pub.name)}
         esbrrating={gameInfo.esrb_rating?.name || "N/A"}
         type="game"
+        contentType="game"
+        platforms={gameInfo.parent_platforms}
       />
       <GameInfo gameData={gameInfo} />
     </main>

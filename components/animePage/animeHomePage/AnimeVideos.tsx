@@ -46,16 +46,16 @@ export function AnimeVideos({ animeVideos }: { animeVideos: AnimeTrailer[] }) {
   // console.log(animeVideos[0].entry.images)
   return (
     <section>
-      <h2 className="mb-4 flex items-center text-2xl font-semibold text-gray-900">
+      <h2 className="mb-4 flex items-center px-4 text-2xl font-semibold text-gray-900">
         <Video className="mr-2" />
         Anime Videos
       </h2>
-      <div className="hide-scrollbar w-full overflow-x-scroll whitespace-nowrap">
+      <div className="hide-scrollbar w-full overflow-x-scroll whitespace-nowrap px-4">
         <div className="flex w-fit space-x-4 p-4 pr-5">
           {animeVideos.map((video) => (
             <Dialog>
               <DialogTrigger asChild>
-                <div className="w-[400px] duration-300 hover:scale-105">
+                <div className="w-[300px] duration-300 hover:scale-105 md:w-[400px]">
                   <div
                     key={video.entry.mal_id}
                     className="group relative aspect-video"

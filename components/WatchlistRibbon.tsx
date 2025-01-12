@@ -7,6 +7,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Trash2 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 
 export interface WatchlistRibbonProps {
   onStatusChange: (_status: string) => void
@@ -26,7 +28,13 @@ export const WatchlistRibbon: React.FC<WatchlistRibbonProps> = ({
   currentStatus,
   statuses,
 }) => {
+  const router = useRouter()
+  const { data: session } = useSession()
   const handleStatusChange = (status: string) => {
+    if (!session?.user.id) {
+      router.push("/login")
+      return
+    }
     onStatusChange(status)
   }
 

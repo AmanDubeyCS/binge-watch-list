@@ -1,20 +1,10 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { useSearchParams } from "next/navigation"
 import Card from "../common/Card"
-import { useMovieSearch } from "@/queries/TMDB/movies/moviesFetch"
 import { genreMap, movieStatuses } from "../common/ListContent"
-import axios from "axios"
-import { configTMDB } from "@/apiConfig"
-
-async function fetchMovieDetails(movieID: number) {
-  const response = await axios.get("/api/proxy", {
-    params: {
-      url: configTMDB.getSingleMovieProfile(movieID),
-    },
-  })
-
-  return response.data
-}
+import { useDebounce } from "@/util/debouncing"
+import { useSearchData } from "@/queries/search"
+import { LoadingCard } from "../LoadingCard"
 
 interface MovieResult {
   id: number
@@ -31,51 +21,30 @@ interface MovieResult {
 
 export default function SearchMovie() {
   const searchParams = useSearchParams()
-  const [debouncedSearch, setDebouncedSearch] = useState("")
-  const [results, setResults] = useState<MovieResult[]>([])
 
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedSearch(searchParams.get("q") || "")
-    }, 300)
+  const debouncedQuery = useDebounce(searchParams.get("q") || "")
 
-    return () => {
-      clearTimeout(handler)
-    }
-  }, [searchParams])
+  const {
+    data: movieData,
+    isLoading,
+    error,
+  } = useSearchData("movie", debouncedQuery)
 
-  const { data: movieData, error, isLoading } = useMovieSearch(debouncedSearch)
-
-  useEffect(() => {
-    const fetchMovies = async () => {
-      if (movieData && movieData.length > 0) {
-        const promises = movieData.map(async (movie: any) => {
-          const movieDetails = await fetchMovieDetails(movie.id)
-          return { ...movie, details: movieDetails }
-        })
-
-        const updatedResults = await Promise.all(promises)
-        setResults(updatedResults)
-      }
-    }
-
-    fetchMovies()
-  }, [movieData])
-
-  const filteredData = results.filter((item) => {
-    return !item.details.keywords.keywords.some(
-      (keyword: { id: number }) => keyword.id === 210024
-    )
-  })
   if (error) return <p>Error: {error.message}</p>
 
   return (
     <>
-      {isLoading && <div>Loading...</div>}
+      {isLoading && (
+        <div className="mx-auto flex max-w-[1600px] flex-wrap gap-4">
+          {Array.from({ length: 16 }, (_, i) => (
+            <LoadingCard key={i} />
+          ))}
+        </div>
+      )}
       <div className="mx-auto flex max-w-[1600px] items-center justify-center gap-2">
-        {!isLoading && results && (
+        {!isLoading && (
           <div className="grid grid-cols-3 gap-3 p-3 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-            {filteredData?.map((movie) => (
+            {movieData?.map((movie: MovieResult) => (
               <Card
                 key={movie.id}
                 id={movie.id}
@@ -90,7 +59,6 @@ export default function SearchMovie() {
                 numbers={movie.popularity}
                 mediaType="movie"
                 status={movieStatuses}
-                statusData={[]}
               />
             ))}
           </div>

@@ -58,25 +58,25 @@ export function EpisodesList({
   const { data } = useSeasonEpisodes(seriesId, seasonId)
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="px-4 py-8">
       <div className="space-y-6">
         {data?.episodes?.map((episode: Episode) => (
           <div
             key={episode.id}
             className="overflow-hidden rounded-lg bg-white shadow-md"
           >
-            <div className="flex items-start p-4">
+            <div className="flex items-start md:p-4">
               <img
                 src={`https://image.tmdb.org/t/p/w300${episode.still_path}`}
                 alt={`${episode.name}`}
-                className="h-18 mr-4 w-48 shrink-0 rounded-md object-cover"
+                className="md:h-18 mr-4 h-full w-48 shrink-0 rounded-md object-cover"
               />
               <div className="grow">
                 <div className="mb-2 flex items-start justify-between">
-                  <h2 className="text-xl font-semibold">
-                    {episode.episode_number}. {episode.name}
+                  <h2 className="line-clamp-2 text-xl font-semibold">
+                    {episode.name}
                   </h2>
-                  <span className="rounded-full bg-gray-200 px-2 py-1 text-sm text-gray-700">
+                  <span className="hidden rounded-full bg-gray-200 px-2 py-1 text-sm text-gray-700 md:flex">
                     {episode.runtime} min
                   </span>
                 </div>

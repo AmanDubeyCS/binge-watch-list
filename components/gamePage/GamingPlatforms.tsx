@@ -35,8 +35,8 @@ export default function GamingPlatforms() {
 
   return (
     <section>
-      <h2 className="mb-6 text-3xl font-bold">Gaming Platforms</h2>
-      <div className="hide-scrollbar flex gap-6 overflow-x-scroll">
+      <h2 className="mb-6 px-4 text-3xl font-bold">Gaming Platforms</h2>
+      <div className="hide-scrollbar flex gap-6 overflow-x-scroll px-4">
         {platformData.results.map((platform) =>
           platform.platforms.length > 1 ? (
             <div

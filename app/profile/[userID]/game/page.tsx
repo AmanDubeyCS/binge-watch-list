@@ -5,17 +5,13 @@ import React from "react"
 export const revalidate = 300
 export default async function page({ params }: { params: { userID: string } }) {
   const userId = params.userID
-  try {
-    const game = await fetchProfileList(userId, "game")
-    return (
-      <ContentTab
-        data={game}
-        title="MY GAMES"
-        mediaType="game"
-        filters={["playing", "planning", "dropped", "beaten"]}
-      />
-    )
-  } catch (error) {
-    console.error("Error fetching movies:", error)
-  }
+  const game = await fetchProfileList(userId, "game")
+  return (
+    <ContentTab
+      data={game}
+      title="MY GAMES"
+      mediaType="game"
+      filters={["playing", "planning", "dropped", "beaten"]}
+    />
+  )
 }

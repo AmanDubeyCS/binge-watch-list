@@ -6,9 +6,5 @@ import React from "react"
 export default async function page({ params }: { params: { tvID: number } }) {
   const seriesId = params.tvID
   const data = await fetchFromTMDB(configTMDB.getTvReviews(seriesId))
-  return (
-    <div>
-      <Reviews data={data.results} />
-    </div>
-  )
+  return <Reviews data={data.results} />
 }
