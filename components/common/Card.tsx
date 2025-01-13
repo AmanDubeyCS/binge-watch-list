@@ -86,7 +86,7 @@ export default function Card({
       game: `/games/${id}`,
     }
 
-    router.push(routes[mediaType] || `${pathname}/${id}`)
+    router.push(routes[mediaType] || `${pathname}/${id}`, { scroll: false })
   }
 
   const watchStatus = useMemo(() => {
