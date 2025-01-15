@@ -51,7 +51,7 @@ export default async function SingleMoviePage({
                     href={movieInfo.homepage}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-500 hover:underline"
+                    className="line-clamp-1 text-blue-500 hover:underline"
                   >
                     {movieInfo.homepage}
                   </a>

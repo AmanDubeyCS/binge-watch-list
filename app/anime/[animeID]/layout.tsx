@@ -161,9 +161,7 @@ export default async function layout({
               <div className="">
                 <NavLinks id={animeID} links={navLinks} />
               </div>
-              <div className="rounded-lg bg-white p-4 shadow-md">
-                {children}
-              </div>
+              <div>{children}</div>
             </div>
           </div>
         </div>

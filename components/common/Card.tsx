@@ -342,7 +342,8 @@ export default function Card({
             src={coverImage}
             alt={name}
             className={cn(
-              "h-[240px] w-[165px] rounded-xl rounded-b-none object-cover",
+              "h-[240px] w-[165px] rounded-xl object-cover",
+              pathname.includes("/profile") && "rounded-b-none",
               (pathname.includes("/discover") ||
                 pathname.includes("/search") ||
                 pathname.includes("/profile") ||
@@ -363,7 +364,13 @@ export default function Card({
             {name}
           </h2>
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-500">{tag}</span>
+            <span className="text-sm text-gray-500">
+              {mediaType === "movie" ||
+              mediaType === "tv" ||
+              mediaType === "game"
+                ? tag.slice(0, 4)
+                : tag}
+            </span>
             <div className="flex items-center">
               <Star className="mr-1 size-4 text-yellow-400" />
               <span className="text-sm font-semibold">

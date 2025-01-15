@@ -1,6 +1,5 @@
 import { configTMDB } from "@/apiConfig"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
-import { Heart } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import React from "react"
@@ -45,9 +44,9 @@ export default async function page({
                 width={150}
                 height={200}
               />
-              <button className="absolute right-2 top-2 rounded-full bg-white p-1 text-red-500 transition-colors hover:text-red-600">
+              {/* <button className="absolute right-2 top-2 rounded-full bg-white p-1 text-red-500 transition-colors hover:text-red-600">
                 <Heart className="size-5" />
-              </button>
+              </button> */}
             </div>
             <div className="p-4">
               <h2 className="truncate text-lg font-bold text-indigo-700">

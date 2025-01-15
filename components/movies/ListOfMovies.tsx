@@ -4,6 +4,7 @@ import React from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { TvShow } from "@/types/tv/tvListType"
 import Card from "../common/Card"
+import { movieStatuses, tvStatuses } from "../common/ListContent"
 
 export interface Movie {
   adult: boolean
@@ -94,7 +95,7 @@ export function ListOfMovies() {
   }
 
   return (
-    <div>
+    <div className="pb-20">
       {data && data.results && (
         <>
           <div className="grid grid-cols-2 gap-3 p-2 sm:grid-cols-3 md:p-6 2xl:grid-cols-4">
@@ -113,7 +114,7 @@ export function ListOfMovies() {
                     )}
                     numbers={movie.popularity}
                     mediaType="movie"
-                    status={""}
+                    status={movieStatuses}
                   />
                 ))
               : data.results.map((tv: TvShow) => (
@@ -130,11 +131,11 @@ export function ListOfMovies() {
                     )}
                     numbers={tv.popularity}
                     mediaType="tv"
-                    status={""}
+                    status={tvStatuses}
                   />
                 ))}
           </div>
-          <div className="flex justify-between p-6">
+          <div className="flex justify-between px-2 md:p-6">
             <button
               onClick={() => handleNavigation(parseInt(page) - 1)}
               disabled={page === "1"}
@@ -142,7 +143,7 @@ export function ListOfMovies() {
             >
               Previous
             </button>
-            <div className="flex items-center justify-center space-x-2">
+            <div className="hidden items-center justify-center space-x-2 md:flex">
               {getPageNumbers().map((page, index) => (
                 <button
                   key={index}

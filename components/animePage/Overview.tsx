@@ -7,7 +7,7 @@ export default function Overview({ animeInfo }: { animeInfo: Anime }) {
     <div className="space-y-6 text-black md:col-span-2">
       <section className="rounded-lg bg-white p-6 shadow-md">
         <h2 className="mb-4 text-2xl font-bold">Anime Information</h2>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className="flex items-center">
             <Calendar className="mr-2 size-5 text-blue-500" />
             <span className="font-semibold">Aired:</span>
@@ -89,8 +89,11 @@ export default function Overview({ animeInfo }: { animeInfo: Anime }) {
             <h3 className="text-lg font-semibold">{relation.relation}</h3>
             {relation.entry.map((entry, entryIndex) => (
               <div key={entryIndex} className="mt-1 flex items-center">
-                <Link className="mr-2 size-4 text-blue-500" />
-                <a href={entry.url} className="text-blue-500 hover:underline">
+                <Link className="mr-2 size-4 shrink-0 text-blue-500" />
+                <a
+                  href={entry.url}
+                  className="line-clamp-1 text-blue-500 hover:underline"
+                >
                   {entry.name}
                 </a>
                 <span className="ml-2 text-gray-600">({entry.type})</span>

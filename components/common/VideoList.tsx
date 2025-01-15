@@ -19,7 +19,6 @@ export default function VideoList({ videos }: { videos: Video[] }) {
   if (videos.length < 1) {
     return
   }
-
   return (
     <>
       {!showVideos && (
@@ -31,7 +30,7 @@ export default function VideoList({ videos }: { videos: Video[] }) {
         </div>
       )}
       {showVideos && (
-        <div className="flex flex-col gap-4 p-2 lg:flex-row lg:p-10">
+        <div className="flex flex-col gap-4 p-2">
           <iframe
             src={`https://www.youtube.com/embed/${currentVideo.key}`}
             allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -39,34 +38,42 @@ export default function VideoList({ videos }: { videos: Video[] }) {
             className="aspect-video size-full rounded-lg"
           ></iframe>
 
-          <div className="hide-scrollbar flex max-h-[640px] max-w-[1200px] justify-center gap-4 overflow-scroll lg:flex-col">
-            {trailers.map((video) => (
-              <div
-                key={video.key}
-                className="shrink-0 cursor-pointer"
-                onClick={() => setCurrentVideo(video)}
-              >
-                <img
-                  src={`https://img.youtube.com/vi/${video.key}/0.jpg`}
-                  alt={video.name}
-                  className="h-auto w-[120px] rounded-md object-cover md:w-[180px] lg:w-auto"
-                />
-              </div>
-            ))}
-            {others.map((video) => (
-              <div
-                key={video.key}
-                className="shrink-0 cursor-pointer"
-                onClick={() => setCurrentVideo(video)}
-              >
-                <img
-                  src={`https://img.youtube.com/vi/${video.key}/0.jpg`}
-                  alt={video.name}
-                  className="h-auto w-[120px] rounded-md object-cover md:w-[180px] lg:w-auto"
-                />
-              </div>
-            ))}
-          </div>
+          {videos.length > 1 && (
+            <div className="hide-scrollbar flex justify-start gap-4 overflow-x-auto">
+              {trailers.map((video) => (
+                <div
+                  key={video.key}
+                  onClick={() => setCurrentVideo(video)}
+                  className="w-36 shrink-0 cursor-pointer md:w-64"
+                >
+                  <img
+                    src={`https://img.youtube.com/vi/${video.key}/0.jpg`}
+                    alt={video.name}
+                    className="h-20 w-full rounded-md object-cover md:h-36"
+                  />
+                  <p className="mt-2 truncate text-sm font-medium">
+                    {video.name}
+                  </p>
+                </div>
+              ))}
+              {others.map((video) => (
+                <div
+                  key={video.key}
+                  onClick={() => setCurrentVideo(video)}
+                  className="w-36 shrink-0 cursor-pointer md:w-64"
+                >
+                  <img
+                    src={`https://img.youtube.com/vi/${video.key}/0.jpg`}
+                    alt={video.name}
+                    className="h-20 w-full rounded-md object-cover md:h-36"
+                  />
+                  <p className="mt-2 truncate text-sm font-medium">
+                    {video.name}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </>

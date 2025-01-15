@@ -180,13 +180,18 @@ export function ContentDetails({
                   </span>
                   <span>•</span>
                   <span>{date}</span>
-                  <span>•</span>
-                  <span>
-                    {imdbData?.Rated ||
-                      imdbData?.certification ||
-                      status ||
-                      esbrrating}
-                  </span>
+
+                  {imdbData && esbrrating && status && (
+                    <>
+                      <span>•</span>
+                      <span>
+                        {imdbData?.Rated ||
+                          imdbData?.certification ||
+                          status ||
+                          esbrrating}
+                      </span>
+                    </>
+                  )}
                   {episodes && (
                     <>
                       <span>•</span>
@@ -441,8 +446,17 @@ export function ContentDetails({
                 </span>
                 <span>•</span>
                 <span>{date}</span>
-                <span>•</span>
-                <span>{imdbData?.Rated || status || esbrrating}</span>
+                {imdbData && esbrrating && status && (
+                  <>
+                    <span>•</span>
+                    <span>
+                      {imdbData?.Rated ||
+                        imdbData?.certification ||
+                        status ||
+                        esbrrating}
+                    </span>
+                  </>
+                )}
                 {episodes && (
                   <>
                     <span>•</span>

@@ -17,7 +17,7 @@ export default async function Page() {
   ])
 
   return (
-    <main className="mx-auto flex max-w-[1600px] flex-col gap-5 px-4 pb-10 md:px-8">
+    <main className="mx-auto flex max-w-[1600px] flex-col gap-10 pb-10">
       {topManhwa && (
         <ListCards
           mangaData={topManhwa}

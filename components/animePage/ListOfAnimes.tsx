@@ -46,7 +46,7 @@ export function ListOfAnimes() {
   }
 
   return (
-    <div>
+    <div className="pb-20">
       {data && data.data && (
         <>
           <div className="grid grid-cols-2 gap-3 p-2 sm:grid-cols-3 md:p-6 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
@@ -68,7 +68,7 @@ export function ListOfAnimes() {
               />
             ))}
           </div>
-          <div className="flex justify-between p-6">
+          <div className="flex justify-between px-2 md:p-6">
             <button
               onClick={() => handleNavigation(parseInt(page) - 1)}
               disabled={page === "1"}

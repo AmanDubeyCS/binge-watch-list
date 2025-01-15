@@ -16,7 +16,7 @@ export default async function SingleTvPage({
     return <div>loading</div>
   }
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen pb-10">
       <div className="mx-auto">
         <div className="space-y-8 px-2">
           {tvInfo.last_episode_to_air && (
@@ -96,58 +96,6 @@ export default async function SingleTvPage({
             </div>
           </section>
 
-          <section className="flex gap-10">
-            <div>
-              <h2 className="mb-4 text-2xl font-semibold">Networks</h2>
-              <div className="flex flex-wrap gap-2">
-                {tvInfo.networks.map((network) => (
-                  <div
-                    key={network.id}
-                    className="rounded-full px-2 py-1 text-sm text-blue-800"
-                  >
-                    {network.logo_path ? (
-                      <Image
-                        src={`https://image.tmdb.org/t/p/w300${network.logo_path}`}
-                        alt={`Season ${network.name} Poster`}
-                        width={300}
-                        height={450}
-                        className="h-auto w-[150px] object-cover"
-                      />
-                    ) : (
-                      <p>{network.name}</p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <h2 className="mb-4 text-2xl font-semibold">
-                Production Companies
-              </h2>
-              <div className="flex flex-wrap gap-2">
-                {tvInfo.production_companies.map((company) => (
-                  <div
-                    key={company.id}
-                    className="rounded-full text-sm text-gray-800"
-                  >
-                    {company.logo_path ? (
-                      <Image
-                        src={`https://image.tmdb.org/t/p/w300${company.logo_path}`}
-                        alt={`Season ${company.name} Poster`}
-                        width={300}
-                        height={450}
-                        className="h-auto w-[150px] object-cover"
-                      />
-                    ) : (
-                      <p>{company.name}</p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
           <section>
             <h2 className="mb-4 text-2xl font-semibold">
               Additional Information
@@ -173,6 +121,14 @@ export default async function SingleTvPage({
                 <div className="flex gap-2">
                   <p className="font-semibold">Number of Seasons</p>
                   <p>{tvInfo.number_of_seasons}</p>
+                </div>
+                <div className="flex gap-2">
+                  <p className="font-semibold">Networks</p>{" "}
+                  <div className="line-clamp-1 flex">
+                    {tvInfo.networks.map((network) => (
+                      <p key={network.id}>{network.name}</p>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

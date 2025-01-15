@@ -6,6 +6,7 @@ import { TvGenresList } from "@/components/tvPage/tvHomePage/TvGenresList"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
 import { Tv } from "lucide-react"
 import { ListCards } from "@/components/common/ListContent"
+// import { Banner } from "@/components/common/Banner"
 
 export default async function MoviesPage() {
   const [trendingMovies, popularMovies, movieProviders, movieGenres] =
@@ -40,6 +41,11 @@ export default async function MoviesPage() {
 
   return (
     <main className="mx-auto flex max-w-[1600px] flex-col gap-10 pb-10">
+      {/* <div className="hide-scrollbar flex gap-5 overflow-x-scroll">
+        {trendingMovies.results.map((trendingMovies) => (
+          <Banner movie={trendingMovies} />
+        ))}
+      </div> */}
       {trendingMovies && (
         <ListCards
           movieData={trendingMovies.results}

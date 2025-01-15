@@ -49,7 +49,7 @@ export default async function page({
                   {index + 1}
                 </span>
                 <div>
-                  <h3 className="mb-1 text-xl font-semibold text-gray-800">
+                  <h3 className="mb-1 text-lg font-semibold text-gray-800 md:text-xl">
                     {episode.title}
                   </h3>
                   <p className="text-sm text-gray-500">
@@ -57,7 +57,7 @@ export default async function page({
                   </p>
                 </div>
               </div>
-              <div className="flex items-center space-x-6">
+              <div className="flex flex-col items-center gap-6 md:flex-row">
                 <div className="flex items-center">
                   <Calendar className="mr-2 size-5 text-gray-400" />
                   <span className="text-sm text-gray-600">

@@ -50,7 +50,7 @@ export function ListOfGames() {
   }
 
   return (
-    <div className="-z-10">
+    <div className="-z-10 pb-20">
       {data && data.results && (
         <div className="grid grid-cols-2 gap-3 p-2 sm:grid-cols-3 md:p-6 2xl:grid-cols-4">
           {data.results.map((game: Game) => (
@@ -71,7 +71,7 @@ export function ListOfGames() {
           ))}
         </div>
       )}
-      <div className="flex justify-between p-6">
+      <div className="flex justify-between px-2 md:p-6">
         <button
           onClick={() => handleNavigation(parseInt(page) - 1)}
           disabled={!data?.previous}

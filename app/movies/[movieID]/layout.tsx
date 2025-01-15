@@ -80,10 +80,14 @@ export default async function Layout({
         revenue={movieInfo.revenue}
         watchProvider={movieInfo["watch/providers"].results}
         imdbRating={
-          imdbResponse?.imdbRating || imdbResponse?.ratings["imdb"]?.rating
+          imdbResponse?.imdbRating ||
+          imdbResponse?.ratings?.["imdb"]?.rating ||
+          null
         }
         imdbVotes={
-          imdbResponse?.imdbVotes || imdbResponse?.ratings["imdb"]?.votes
+          imdbResponse?.imdbVotes ||
+          imdbResponse?.ratings?.["imdb"]?.votes ||
+          null
         }
         contentType="movie"
         numbers={movieInfo.popularity}

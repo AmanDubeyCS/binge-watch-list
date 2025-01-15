@@ -1,7 +1,14 @@
 "use client"
 
 import { useEffect, useMemo, useRef, useState } from "react"
-import { X, Check, ChevronDown, ChevronRight, CircleX } from "lucide-react"
+import {
+  X,
+  Check,
+  ChevronDown,
+  ChevronRight,
+  CircleX,
+  Filter,
+} from "lucide-react"
 import { ListOfGames } from "./ListOfGames"
 import { useRouter, useSearchParams } from "next/navigation"
 import {
@@ -281,7 +288,6 @@ export function GameDiscoverPage() {
       ...(platforms.length > 0 && { platforms: platforms.join(",") }),
       ...(release && { release }),
     })
-
     router.push(`/games/discover?${params.toString()}`)
   }
 
@@ -304,32 +310,23 @@ export function GameDiscoverPage() {
     <div className="mx-auto max-w-[1600px]">
       <div
         className={cn(
-          "w-fit bg-gray-300 p-4 lg:hidden",
+          "mx-auto my-1 flex w-fit gap-3 rounded-md bg-gray-300 p-4 text-center font-bold lg:hidden",
           !showFilter && "hidden"
         )}
         onClick={() => setShowFilter((prev) => !prev)}
       >
+        <Filter />
         Show filter
       </div>
       <div>
         <div className={cn("p-2 lg:p-6", showFilter && "hidden lg:block")}>
           <div className="flex justify-between px-8 py-4 lg:hidden">
-            <p>Filters</p>
+            <p className="flex items-center gap-2 text-lg font-bold">
+              <Filter size={20} /> Filters
+            </p>
             <CircleX onClick={() => setShowFilter((prev) => !prev)} />
           </div>
           <div className="flex flex-wrap justify-center gap-4 rounded-md">
-            {/* <div className="flex-1">
-              <p className="py-2.5 text-[15px] font-semibold text-gray-600">
-                Search
-              </p>
-              <input
-                placeholder="God of war..."
-                value={search}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="h-[40px] w-full rounded-md border p-2"
-              />
-            </div> */}
-
             <DropdownMultiSelect
               title="Order by"
               placeholder="Ex: Relevence"
