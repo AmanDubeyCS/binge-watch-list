@@ -98,7 +98,7 @@ export function ListOfMovies() {
     <div className="pb-20">
       {data && data.results && (
         <>
-          <div className="grid grid-cols-2 gap-3 p-2 sm:grid-cols-3 md:p-6 2xl:grid-cols-4">
+          <div className="grid grid-cols-2 place-items-center gap-3 p-3 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {type === "movie"
               ? data.results.map((movie: Movie) => (
                   <Card

@@ -1,6 +1,8 @@
 import { configTMDB } from "@/apiConfig"
+import { Icon } from "@/components/icons"
 import { Show } from "@/types/tv/singleTvType"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
+import { ImageLoader } from "@/util/ImageLoader"
 import { Calendar, Clock, Star } from "lucide-react"
 import Image from "next/image"
 import React from "react"
@@ -23,13 +25,23 @@ export default async function SingleTvPage({
             <section>
               <h2 className="mb-4 text-2xl font-semibold">Last Episode</h2>
               <div className="flex flex-col overflow-hidden rounded-lg bg-white shadow-md xs:flex-row">
-                <Image
+                <ImageLoader
+                  src={`https://image.tmdb.org/t/p/w500${tvInfo.last_episode_to_air.still_path}`}
+                  alt="Last Episode Still"
+                  fallback={
+                    <div className="flex aspect-[2/3] size-full items-center justify-center bg-[rgba(181,181,181,0.3)]">
+                      <Icon.noPreview />
+                    </div>
+                  }
+                  className="size-full object-cover"
+                />
+                {/* <Image
                   src={`https://image.tmdb.org/t/p/w500${tvInfo.last_episode_to_air.still_path}`}
                   alt="Last Episode Still"
                   width={500}
                   height={281}
                   className="h-auto object-cover xs:w-[150px]"
-                />
+                /> */}
                 <div className="p-4">
                   <h3 className="text-lg font-semibold">
                     {tvInfo.last_episode_to_air.name}

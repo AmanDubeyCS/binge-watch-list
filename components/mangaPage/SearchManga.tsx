@@ -31,7 +31,7 @@ export default function SearchManga() {
       )}
       <div className="mx-auto flex max-w-[1600px] justify-center gap-2">
         {mangaData && (
-          <div className="grid grid-cols-3 gap-3 p-3 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 p-3 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {mangaData.map((manga: MangaItem) => {
               const image = manga.relationships.filter(
                 (data) => data.type === "cover_art"

@@ -2,6 +2,7 @@ import { configTMDB } from "@/apiConfig"
 import { ContentDetails } from "@/components/common/ContentDetails"
 import NavLinks from "@/components/common/NavLinks"
 import VideoList from "@/components/common/VideoList"
+import { ScrollToTop } from "@/components/ScorllTop"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
 import { getIMDBData } from "@/util/fetchIMDBdata"
 import React, { ReactElement } from "react"
@@ -53,6 +54,7 @@ export default async function layout({
 
   return (
     <section>
+      <ScrollToTop />
       <ContentDetails
         id={tvID}
         backdropPoster={`https://image.tmdb.org/t/p/w1280${tvInfo.backdrop_path}`}

@@ -1,6 +1,7 @@
 import { config, configTMDB } from "@/apiConfig"
 import { ContentDetails } from "@/components/common/ContentDetails"
 import NavLinks from "@/components/common/NavLinks"
+import { ScrollToTop } from "@/components/ScorllTop"
 import { fetchFromJikan } from "@/util/fetchFromJikan"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
 import { getIMDBData } from "@/util/fetchIMDBdata"
@@ -102,6 +103,7 @@ export default async function layout({
   return (
     <>
       <section>
+        <ScrollToTop />
         <ContentDetails
           id={animeID}
           backdropPoster={

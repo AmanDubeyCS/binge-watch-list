@@ -76,7 +76,6 @@ export default function Card({
   const pathname = usePathname()
   const { data, upsertItem, removeFromWatchlist } = useDataStore() as DataStore
 
-  // Extract the user ID from the URL
   const handleClick = () => {
     const routes: Record<string, string> = {
       movie: `/movies/${id}`,
@@ -244,10 +243,8 @@ export default function Card({
               src={coverImage}
               alt={name}
               fallback={
-                <div
-                  className={`flex h-auto w-[140px] items-center justify-center bg-white text-center text-black`}
-                >
-                  <p>Image not available</p>
+                <div className="flex aspect-[2/3] size-full items-center justify-center rounded-xl bg-[rgba(181,181,181,0.3)]">
+                  <Icon.noPreview />
                 </div>
               }
             />
@@ -351,10 +348,8 @@ export default function Card({
                 "aspect-[2/3] size-full"
             )}
             fallback={
-              <div
-                className={`flex h-auto w-[140px] items-center justify-center bg-white text-center text-black`}
-              >
-                <p>Image not available</p>
+              <div className="flex aspect-[2/3] size-full items-center justify-center rounded-xl bg-[rgba(181,181,181,0.3)]">
+                <Icon.noPreview />
               </div>
             }
           />
@@ -365,9 +360,7 @@ export default function Card({
           </h2>
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-500">
-              {mediaType === "movie" ||
-              mediaType === "tv" ||
-              mediaType === "game"
+              {mediaType === "movie" || mediaType === "tv"
                 ? tag.slice(0, 4)
                 : tag}
             </span>

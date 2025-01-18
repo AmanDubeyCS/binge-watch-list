@@ -1,5 +1,4 @@
 import { ArrowDown, ArrowUp, Tag } from "lucide-react"
-import Link from "next/link"
 import React from "react"
 
 interface MangaUpdatesData {
@@ -50,7 +49,7 @@ export default async function page({ params }: { params: any }) {
         </div>
       </div>
 
-      <div>
+      {/* <div>
         <h3 className="mb-4 text-xl font-semibold">Recommendations</h3>
         <ul className="space-y-2">
           {MUData.category_recommendations.map((recommendation) => (
@@ -67,7 +66,7 @@ export default async function page({ params }: { params: any }) {
             </li>
           ))}
         </ul>
-      </div>
+      </div> */}
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div className="rounded-lg border shadow-lg">
@@ -102,7 +101,7 @@ export default async function page({ params }: { params: any }) {
         </div>
         <div className="rounded-lg border shadow-lg">
           <div className="border-b p-4">
-            <h3 className="text-lg">List Statistics</h3>
+            <h3 className="text-lg">Statistics</h3>
           </div>
           <div className="p-4">
             <ul className="space-y-2">

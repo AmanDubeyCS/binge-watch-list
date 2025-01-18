@@ -1,5 +1,4 @@
 import React from "react"
-import Image from "next/image"
 import { Info, Star } from "lucide-react"
 import { ImdbData } from "@/types/ImdbType"
 import { formatNumber } from "@/util/formatNumber"
@@ -7,6 +6,7 @@ import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { Icon } from "../icons"
 import BookmarkTag from "./BookmarkTag"
+import { ImageLoader } from "@/util/ImageLoader"
 
 interface ContentDetailsProps {
   id: number | string
@@ -32,6 +32,7 @@ interface ContentDetailsProps {
   watchProvider?: any
   imdbRating?: any
   imdbVotes?: any
+  muRating?: number
   contentType?: string
   readProviders?: any
   numbers?: number
@@ -95,6 +96,7 @@ export function ContentDetails({
   watchProvider,
   imdbRating,
   imdbVotes,
+  muRating,
   contentType,
   readProviders,
   numbers,
@@ -110,14 +112,33 @@ export function ContentDetails({
       rating: imdbRating || "N/A",
     },
     {
-      name: contentType === "anime" ? "MALDB" : "TMDB",
+      name:
+        contentType === "anime"
+          ? "MALDB"
+          : contentType === "manga"
+            ? "MDex"
+            : "TMDB",
       logo:
         contentType === "anime"
           ? "https://upload.wikimedia.org/wikipedia/commons/9/9b/MyAnimeList_favicon.svg"
-          : "https://upload.wikimedia.org/wikipedia/commons/8/89/Tmdb.new.logo.svg",
+          : contentType === "manga"
+            ? "https://upload.wikimedia.org/wikipedia/pt/a/ac/MangaDex_logo.svg"
+            : "https://upload.wikimedia.org/wikipedia/commons/8/89/Tmdb.new.logo.svg",
       votes: `${formatNumber(voteCount)}`,
-      bgColor: `bg-green-100`,
+      bgColor:
+        contentType === "anime"
+          ? `bg-green-100`
+          : contentType === "manga"
+            ? `bg-orange-200`
+            : `bg-green-100`,
       rating: rating ? rating.toFixed(1).slice(0, 3) : "N/A",
+    },
+    {
+      name: "MDex",
+      logo: <Icon.mangaUpdatesIcon />,
+      votes: `${formatNumber(0)}`,
+      bgColor: `bg-white`,
+      rating: muRating || "N/A",
     },
     {
       name: "RottenTomatoes",
@@ -163,13 +184,23 @@ export function ContentDetails({
         >
           <div className="mx-auto flex h-full max-w-[1600px] px-10 py-8 text-white">
             <div className="h-[450px] min-w-[300px]">
-              <Image
+              <ImageLoader
+                src={poster}
+                alt={title}
+                fallback={
+                  <div className="flex aspect-[2/3] size-full items-center justify-center rounded-xl bg-[rgba(181,181,181,0.3)]">
+                    <Icon.noPreview />
+                  </div>
+                }
+                className="size-auto max-w-[300px] rounded-lg md:h-full md:min-w-[300px]"
+              />
+              {/* <Image
                 src={poster}
                 alt="image"
                 width={600}
                 height={500}
                 className="size-auto max-w-[300px] rounded-lg md:h-full md:min-w-[300px]"
-              />
+              /> */}
             </div>
             <div className="flex flex-col gap-4 overflow-y-auto px-4">
               <div className="flex flex-col gap-2">
@@ -238,7 +269,7 @@ export function ContentDetails({
                 </div>
               </div>
 
-              {type === "manga" || type === "game" ? (
+              {contentType === "game" ? (
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2 rounded-full px-3 py-1">
                     <Star className="size-5 text-yellow-400" />
@@ -265,18 +296,23 @@ export function ContentDetails({
                           )}
                         >
                           <div className="flex items-center gap-2">
-                            <img
-                              src={rating.logo}
-                              alt=""
-                              style={{
-                                width: "full",
-                                height: "20px",
-                              }}
-                            />
+                            {typeof rating.logo === "string" ? (
+                              <img
+                                src={rating.logo}
+                                alt=""
+                                style={{
+                                  width: "full",
+                                  height: "20px",
+                                }}
+                              />
+                            ) : (
+                              rating.logo
+                            )}
                             <div className="text-[20px] font-bold">
                               {rating.rating}
                               <span className="text-base font-bold">
-                                {rating.name.includes("DB")
+                                {rating.name.includes("DB") ||
+                                rating.name.includes("MDex")
                                   ? "/10"
                                   : rating.name === "Metacritic" &&
                                       rating.rating !== "N/A"
@@ -284,7 +320,7 @@ export function ContentDetails({
                                     : ""}
                               </span>
                               <div className="text-xs text-zinc-500">
-                                ({rating.votes})
+                                {rating.votes !== "0" && `${rating.votes}`}
                               </div>
                             </div>
                           </div>
@@ -428,13 +464,23 @@ export function ContentDetails({
       >
         <div className="via-[#1f1f34]/84 to-[#1f1f34]/84 absolute inset-0 bg-gradient-to-r from-[#1f1f34]" />
         <div className="relative mx-auto flex max-w-[1600px] flex-col items-start px-4 py-8 text-white">
-          <Image
+          <ImageLoader
+            src={poster}
+            alt={title}
+            fallback={
+              <div className="flex aspect-[2/3] size-full items-center justify-center rounded-xl bg-[rgba(181,181,181,0.3)]">
+                <Icon.noPreview />
+              </div>
+            }
+            className="mx-auto mb-6 h-auto w-full max-w-[150px] rounded-lg object-cover shadow-lg"
+          />
+          {/* <Image
             src={poster}
             alt={`${title} poster`}
             width={300}
             height={450}
             className="mx-auto mb-6 h-auto w-full max-w-[150px] rounded-lg object-cover shadow-lg"
-          />
+          /> */}
           <div className="mx-auto flex max-w-[450px] flex-col items-center justify-center gap-4">
             <div className="flex flex-col items-center justify-center gap-1">
               <h1 className="mb-2 text-center text-3xl font-bold md:text-4xl">
@@ -491,7 +537,7 @@ export function ContentDetails({
               </div>
 
               {/* Genres */}
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap items-center justify-center gap-2">
                 {genres.map((genre, index) => (
                   <span
                     key={index}
@@ -502,7 +548,7 @@ export function ContentDetails({
                 ))}
               </div>
             </div>
-            {type === "manga" || type === "game" ? (
+            {contentType === "game" ? (
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2 rounded-full bg-slate-700 px-3 py-1">
                   <Star className="size-5 text-yellow-400" />
@@ -529,14 +575,18 @@ export function ContentDetails({
                         )}
                       >
                         <div className="flex items-center gap-2">
-                          <img
-                            src={rating.logo}
-                            alt=""
-                            style={{
-                              width: "full",
-                              height: "14px",
-                            }}
-                          />
+                          {typeof rating.logo === "string" ? (
+                            <img
+                              src={rating.logo}
+                              alt={rating.name}
+                              style={{
+                                width: "full",
+                                height: "20px",
+                              }}
+                            />
+                          ) : (
+                            rating.logo
+                          )}
                           <div className="text-[14px] font-bold">
                             {rating.rating}
                             <span className="text-[14px] font-bold">
@@ -547,9 +597,6 @@ export function ContentDetails({
                                   ? "/100"
                                   : ""}
                             </span>
-                            {/* <div className="text-xs text-zinc-500">
-                              ({rating.votes})
-                            </div> */}
                           </div>
                         </div>
                       </div>
@@ -583,120 +630,6 @@ export function ContentDetails({
               {/* <p className="mb-2 text-lg font-bold text-white">Overview</p> */}
               <p className="line-clamp-4 text-sm text-gray-300">{overview}</p>
             </div>
-            {/* <div className="start flex w-full flex-col justify-start gap-4">
-              {imdbData?.Director && imdbData?.Director !== "N/A" && (
-                <div className="flex gap-3">
-                  <h3 className="flex items-center gap-2 text-sm font-semibold">
-                    <Info className="size-4" /> Director
-                  </h3>
-                  <p className="text-sm font-medium text-gray-400">
-                    {imdbData.Director}
-                  </p>
-                </div>
-              )}
-              {imdbData?.Writer && imdbData?.Writer !== "N/A" && (
-                <div className="flex gap-3">
-                  <h3 className="flex items-center gap-2 text-sm font-semibold">
-                    <Info className="size-4" /> Writer
-                  </h3>
-                  <p className="text-sm font-medium text-gray-400">
-                    {imdbData.Writer}
-                  </p>
-                </div>
-              )}
-              <div className="flex gap-3">
-                <h3 className="flex items-center gap-2 text-sm font-semibold">
-                  <Info className="size-4" />{" "}
-                  {type === "manga"
-                    ? "Artist"
-                    : type === "game"
-                      ? "Developers"
-                      : "Production"}
-                </h3>
-                <div className="flex flex-wrap text-sm text-gray-400">
-                  {production
-                    .slice(0, 2)
-                    .map((productionCompany, index: number) => (
-                      <p key={index} className="mr-1 font-medium">
-                        {productionCompany}
-                        {index < production.length - 1 ? "," : ""}
-                      </p>
-                    ))}
-                </div>
-              </div>
-              {producer && producer.length > 0 && (
-                <div className="flex gap-3">
-                  <h3 className="flex items-center gap-2 text-sm font-semibold">
-                    <Info className="size-4" /> Producers
-                  </h3>
-                  <div className="flex flex-wrap text-sm text-gray-400">
-                    {producer.slice(0, 2).map((prod, index) => (
-                      <p key={index} className="mr-1 font-medium">
-                        {prod}
-                        {index < producer.length - 1 ? "," : ""}
-                      </p>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div> */}
-
-            {/* <div className="flex w-full flex-wrap gap-4">
-              <div className="w-full">
-                <BookmarkTag
-                  id={id}
-                  contentType={contentType}
-                  name={title}
-                  coverImage={poster}
-                  tag={date}
-                  voteAverage={rating}
-                  voteCount={voteCount}
-                  numbers={numbers}
-                  genre={genres}
-                  Episodes={episodes}
-                  platforms={platforms}
-                  muID={muID}
-                />
-              </div>
-
-              {watchProvider && (
-                <button className="flex h-fit w-full items-center justify-center gap-2 rounded-lg bg-gray-800 p-1 pr-6">
-                  <img
-                    src={`https://image.tmdb.org/t/p/original${watchProvider["IN"]?.flatrate[0]?.logo_path}`}
-                    alt={watchProvider["IN"]?.flatrate[0]?.provider_name}
-                    className="size-[45px] rounded-md"
-                  />
-                  <div className="flex flex-wrap items-center text-center">
-                    <span>
-                      <h4 className="text-sm font-normal text-opacity-80">
-                        Now Streaming
-                      </h4>
-                      <h3 className="font-bold">Watch Now</h3>
-                    </span>
-                  </div>
-                </button>
-              )}
-              {readProviders &&
-                readProviders.map(
-                  (platform: any) =>
-                    platform.id && (
-                      <Link
-                        key={platform.name}
-                        href={platform.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="social-link flex items-center justify-center gap-1 rounded-md border border-gray-300 bg-black p-2"
-                      >
-                        {
-                          platformLogos[
-                            platform.name as keyof typeof platformLogos
-                          ]
-                        }
-                        <span>{platform.name}</span>
-                      </Link>
-                    )
-                )}
-            </div> */}
           </div>
         </div>
       </section>

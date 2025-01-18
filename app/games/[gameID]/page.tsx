@@ -1,6 +1,7 @@
 import { configRAWG } from "@/apiConfig"
 import { ContentDetails } from "@/components/common/ContentDetails"
 import GameInfo from "@/components/gamePage/GameInfo"
+import { ScrollToTop } from "@/components/ScorllTop"
 import React from "react"
 
 interface Props {
@@ -14,6 +15,7 @@ export default async function page({ params }: { params: Props }) {
 
   return (
     <main>
+      <ScrollToTop />
       <ContentDetails
         id={gameId}
         backdropPoster={gameInfo.background_image}

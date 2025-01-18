@@ -5,6 +5,7 @@ import { genreMap, movieStatuses } from "../common/ListContent"
 import { useDebounce } from "@/util/debouncing"
 import { useSearchData } from "@/queries/search"
 import { LoadingCard } from "../LoadingCard"
+import { ErrorImage } from "../ErrorImage"
 
 interface MovieResult {
   id: number
@@ -30,7 +31,7 @@ export default function SearchMovie() {
     error,
   } = useSearchData("movie", debouncedQuery)
 
-  if (error) return <p>Error: {error.message}</p>
+  if (error) return <ErrorImage error={error} />
 
   return (
     <>
@@ -43,7 +44,7 @@ export default function SearchMovie() {
       )}
       <div className="mx-auto flex max-w-[1600px] items-center justify-center gap-2">
         {!isLoading && (
-          <div className="grid grid-cols-3 gap-3 p-3 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 p-3 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {movieData?.map((movie: MovieResult) => (
               <Card
                 key={movie.id}

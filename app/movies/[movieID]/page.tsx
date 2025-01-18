@@ -2,7 +2,6 @@ import React from "react"
 
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
 import { configTMDB } from "@/apiConfig"
-import Image from "next/image"
 import {
   CalendarIcon,
   DollarSignIcon,
@@ -73,7 +72,7 @@ export default async function SingleMoviePage({
             <ul className="mb-4 space-y-2">
               {movieInfo.production_companies.map((company) => (
                 <li key={company.id} className="flex items-center">
-                  {company.logo_path && (
+                  {/* {company.logo_path && (
                     <Image
                       src={`https://image.tmdb.org/t/p/w92${company.logo_path}`}
                       alt={company.name}
@@ -81,7 +80,7 @@ export default async function SingleMoviePage({
                       height={25}
                       className="mr-2"
                     />
-                  )}
+                  )} */}
                   <span>{company.name}</span>
                 </li>
               ))}

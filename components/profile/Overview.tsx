@@ -38,7 +38,7 @@ export function Overview({
             <ul className="hide-scrollbar grid w-full grid-cols-2 gap-3 divide-y divide-gray-200 overflow-scroll p-2 sm:grid-cols-3 md:p-6 lg:flex lg:flex-wrap">
               {movieData &&
                 movieData
-                  .slice(0, 4)
+                  .slice(-4)
                   .map((data: any) => (
                     <Card
                       key={data.id}

@@ -1,6 +1,7 @@
 import { configTMDB } from "@/apiConfig"
+import { Icon } from "@/components/icons"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
-import Image from "next/image"
+import { ImageLoader } from "@/util/ImageLoader"
 import Link from "next/link"
 import React from "react"
 
@@ -28,7 +29,7 @@ export default async function page({
   const data = await fetchFromTMDB(configTMDB.getSingleMovieCast(movieID))
 
   return (
-    <div className="grid grid-cols-2 items-center justify-center gap-2 px-2 py-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+    <div className="grid grid-cols-2 items-center justify-center gap-2 px-2 py-4 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
       {data &&
         data.cast.map((character: Actor) => (
           <Link
@@ -37,13 +38,23 @@ export default async function page({
             className="size-full cursor-pointer overflow-hidden rounded-xl bg-white shadow-md"
           >
             <div className="relative h-64">
-              <Image
+              <ImageLoader
+                src={`https://image.tmdb.org/t/p/w300/${character.profile_path}`}
+                alt={character.name}
+                fallback={
+                  <div className="flex aspect-[2/3] size-full items-center justify-center bg-[rgba(181,181,181,0.3)]">
+                    <Icon.noPreview />
+                  </div>
+                }
+                className="size-full object-cover"
+              />
+              {/* <Image
                 className="size-full object-cover"
                 src={`https://image.tmdb.org/t/p/w300/${character.profile_path}`}
                 alt="Character Image"
                 width={150}
                 height={200}
-              />
+              /> */}
               {/* <button className="absolute right-2 top-2 rounded-full bg-white p-1 text-red-500 transition-colors hover:text-red-600">
                 <Heart className="size-5" />
               </button> */}

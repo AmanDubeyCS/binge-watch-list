@@ -49,7 +49,7 @@ export function ListOfAnimes() {
     <div className="pb-20">
       {data && data.data && (
         <>
-          <div className="grid grid-cols-2 gap-3 p-2 sm:grid-cols-3 md:p-6 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 p-3 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {data.data.map((anime: AnimeData) => (
               <Card
                 key={anime.mal_id}
