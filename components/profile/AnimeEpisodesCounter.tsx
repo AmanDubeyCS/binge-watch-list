@@ -24,12 +24,12 @@ export function AnimeEpisodesCounter({
   return (
     <div className="flex w-full flex-col items-center justify-center gap-3 space-x-2">
       <p className="w-24 text-center font-bold">{`${epProgress}/${epiodes}`}</p>
-      <div className="flex w-full gap-3">
+      <div className="flex w-full justify-between gap-3">
         <button
           onClick={() => navigate("decrement")}
           disabled={progress === 1}
           aria-label="Decrease episode"
-          className="flex size-10 w-1/2 shrink-0 items-center justify-center rounded-md bg-gray-400 p-2 text-2xl disabled:bg-slate-100"
+          className="flex size-8 w-1/3 shrink-0 items-center justify-center rounded-md bg-gray-400 p-2 text-2xl disabled:bg-slate-100"
         >
           -
         </button>
@@ -37,7 +37,7 @@ export function AnimeEpisodesCounter({
           onClick={() => navigate("increment")}
           disabled={progress === epiodes}
           aria-label="Increase episode"
-          className="flex size-10 w-1/2 shrink-0 items-center justify-center rounded-md bg-green-500 p-2 text-2xl disabled:bg-slate-100"
+          className="flex size-8 w-1/3 shrink-0 items-center justify-center rounded-md bg-green-500 p-2 text-2xl disabled:bg-slate-100"
         >
           +
         </button>

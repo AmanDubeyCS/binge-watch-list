@@ -103,7 +103,9 @@ export const WatchlistRibbon: React.FC<WatchlistRibbonProps> = ({
                   ? "bg-yellow-100 text-yellow-600"
                   : label === "Completed" || label === "I've seen this"
                     ? "bg-green-100 text-green-600"
-                    : "bg-red-100 text-red-600"
+                    : label === "On Hold"
+                      ? "bg-orange-100 text-orange-600"
+                      : "bg-red-100 text-red-600"
             )}
           >
             {icon}
@@ -113,7 +115,7 @@ export const WatchlistRibbon: React.FC<WatchlistRibbonProps> = ({
         {onRemoveData && (
           <DropdownMenuItem
             onSelect={onRemoveData}
-            className="col-span-2 flex cursor-pointer items-center justify-center rounded-md bg-red-400 p-3 text-red-900 transition-colors duration-200 hover:opacity-80"
+            className="flex cursor-pointer items-center justify-center rounded-md bg-red-400 p-3 text-red-900 transition-colors duration-200 hover:opacity-80 md:col-span-2"
           >
             <Trash2 size={14} />
             <span className="ml-1 text-[15px]">Remove</span>

@@ -1,10 +1,11 @@
+import Link from "next/link"
 import React from "react"
 
 export function MainLandingPage() {
   return (
     <main className="relative flex-1 overflow-y-auto bg-neutral-900 text-white">
       {/* <!-- Background Grid of Cards --> */}
-      <div className="absolute inset-0 opacity-10">
+      {/* <div className="absolute inset-0 opacity-10">
         <div className="grid grid-cols-4 gap-4 p-4">
           <div className="h-48 rounded-lg bg-neutral-800"></div>
           <div className="h-48 rounded-lg bg-neutral-800"></div>
@@ -15,25 +16,26 @@ export function MainLandingPage() {
           <div className="h-48 rounded-lg bg-neutral-800"></div>
           <div className="h-48 rounded-lg bg-neutral-800"></div>
         </div>
-      </div>
+      </div> */}
       <div className="mx-auto max-w-[1600px]">
         <div>
           <section id="hero" className="relative overflow-hidden">
             {/* <!-- Hero Content --> */}
             <div className="relative flex min-h-[80vh] items-center">
-              <div className="container mx-auto px-6 py-16">
-                <div className="max-w-3xl">
-                  <h1 className="mb-6 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-5xl font-bold text-transparent md:text-6xl">
+              <div className="container mx-auto flex justify-center py-16">
+                <div className="flex max-w-3xl flex-col items-center justify-center text-center">
+                  <h1 className="mb-6 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-4xl font-bold text-transparent md:text-6xl">
                     Track Everything You Watch, Read &amp; Play
                   </h1>
 
-                  <p className="mb-8 text-xl text-neutral-300 md:text-2xl">
+                  {/* <p className="mb-8 text-lg text-neutral-300 md:text-2xl flex flex-col">
                     One platform for all your entertainment tracking needs.
-                    Movies, Shows, Manga, and Games - all in one place.
-                  </p>
+                    <span>Movies, Shows, Manga, and Games</span>
+                    <span>all in one place.</span>
+                  </p> */}
 
                   {/* <!-- Feature Pills --> */}
-                  <div className="mb-8 flex flex-wrap gap-3">
+                  <div className="mb-8 flex flex-wrap items-center justify-center gap-3">
                     <span className="rounded-full border border-purple-500/30 bg-purple-500/20 px-4 py-2 text-purple-400">
                       Shows &amp; Anime
                     </span>
@@ -50,12 +52,12 @@ export function MainLandingPage() {
 
                   {/* <!-- CTA Buttons --> */}
                   <div className="flex flex-wrap gap-4">
-                    <button className="rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-3 font-semibold text-white transition-all duration-300 hover:from-purple-700 hover:to-pink-700">
+                    <Link
+                      href={"/home"}
+                      className="rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-3 font-semibold text-white transition-all duration-300 hover:from-purple-700 hover:to-pink-700"
+                    >
                       Get Started
-                    </button>
-                    <button className="rounded-lg border border-neutral-700 px-8 py-3 transition-all duration-300 hover:bg-neutral-800">
-                      Learn More
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -85,7 +87,7 @@ export function MainLandingPage() {
         </div>
         <div>
           <section id="features" className="bg-neutral-900 py-20">
-            <div className="container mx-auto px-6">
+            <div className="container mx-auto">
               {/* <!-- Section Header --> */}
               <div className="mb-16 text-center">
                 <h2 className="mb-4 text-4xl font-bold text-white">
@@ -260,7 +262,7 @@ export function MainLandingPage() {
         </div>
         <div>
           <section id="ContentCategories" className="bg-neutral-900 py-20">
-            <div className="container mx-auto px-6">
+            <div className="container mx-auto">
               {/* <!-- Section Header --> */}
               <div className="mb-16 text-center">
                 <h2 className="mb-4 text-4xl font-bold text-white">
@@ -506,7 +508,7 @@ export function MainLandingPage() {
         </div>
         <div>
           <section id="HowItWorks" className="bg-neutral-900 py-20">
-            <div className="container mx-auto px-6">
+            <div className="container mx-auto">
               {/* <!-- Section Header --> */}
               <div className="mb-16 text-center">
                 <h2 className="mb-4 text-4xl font-bold text-white">
@@ -685,7 +687,7 @@ export function MainLandingPage() {
         </div>
         <div>
           <section id="IntegratedPlatforms" className="bg-neutral-900 py-20">
-            <div className="container mx-auto px-6">
+            <div className="container mx-auto">
               {/* <!-- Section Header --> */}
               <div className="mb-16 text-center">
                 <h2 className="mb-4 text-4xl font-bold text-white">
@@ -925,7 +927,7 @@ export function MainLandingPage() {
         </div>
         <div>
           <section id="Testimonials" className="bg-neutral-900 py-20">
-            <div className="container mx-auto px-6">
+            <div className="container mx-auto">
               {/* <!-- Section Header --> */}
               <div className="mb-16 text-center">
                 <h2 className="mb-4 text-4xl font-bold text-white">
@@ -1125,7 +1127,7 @@ export function MainLandingPage() {
         </div>
         <div>
           <section id="CallToAction" className="bg-neutral-900 py-20">
-            <div className="container mx-auto px-6">
+            <div className="container mx-auto">
               <div className="relative overflow-hidden rounded-2xl">
                 {/* <!-- Background Gradient --> */}
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 via-pink-600/20 to-blue-600/20 backdrop-blur-xl"></div>
@@ -1223,12 +1225,12 @@ export function MainLandingPage() {
 
                     {/* <!-- CTA Buttons --> */}
                     <div className="flex flex-col justify-center gap-4 sm:flex-row">
-                      <button className="rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-3 font-semibold text-white transition-all duration-300 hover:from-purple-700 hover:to-pink-700">
-                        Get Started Now
-                      </button>
-                      <button className="rounded-lg border border-neutral-200/20 px-8 py-3 font-semibold text-white transition-all duration-300 hover:border-neutral-200/40">
-                        Learn More
-                      </button>
+                      <Link
+                        href={"/home"}
+                        className="rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-3 font-semibold text-white transition-all duration-300 hover:from-purple-700 hover:to-pink-700"
+                      >
+                        Get Started
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -1236,14 +1238,14 @@ export function MainLandingPage() {
             </div>
           </section>
         </div>
-        <div>
+        <div className="z-50">
           <footer
             id="Footer"
             className="border-t border-neutral-800 bg-neutral-900"
           >
-            <div className="container mx-auto px-6 py-12">
+            <div className="container mx-auto py-12">
               {/* <!-- Footer Grid --> */}
-              <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+              <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
                 {/* <!-- Company Info --> */}
                 <div>
                   <h3 className="mb-4 text-xl font-bold text-white">
@@ -1334,45 +1336,45 @@ export function MainLandingPage() {
 
                 {/* <!-- Resources --> */}
                 <div>
-                  <h4 className="mb-4 font-semibold text-white">Resources</h4>
+                  <h4 className="mb-4 font-semibold text-white">Discover</h4>
                   <ul className="space-y-2">
                     <li>
                       <a
-                        href="#"
+                        href="/anime/discover"
                         className="text-neutral-400 transition-colors hover:text-white"
                       >
-                        Documentation
+                        Anime
                       </a>
                     </li>
                     <li>
                       <a
-                        href="#"
+                        href="/movies/discover"
                         className="text-neutral-400 transition-colors hover:text-white"
                       >
-                        API Status
+                        Movies
                       </a>
                     </li>
                     <li>
                       <a
-                        href="#"
+                        href="/games/discover"
                         className="text-neutral-400 transition-colors hover:text-white"
                       >
-                        Support
+                        Game
                       </a>
                     </li>
                     <li>
                       <a
-                        href="#"
+                        href="/tv/discover"
                         className="text-neutral-400 transition-colors hover:text-white"
                       >
-                        Community
+                        TV Shows
                       </a>
                     </li>
                   </ul>
                 </div>
 
                 {/* <!-- Legal --> */}
-                <div>
+                {/* <div>
                   <h4 className="mb-4 font-semibold text-white">Legal</h4>
                   <ul className="space-y-2">
                     <li>
@@ -1408,28 +1410,15 @@ export function MainLandingPage() {
                       </a>
                     </li>
                   </ul>
-                </div>
+                </div> */}
               </div>
 
               {/* <!-- Bottom Bar --> */}
-              <div className="border-t border-neutral-800 pt-8">
+              <div className="flex justify-center border-t border-neutral-800 pt-8">
                 <div className="flex flex-col items-center justify-between md:flex-row">
                   <p className="text-sm text-neutral-400">
                     © 2024 BingeWatch. All rights reserved.
                   </p>
-                  <div className="mt-4 md:mt-0">
-                    <div className="flex space-x-4">
-                      <button className="text-sm text-neutral-400 hover:text-white">
-                        Dark Mode
-                      </button>
-                      <span className="text-neutral-400">|</span>
-                      <select className="bg-transparent text-sm text-neutral-400 hover:text-white focus:outline-none">
-                        <option value="en">English</option>
-                        <option value="es">Español</option>
-                        <option value="fr">Français</option>
-                      </select>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>

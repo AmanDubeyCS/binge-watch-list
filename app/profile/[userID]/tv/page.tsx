@@ -24,7 +24,7 @@ export default async function page({ params }: { params: { userID: string } }) {
       data={mergedData}
       title="MY TV SHOWS"
       mediaType="tv"
-      filters={["watching", "planning", "dropped", "completed"]}
+      filters={["watching", "planning", "on hold", "dropped", "completed"]}
     />
   )
 }

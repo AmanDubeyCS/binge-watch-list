@@ -154,7 +154,7 @@ export function ContentDetails({
     {
       name: "Metacritic",
       logo: "https://upload.wikimedia.org/wikipedia/commons/2/20/Metacritic.svg",
-      votes: "Votes",
+      votes: "",
       bgColor: `bg-gray-200`,
       rating:
         imdbData?.Ratings?.find(
@@ -320,7 +320,8 @@ export function ContentDetails({
                                     : ""}
                               </span>
                               <div className="text-xs text-zinc-500">
-                                {rating.votes !== "0" && `${rating.votes}`}
+                                {rating.votes !== "0" &&
+                                  `(${rating.votes} votes)`}
                               </div>
                             </div>
                           </div>

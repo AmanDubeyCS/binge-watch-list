@@ -28,7 +28,7 @@ export default async function page({ params }: { params: { userID: string } }) {
       data={mergedData}
       title="MY MANGA"
       mediaType="manga"
-      filters={["reading", "planning", "dropped", "completed"]}
+      filters={["reading", "planning", "on hold", "dropped", "completed"]}
     />
   )
 }

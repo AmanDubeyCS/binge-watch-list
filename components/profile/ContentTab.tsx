@@ -85,7 +85,7 @@ export default function ContentTab({
               key={filter}
               onClick={() => handleClick(filter)}
               className={cn(
-                "flex cursor-pointer items-center justify-center rounded-full border px-4 text-center leading-4 text-black hover:bg-gray-100",
+                "flex cursor-pointer items-center justify-center text-nowrap rounded-full border px-4 text-center leading-4 text-black hover:bg-gray-100",
                 activeFilter === filter && "bg-slate-100"
               )}
             >
@@ -94,7 +94,7 @@ export default function ContentTab({
           ))}
         </div>
       </div>
-      <div className="mx-auto grid w-fit grid-cols-2 gap-1 pb-20 sm:grid-cols-3 sm:gap-3 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+      <div className="mx-auto grid w-fit grid-cols-1 gap-1 pb-20 sm:grid-cols-2 sm:gap-3 lg:grid-cols-3 2xl:grid-cols-4">
         {filteredData.map((data) => (
           <ProfileCard
             key={data.id}

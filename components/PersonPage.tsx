@@ -1,8 +1,8 @@
 "use client"
 import { Calendar, MapPin, TrendingUp } from "lucide-react"
 import React, { useState } from "react"
-import TVShowCard from "./tvPage/tvHomePage/TvShowCard"
 import { genreMap } from "./tvPage/tvHomePage/CurrentlyTrending"
+import Card from "./common/Card"
 
 interface ExternalIds {
   freebase_mid: string | null
@@ -72,7 +72,7 @@ export default function PersonPage({ actorData }: { actorData: Person }) {
   const [showFullBio, setShowFullBio] = useState(false)
 
   const renderWorkItem = (work: Cast) => (
-    <TVShowCard
+    <Card
       key={work.id}
       id={work.id}
       name={work.title || work.name}
@@ -85,7 +85,7 @@ export default function PersonPage({ actorData }: { actorData: Person }) {
       )}
       numbers={work.popularity}
       mediaType="movie"
-      statusData={[]}
+      status={[]}
     />
   )
 
@@ -133,7 +133,7 @@ export default function PersonPage({ actorData }: { actorData: Person }) {
         </div>
 
         <div className="border-t border-gray-200 md:flex">
-          <div className="w-[290px] shrink-0 bg-gray-50 p-5">
+          <div className="shrink-0 bg-gray-50 p-5 md:w-[290px]">
             <h2 className="mb-4 text-xl font-semibold">Personal Information</h2>
             <div className="space-y-3">
               <div className="flex items-center">
@@ -151,7 +151,7 @@ export default function PersonPage({ actorData }: { actorData: Person }) {
             </div>
           </div>
 
-          <div className="w-fit p-8">
+          <div className="w-fit p-2 sm:p-8">
             <nav className="mb-6 flex space-x-4">
               <button
                 onClick={() => setActiveTab("cast")}
@@ -171,7 +171,7 @@ export default function PersonPage({ actorData }: { actorData: Person }) {
               <h2 className="mb-4 text-xl font-semibold">
                 {activeTab === "cast" ? "Acting Roles" : "Behind the Scenes"}
               </h2>
-              <div className="flex flex-wrap gap-4 space-y-4">
+              <div className="flex flex-wrap gap-2 space-y-4">
                 {activeTab === "cast"
                   ? actorData.combined_credits.cast.map(renderWorkItem)
                   : actorData.combined_credits.crew.map(renderWorkItem)}

@@ -1,6 +1,9 @@
 import { configTMDB } from "@/apiConfig"
+import { Icon } from "@/components/icons"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
+import { ImageLoader } from "@/util/ImageLoader"
 import { Calendar, Star } from "lucide-react"
+import Link from "next/link"
 import React from "react"
 
 interface MoviePart {
@@ -52,15 +55,26 @@ export default async function page({
 
           <div className="space-y-6">
             {data.parts.map((movie: MoviePart) => (
-              <div
+              <Link
+                href={`/movies/${movie.id}`}
                 key={movie.id}
                 className="flex flex-col overflow-hidden rounded-lg bg-white shadow-md md:flex-row"
               >
-                <img
+                <ImageLoader
+                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                  alt={`${movie.title} Poster`}
+                  fallback={
+                    <div className="flex aspect-[2/3] size-full items-center justify-center bg-[rgba(181,181,181,0.3)]">
+                      <Icon.noPreview />
+                    </div>
+                  }
+                  className="h-72 w-full object-cover md:w-48"
+                />
+                {/* <img
                   src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                   alt={`${movie.title} Poster`}
                   className="h-72 w-full object-cover md:w-48"
-                />
+                /> */}
                 <div className="flex grow flex-col justify-between p-4">
                   <div>
                     <h2 className="mb-2 text-xl font-semibold">
@@ -84,7 +98,7 @@ export default async function page({
                     </p>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </>

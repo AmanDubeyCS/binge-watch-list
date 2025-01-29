@@ -11,7 +11,7 @@ export default async function page({ params }: { params: { userID: string } }) {
       data={anime}
       title="MY ANIME"
       mediaType="anime"
-      filters={["watching", "planning", "dropped", "completed"]}
+      filters={["watching", "planning", "on hold", "dropped", "completed"]}
     />
   )
 }

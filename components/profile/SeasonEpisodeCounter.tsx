@@ -95,12 +95,12 @@ export function SeasonEpisodeCounter({
       <p className="w-24 text-center font-bold">
         {formatProgress(season, episode)}
       </p>
-      <div className="flex w-full gap-3">
+      <div className="flex w-full justify-between gap-3">
         <button
           onClick={() => navigate("decrement")}
           disabled={isDecrementDisabled}
           aria-label="Decrease episode"
-          className="flex size-10 w-1/2 shrink-0 items-center justify-center rounded-md bg-gray-400 p-2 text-2xl disabled:bg-slate-100"
+          className="flex size-10 w-1/3 shrink-0 items-center justify-center rounded-md bg-gray-400 p-2 text-2xl disabled:bg-slate-100"
         >
           -
         </button>
@@ -108,7 +108,7 @@ export function SeasonEpisodeCounter({
           onClick={() => navigate("increment")}
           disabled={isIncrementDisabled}
           aria-label="Increase episode"
-          className="flex size-10 w-1/2 shrink-0 items-center justify-center rounded-md bg-green-500 p-2 text-2xl disabled:bg-slate-100"
+          className="flex size-10 w-1/3 shrink-0 items-center justify-center rounded-md bg-green-500 p-2 text-2xl disabled:bg-slate-100"
         >
           +
         </button>

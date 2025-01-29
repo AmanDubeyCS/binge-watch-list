@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from "react"
-import { BookOpen, Tv, Film, Gamepad, User } from "lucide-react"
+import { BookOpen, Tv, Film, Gamepad, User, Cat } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
@@ -23,7 +23,7 @@ const links = [
   {
     name: "ANIME",
     link: "anime",
-    logo: <Tv className="inline-block size-5 md:mr-2" />,
+    logo: <Cat className="inline-block size-5 md:mr-2" />,
   },
   {
     name: "MANGA",

@@ -45,14 +45,13 @@ export default async function SingleMoviePage({
               <li className="flex items-center">
                 <GlobeIcon className="mr-2 size-5" />
                 <span>
-                  Homepage:{" "}
                   <a
                     href={movieInfo.homepage}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="line-clamp-1 text-blue-500 hover:underline"
                   >
-                    {movieInfo.homepage}
+                    Website
                   </a>
                 </span>
               </li>

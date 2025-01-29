@@ -5,7 +5,14 @@ import { AnimeData } from "@/types/anime/animeTypes"
 import { MangaItem } from "@/types/manga/mangaTypes"
 import Card from "./Card"
 import { Game } from "@/types/game/singleGame"
-import { CircleCheckBig, Clock, Eye, Gamepad2, ThumbsDown } from "lucide-react"
+import {
+  CircleCheckBig,
+  Clock,
+  Eye,
+  Gamepad2,
+  Pause,
+  ThumbsDown,
+} from "lucide-react"
 export const genreMap = {
   10759: "Action & Adventure",
   16: "Animation",
@@ -39,6 +46,7 @@ export const genreMap = {
 export const tvStatuses = {
   watching: { label: "Watching", icon: <Eye size={14} /> },
   planning: { label: "Plan to Watch", icon: <Clock size={14} /> },
+  hold: { label: "On Hold", icon: <Pause size={14} /> },
   completed: { label: "Completed", icon: <CircleCheckBig size={14} /> },
   dropped: { label: "Dropped", icon: <ThumbsDown size={14} /> },
 }
@@ -52,6 +60,7 @@ export const movieStatuses = {
 export const bookStatuses = {
   reading: { label: "Reading", icon: <Eye size={14} /> },
   planning: { label: "Plan to Read", icon: <Clock size={14} /> },
+  hold: { label: "On Hold", icon: <Pause size={14} /> },
   completed: { label: "Completed", icon: <CircleCheckBig size={14} /> },
   dropped: { label: "Dropped", icon: <ThumbsDown size={14} /> },
 }

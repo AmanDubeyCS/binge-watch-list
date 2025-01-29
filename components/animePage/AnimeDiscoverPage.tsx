@@ -135,7 +135,10 @@ export function AnimeDiscoverPage({ animeGenres }: any) {
   )
 
   const genresList = animeGenres.slice(0, 18)
+  // const explicitGenres = animeGenres.slice(18, 21)
+  // const theame = animeGenres.slice(21, -5)
   const demographicsList = animeGenres.slice(-5)
+
   const updateStateFromObject = (params: Record<string, string>) => {
     Object.entries(params).forEach(([key, value]) => {
       switch (key) {
