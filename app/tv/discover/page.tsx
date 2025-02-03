@@ -1,4 +1,5 @@
 import { configTMDB } from "@/apiConfig"
+import Loading from "@/components/Loading"
 import { MovieDiscoverPage } from "@/components/movies/MovieDiscoverPage"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
 import React, { Suspense } from "react"
@@ -12,7 +13,7 @@ export default async function page() {
   ])
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loading />}>
       <MovieDiscoverPage
         movieProviders={tvProviders.results}
         movieGenres={tvGenres.genres}

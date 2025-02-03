@@ -6,6 +6,7 @@ import { useDebounce } from "@/util/debouncing"
 import { useSearchData } from "@/queries/search"
 import { LoadingCard } from "../LoadingCard"
 import { ErrorImage } from "../ErrorImage"
+import { NoDataFound } from "../NoDataFound"
 
 interface MovieResult {
   id: number
@@ -43,7 +44,7 @@ export default function SearchMovie() {
         </div>
       )}
       <div className="mx-auto flex max-w-[1600px] items-center justify-center gap-2">
-        {!isLoading && (
+        {!isLoading && movieData?.length !== 0 ? (
           <div className="grid grid-cols-2 gap-3 p-3 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {movieData?.map((movie: MovieResult) => (
               <Card
@@ -63,6 +64,8 @@ export default function SearchMovie() {
               />
             ))}
           </div>
+        ) : (
+          <NoDataFound />
         )}
       </div>
     </>

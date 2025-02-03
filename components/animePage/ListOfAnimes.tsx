@@ -5,6 +5,8 @@ import { useFetchAnime } from "@/queries/jikan/animefetch"
 import { AnimeData } from "@/types/anime/animeTypes"
 import Card from "../common/Card"
 import { tvStatuses } from "../common/ListContent"
+import { LoadingCard } from "../LoadingCard"
+import { ErrorImage } from "../ErrorImage"
 
 export function ListOfAnimes() {
   const router = useRouter()
@@ -12,7 +14,7 @@ export function ListOfAnimes() {
 
   const currentParams = Object.fromEntries(searchParams.entries())
 
-  const { data } = useFetchAnime(currentParams)
+  const { data, isLoading, isError } = useFetchAnime(currentParams)
 
   const page = (data?.pagination.current_page || 1).toString()
   const totalPages = data?.pagination.last_visible_page
@@ -44,9 +46,16 @@ export function ListOfAnimes() {
 
     return pageNumbers
   }
-
+  if (isError) return <ErrorImage error={isError} />
   return (
     <div className="pb-20">
+      {isLoading && (
+        <div className="mx-auto flex max-w-[1600px] flex-wrap gap-4">
+          {Array.from({ length: 16 }, (_, i) => (
+            <LoadingCard key={i} />
+          ))}
+        </div>
+      )}
       {data && data.data && (
         <>
           <div className="grid grid-cols-2 gap-3 p-3 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">

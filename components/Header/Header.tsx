@@ -61,9 +61,13 @@ export default function Header() {
         pathname === "/" && "bg-neutral-900 md:text-white"
       )}
     >
-      <div className="mx-auto flex h-[72px] w-full max-w-[1600px] items-center justify-between">
+      <div className="mx-auto flex h-[40px] w-full max-w-[1600px] items-center justify-between md:h-[72px]">
         <div>
-          <Image src={logo} alt="logo" className="h-[50px] w-auto" />
+          <Image
+            src={logo}
+            alt="logo"
+            className="h-[30px] w-auto md:h-[50px]"
+          />
         </div>
         <div className="fixed bottom-0 left-0 z-50 flex w-full bg-white p-2 md:relative md:flex md:max-w-[600px] md:bg-transparent">
           {links.map((link) => (

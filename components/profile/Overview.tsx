@@ -24,7 +24,7 @@ export function Overview({
   mangaData: WatchListData[]
 }) {
   return (
-    <div className="flex flex-wrap justify-center gap-10">
+    <div className="flex flex-wrap justify-center gap-10 pb-20">
       <h2 className="mb-6 text-2xl font-bold">OVERVIEW</h2>
 
       {movieData.length > 1 && (

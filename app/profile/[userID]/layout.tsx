@@ -1,3 +1,4 @@
+import { ProfileImage } from "@/components/profile/ProfileImage"
 import { ProfileNav } from "@/components/profile/ProfileNav"
 import { ProfileSettings } from "@/components/ProfileSettings"
 import { fetchUserData } from "@/util/fetchUserInfo"
@@ -66,14 +67,15 @@ export default async function Layout({
         <div className="absolute inset-0 bg-black bg-opacity-50" />
         <div className="mx-auto flex h-full max-w-[1600px] flex-col justify-end px-4 pb-8">
           <div className="relative z-10 flex flex-col items-center space-y-4 md:flex-row md:items-end md:space-x-6 md:space-y-0">
-            <div className="relative size-32 overflow-hidden rounded-full border-4 border-white md:size-40">
+            <ProfileImage image={userData.profileImage} userID={userId} />
+            {/* <div className="relative size-32 overflow-hidden rounded-full border-4 border-white md:size-40">
               <Image
-                src={userData.profileImage || "/default-avatar.png"}
+                src={userData.profileImage}
                 alt="Profile Picture"
                 fill
                 className="object-cover"
               />
-            </div>
+            </div> */}
             <div className="text-center text-white md:text-left">
               <h1 className="text-3xl font-bold md:text-4xl">
                 {userData.name}

@@ -6,6 +6,7 @@ import { tvStatuses } from "../common/ListContent"
 import { useDebounce } from "@/util/debouncing"
 import { useSearchData } from "@/queries/search"
 import { LoadingCard } from "../LoadingCard"
+import { NoDataFound } from "../NoDataFound"
 
 export default function SearchAnime() {
   const searchParams = useSearchParams()
@@ -25,6 +26,7 @@ export default function SearchAnime() {
   )
 
   if (error) return <p>Error: {error.message}</p>
+
   return (
     <>
       {isLoading && (
@@ -35,7 +37,7 @@ export default function SearchAnime() {
         </div>
       )}
       <div className="mx-auto flex max-w-[1600px] items-center justify-center gap-2">
-        {!isLoading && uniqueData && (
+        {!isLoading && uniqueData && uniqueData.length != 0 ? (
           <div className="grid grid-cols-2 gap-3 p-3 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {uniqueData.map((anime: AnimeData) => (
               <Card
@@ -55,6 +57,8 @@ export default function SearchAnime() {
               />
             ))}
           </div>
+        ) : (
+          <NoDataFound />
         )}
       </div>
     </>

@@ -5,6 +5,8 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { TvShow } from "@/types/tv/tvListType"
 import Card from "../common/Card"
 import { movieStatuses, tvStatuses } from "../common/ListContent"
+import { LoadingCard } from "../LoadingCard"
+import { ErrorImage } from "../ErrorImage"
 
 export interface Movie {
   adult: boolean
@@ -61,7 +63,7 @@ export function ListOfMovies() {
 
   const currentParams = Object.fromEntries(searchParams.entries())
 
-  const { data } = useFetchMedia(type, currentParams)
+  const { data, isLoading, isError } = useFetchMedia(type, currentParams)
 
   const page = (data?.page || 1).toString()
   const totalPages = data?.total_pages > 500 ? 500 : data?.total_pages
@@ -93,9 +95,16 @@ export function ListOfMovies() {
 
     return pageNumbers
   }
-
+  if (isError) return <ErrorImage error={isError} />
   return (
     <div className="pb-20">
+      {isLoading && (
+        <div className="mx-auto flex max-w-[1600px] flex-wrap gap-4">
+          {Array.from({ length: 16 }, (_, i) => (
+            <LoadingCard key={i} />
+          ))}
+        </div>
+      )}
       {data && data.results && (
         <>
           <div className="grid grid-cols-2 place-items-center gap-3 p-3 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">

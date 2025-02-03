@@ -7,6 +7,7 @@ import { bookStatuses } from "../common/ListContent"
 import { useDebounce } from "@/util/debouncing"
 import { useSearchData } from "@/queries/search"
 import { LoadingCard } from "../LoadingCard"
+import { NoDataFound } from "../NoDataFound"
 
 export default function SearchManga() {
   const searchParams = useSearchParams()
@@ -30,7 +31,7 @@ export default function SearchManga() {
         </div>
       )}
       <div className="mx-auto flex max-w-[1600px] justify-center gap-2">
-        {mangaData && (
+        {!isLoading && mangaData && mangaData.length != 0 ? (
           <div className="grid grid-cols-2 gap-3 p-3 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {mangaData.map((manga: MangaItem) => {
               const image = manga.relationships.filter(
@@ -59,6 +60,8 @@ export default function SearchManga() {
               )
             })}
           </div>
+        ) : (
+          <NoDataFound />
         )}
       </div>
     </>

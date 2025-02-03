@@ -7,6 +7,7 @@ import { gameStatuses } from "../common/ListContent"
 import { useDebounce } from "@/util/debouncing"
 import { useSearchData } from "@/queries/search"
 import { LoadingCard } from "../LoadingCard"
+import { NoDataFound } from "../NoDataFound"
 
 export function SearchGame() {
   const searchParams = useSearchParams()
@@ -18,7 +19,7 @@ export function SearchGame() {
     isLoading,
     error,
   } = useSearchData("game", debouncedQuery)
-  console.log(gameData)
+
   if (error) return <p>Error: {error.message}</p>
 
   return (
@@ -30,10 +31,10 @@ export function SearchGame() {
           ))}
         </div>
       )}
-      <div className="mx-auto flex max-w-[1600px] flex-wrap justify-center gap-2">
-        <div className="grid grid-cols-2 gap-3 p-3 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-          {gameData &&
-            gameData.map((game: Game) => (
+      <div className="mx-auto flex max-w-[1600px] items-center justify-center gap-2">
+        {!isLoading && gameData && gameData?.length != 0 ? (
+          <div className="grid grid-cols-3 gap-3 p-3 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+            {gameData.map((game: Game) => (
               <Card
                 key={game.id}
                 id={game.id}
@@ -49,7 +50,10 @@ export function SearchGame() {
                 status={gameStatuses}
               />
             ))}
-        </div>
+          </div>
+        ) : (
+          <NoDataFound />
+        )}
       </div>
     </>
   )

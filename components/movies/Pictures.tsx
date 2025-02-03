@@ -2,6 +2,9 @@
 import { useState } from "react"
 import { Dialog, DialogContent } from "../ui/dialog"
 import { cn } from "@/lib/utils"
+import { useSession } from "next-auth/react"
+import { doc, updateDoc } from "firebase/firestore"
+import { db } from "@/app/firebaseConfig"
 
 interface MediaItem {
   aspect_ratio: number
@@ -16,6 +19,25 @@ interface MediaItem {
 export function Pictures({ data }: { data: any }) {
   const [activeTab, setActiveTab] = useState("backdrops")
   const [openDialog, setOpenDialog] = useState<string | null>(null)
+
+  const { data: session } = useSession()
+
+  const handleBannerUpdate = async (bannerURL: string) => {
+    const userId = session?.user?.id
+    if (!userId) return
+
+    const userDocRef = doc(db, "users", userId)
+
+    try {
+      await updateDoc(userDocRef, {
+        bannerImage: bannerURL,
+      })
+      console.log("sucesss")
+    } catch (error) {
+      console.error("Error updating profile:", error)
+      alert("Failed to update profile.")
+    }
+  }
 
   const renderMediaItems = (items: MediaItem[], type: string) => {
     return (
@@ -41,8 +63,8 @@ export function Pictures({ data }: { data: any }) {
         >
           <DialogContent
             className={cn(
-              "w-fit p-0",
-              type === "backdrops" && "w-full max-w-[1600px]"
+              "w-fit gap-0 overflow-hidden p-0",
+              type === "backdrops" && "w-full max-w-[1400px]"
             )}
           >
             <img
@@ -50,6 +72,16 @@ export function Pictures({ data }: { data: any }) {
               alt={`Media item`}
               className="size-full"
             />
+            <div
+              onClick={() =>
+                handleBannerUpdate(
+                  `https://image.tmdb.org/t/p/original${openDialog}`
+                )
+              }
+              className="cursor-pointer bg-blue-400 px-2 py-1 text-center font-medium text-white"
+            >
+              set as profile banner
+            </div>
           </DialogContent>
         </Dialog>
       </>

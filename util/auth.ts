@@ -9,7 +9,7 @@ export const saveUserData = async (user: User, name?: string) => {
     name: user.displayName || name,
     profileImage:
       user.photoURL ||
-      "https://image.tmdb.org/t/p/original/jexoNYnPd6vVrmygwF6QZmWPFdu.jpg",
+      "https://res.cloudinary.com/djjm6uvso/image/upload/v1738590139/profile-placeholder_nfji6z.jpg",
     createdAt: new Date(),
     isPrivate: false,
     biography: "",

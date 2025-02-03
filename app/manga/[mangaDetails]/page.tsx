@@ -170,16 +170,15 @@ export default async function page({
     )
     review = (await responseReview.json()) as ReviewData
   }
+  console.log(MUData)
 
-  if (!review) {
-    return
-  }
+  // if (!review) {
+  //   return
+  // }
 
-  if (!MUData) {
-    return
-  }
-
-  console.log(MUData.bayesian_rating)
+  // if (!MUData) {
+  //   return
+  // }
 
   const getRankChange = (current: number, previous: number) => {
     if (current < previous) return <ArrowUp className="text-green-500" />
@@ -204,7 +203,7 @@ export default async function page({
               genra.attributes.name.en
           )}
         rating={statistics.statistics[mangaId].rating.bayesian}
-        muRating={MUData.bayesian_rating}
+        muRating={MUData?.bayesian_rating}
         voteCount={0}
         overview={mangaInfo.attributes.description.en}
         production={mangaInfo.relationships
@@ -225,102 +224,106 @@ export default async function page({
         numbers={statistics.statistics[mangaId].follows}
       />
 
-      <div
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, rgba(255, 255, 255, 0.9) 0%, rgba(240, 240, 240, 0.9) 100%)",
-        }}
-        className="pb-14"
-      >
-        <div className="mx-auto flex max-w-[1600px] gap-4 lg:p-10">
-          <div className="flex w-full flex-col gap-4">
-            <div className="p-4">
-              <div className="flex flex-col gap-10">
-                <div className="space-y-8">
-                  <div className="rounded-lg border p-4 shadow-lg">
-                    <h3 className="mb-4 text-xl font-semibold">Tags</h3>
-                    <div className="flex h-[90px] flex-wrap gap-2 overflow-hidden">
-                      {MUData.categories.map((category) => (
-                        <div
-                          key={category.category}
-                          className="flex cursor-pointer items-center justify-center rounded-full bg-gray-200 px-2 py-1 text-sm"
-                        >
-                          <Tag className="mr-1 size-3" />
-                          <span className="ml-1 text-xs font-bold">
-                            {category.category}
-                          </span>
-                        </div>
+      {MUData && (
+        <div
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, rgba(255, 255, 255, 0.9) 0%, rgba(240, 240, 240, 0.9) 100%)",
+          }}
+          className="pb-14"
+        >
+          <div className="mx-auto flex max-w-[1600px] gap-4 lg:p-10">
+            <div className="flex w-full flex-col gap-4">
+              <div className="p-4">
+                <div className="flex flex-col gap-10">
+                  <div className="space-y-8">
+                    <div className="rounded-lg border p-4 shadow-lg">
+                      <h3 className="mb-4 text-xl font-semibold">Tags</h3>
+                      <div className="flex h-[90px] flex-wrap gap-2 overflow-hidden">
+                        {MUData.categories.map((category) => (
+                          <div
+                            key={category.category}
+                            className="flex cursor-pointer items-center justify-center rounded-full bg-gray-200 px-2 py-1 text-sm"
+                          >
+                            <Tag className="mr-1 size-3" />
+                            <span className="ml-1 text-xs font-bold">
+                              {category.category}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <div className="rounded-lg border shadow-lg">
+                      <div className="border-b p-4">
+                        <h3 className="text-lg">Current Position</h3>
+                      </div>
+                      <div className="p-4">
+                        <ul className="space-y-2">
+                          {Object.entries(MUData.rank.position).map(
+                            ([period, position]) => (
+                              <li
+                                key={period}
+                                className="flex items-center justify-between"
+                              >
+                                <span className="capitalize">
+                                  {period.replace("_", " ")}
+                                </span>
+                                <div className="flex items-center">
+                                  {getRankChange(
+                                    position,
+                                    MUData.rank.old_position[period]
+                                  )}
+                                  <span className="mr-2 rounded-full bg-gray-100 px-3 py-1 font-semibold">
+                                    {position}
+                                  </span>
+                                </div>
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="rounded-lg border shadow-lg">
+                      <div className="border-b p-4">
+                        <h3 className="text-lg">Statistics</h3>
+                      </div>
+                      <div className="p-4">
+                        <ul className="space-y-2">
+                          {Object.entries(MUData.rank.lists).map(
+                            ([list, count]) => (
+                              <li
+                                key={list}
+                                className="flex items-center justify-between"
+                              >
+                                <span className="capitalize">{list}:</span>
+                                <span className="font-semibold">{count}</span>
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {review && (
+                  <div className="flex flex-col gap-4 py-6">
+                    <h2 className="text-[26px] font-bold">Reviews</h2>
+                    <div>
+                      {review.results.map((review) => (
+                        <ReviewCard key={review.record.id} review={review} />
                       ))}
                     </div>
                   </div>
-                </div>
-
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                  <div className="rounded-lg border shadow-lg">
-                    <div className="border-b p-4">
-                      <h3 className="text-lg">Current Position</h3>
-                    </div>
-                    <div className="p-4">
-                      <ul className="space-y-2">
-                        {Object.entries(MUData.rank.position).map(
-                          ([period, position]) => (
-                            <li
-                              key={period}
-                              className="flex items-center justify-between"
-                            >
-                              <span className="capitalize">
-                                {period.replace("_", " ")}
-                              </span>
-                              <div className="flex items-center">
-                                {getRankChange(
-                                  position,
-                                  MUData.rank.old_position[period]
-                                )}
-                                <span className="mr-2 rounded-full bg-gray-100 px-3 py-1 font-semibold">
-                                  {position}
-                                </span>
-                              </div>
-                            </li>
-                          )
-                        )}
-                      </ul>
-                    </div>
-                  </div>
-                  <div className="rounded-lg border shadow-lg">
-                    <div className="border-b p-4">
-                      <h3 className="text-lg">Statistics</h3>
-                    </div>
-                    <div className="p-4">
-                      <ul className="space-y-2">
-                        {Object.entries(MUData.rank.lists).map(
-                          ([list, count]) => (
-                            <li
-                              key={list}
-                              className="flex items-center justify-between"
-                            >
-                              <span className="capitalize">{list}:</span>
-                              <span className="font-semibold">{count}</span>
-                            </li>
-                          )
-                        )}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-4 py-6">
-                <h2 className="text-[26px] font-bold">Reviews</h2>
-                <div>
-                  {review.results.map((review) => (
-                    <ReviewCard key={review.record.id} review={review} />
-                  ))}
-                </div>
+                )}
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </main>
   )
 }

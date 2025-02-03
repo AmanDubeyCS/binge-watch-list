@@ -40,7 +40,7 @@ export const checkdata = async (mangaID: string) => {
 
       return muID
     } else if (!mangaInfo.attributes.links.mu) {
-      return 1
+      return false
     } else {
       return parseInt(mangaInfo.attributes.links.mu, 36)
     }

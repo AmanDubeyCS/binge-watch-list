@@ -7,6 +7,7 @@ import { configTMDB } from "@/apiConfig"
 import { useDebounce } from "@/util/debouncing"
 import { useSearchData } from "@/queries/search"
 import { LoadingCard } from "../LoadingCard"
+import { NoDataFound } from "../NoDataFound"
 
 async function fetchTvDetails(tvID: number) {
   const response = await axios.get("/api/proxy", {
@@ -42,40 +43,6 @@ export default function SearchTv() {
     error,
   } = useSearchData("show", debouncedQuery)
 
-  // useEffect(() => {
-  //   const handler = setTimeout(() => {
-  //     setDebouncedSearch(searchParams.get("q") || "")
-  //   }, 300)
-
-  //   return () => {
-  //     clearTimeout(handler)
-  //   }
-  // }, [searchParams])
-
-  // const { data: movieData, error, isLoading } = useTvSearch(debouncedSearch)
-
-  // useEffect(() => {
-  //   const fetchMovies = async () => {
-  //     if (movieData && movieData.length > 0) {
-  //       const promises = movieData.map(async (movie: any) => {
-  //         const movieDetails = await fetchTvDetails(movie.id)
-  //         return { ...movie, details: movieDetails }
-  //       })
-
-  //       const updatedResults = await Promise.all(promises)
-  //       setResults(updatedResults)
-  //     }
-  //   }
-
-  //   fetchMovies()
-  // }, [movieData])
-
-  // console.log(results)
-  // const filteredData = results.filter((item) => {
-  //   return !item.details.keywords.results.some(
-  //     (keyword: { id: number }) => keyword.id === 210024
-  //   )
-  // })
   if (error) return <p>Error: {error.message}</p>
 
   return (
@@ -88,7 +55,7 @@ export default function SearchTv() {
         </div>
       )}
       <div className="mx-auto flex max-w-[1600px] items-center justify-center gap-2">
-        {!isLoading && (
+        {!isLoading && showData?.length !== 0 ? (
           <div className="grid grid-cols-3 gap-3 p-3 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {showData?.map((tv: ShowResult) => (
               <Card
@@ -108,6 +75,8 @@ export default function SearchTv() {
               />
             ))}
           </div>
+        ) : (
+          <NoDataFound />
         )}
       </div>
     </>

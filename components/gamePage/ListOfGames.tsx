@@ -4,6 +4,8 @@ import { useFetchGames } from "@/queries/RAWG/gameFetch"
 import { Game } from "@/app/games/page"
 import Card from "../common/Card"
 import { gameStatuses } from "../common/ListContent"
+import { LoadingCard } from "../LoadingCard"
+import { ErrorImage } from "../ErrorImage"
 
 export function ListOfGames() {
   const router = useRouter()
@@ -12,7 +14,7 @@ export function ListOfGames() {
   const currentParams = Object.fromEntries(searchParams.entries())
   const page = (currentParams.page || 1).toString()
 
-  const { data, isLoading } = useFetchGames()
+  const { data, isLoading, isError } = useFetchGames()
 
   const totalPages = Math.ceil(data?.count / 20)
   const currentPage = parseInt(page) || 1
@@ -44,13 +46,21 @@ export function ListOfGames() {
     return pageNumbers
   }
 
-  if (isLoading) return <p>Loading...</p>
   if (!data) {
     return <div>no data</div>
   }
 
+  if (isError) return <ErrorImage error={isError} />
+
   return (
     <div className="-z-10 pb-20">
+      {isLoading && (
+        <div className="mx-auto flex max-w-[1600px] flex-wrap gap-4">
+          {Array.from({ length: 16 }, (_, i) => (
+            <LoadingCard key={i} />
+          ))}
+        </div>
+      )}
       {data && data.results && (
         <div className="grid grid-cols-2 gap-3 p-2 sm:grid-cols-3 md:p-6 2xl:grid-cols-4">
           {data.results.map((game: Game) => (
