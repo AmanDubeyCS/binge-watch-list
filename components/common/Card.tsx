@@ -307,7 +307,7 @@ export default function Card({
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-500">
               {mediaType === "movie" || mediaType === "tv"
-                ? tag.slice(0, 4)
+                ? tag?.slice(0, 4)
                 : tag}
             </span>
             <div className="flex items-center">
