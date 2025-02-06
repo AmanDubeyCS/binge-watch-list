@@ -19,10 +19,12 @@ export default function NavLinks({
   id,
   links,
   collectionId,
+  tmdbID,
 }: {
   id: number | string
   links: { name: string; link: string }[]
   collectionId?: number
+  tmdbID?: number
 }) {
   const pathname = usePathname()
   const lastSegment = pathname.split("/").pop() || ""
@@ -44,7 +46,7 @@ export default function NavLinks({
               href={
                 link.name === "Collection"
                   ? `/${linkTo}/${id}/${link.link}/${collectionId}`
-                  : `/${linkTo}/${id}/${link.link}`
+                  : `/${linkTo}/${id}/${link.link}${tmdbID ? `?id=${tmdbID}` : ""}`
               }
               onClick={() => setSelected(link.link)}
               className={`inline-block px-4 py-2 text-sm font-medium ${

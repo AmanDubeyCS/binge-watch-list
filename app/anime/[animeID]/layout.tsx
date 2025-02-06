@@ -161,7 +161,11 @@ export default async function layout({
           <div className="mx-auto flex max-w-[1600px] gap-4 lg:p-10">
             <div className="flex w-full flex-col gap-4">
               <div className="">
-                <NavLinks id={animeID} links={navLinks} />
+                <NavLinks
+                  id={animeID}
+                  links={navLinks}
+                  tmdbID={animeDataFromTMDB?.id}
+                />
               </div>
               <div>{children}</div>
             </div>

@@ -80,8 +80,7 @@ export const metadata: Metadata = {
       "max-snippet": 200,
     },
   },
-};
-
+}
 
 export default async function RootLayout({
   children,

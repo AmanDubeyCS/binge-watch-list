@@ -1,7 +1,4 @@
-const isProd = true
-export const BASE_URL_MANGADEX = isProd
-  ? "https://api.mangadex.org"
-  : "https://api.mangadex.dev"
+export const BASE_URL_MANGADEX = "https://api.mangadex.org"
 
 export const BASE_URL_ANIME = "https://api.jikan.moe/v4"
 

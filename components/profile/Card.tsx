@@ -202,8 +202,10 @@ export function ProfileCard({
     // Calculate total episodes up to the current season
     let totalEpisodes = 0
     let watchedEpisodes = 0
-
-    for (const season of seasons) {
+    const filteredSeasons = seasons.filter(
+      (season: { season_number: number }) => season.season_number !== 0
+    )
+    for (const season of filteredSeasons) {
       if (season.season_number < currentSeason) {
         totalEpisodes += season.episode_count
         watchedEpisodes += season.episode_count

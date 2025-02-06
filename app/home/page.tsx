@@ -15,7 +15,7 @@ export default async function page() {
   const topManhua = await fetchTopManhua()
 
   return (
-    <main className="mx-auto flex max-w-[1600px] flex-col gap-10 p-2 pb-16 md:px-8">
+    <main className="mx-auto flex max-w-[1600px] flex-col gap-10 p-2 pb-16">
       {popularMovies && (
         <ListCards
           movieData={popularMovies.results}

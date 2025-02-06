@@ -14,7 +14,7 @@ import {
 import { useSession } from "next-auth/react"
 import { cn } from "@/lib/utils"
 import { usePathname } from "next/navigation"
-import logo from "@/assets/BWL logo.png"
+import logo from "@/assets/MBL-Logo.png"
 import Image from "next/image"
 
 const links = [
@@ -62,13 +62,13 @@ export default function Header() {
       )}
     >
       <div className="mx-auto flex h-[40px] w-full max-w-[1600px] items-center justify-between md:h-[72px]">
-        <div>
+        <Link href={"/"}>
           <Image
             src={logo}
             alt="logo"
             className="h-[30px] w-auto md:h-[50px]"
           />
-        </div>
+        </Link>
         <div className="fixed bottom-0 left-0 z-50 flex w-full bg-white p-2 md:relative md:flex md:max-w-[600px] md:bg-transparent">
           {links.map((link) => (
             <Link

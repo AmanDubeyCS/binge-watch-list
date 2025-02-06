@@ -16,9 +16,8 @@ export default async function page({ params }: { params: { userID: string } }) {
   )
   const results = await Promise.all(promises)
 
-  // console.log(tv)
   const mergedData = mergeData(tv, results)
-  // console.log(mergedData)
+
   return (
     <ContentTab
       data={mergedData}

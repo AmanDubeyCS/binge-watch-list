@@ -56,7 +56,7 @@ export default function SearchTv() {
       )}
       <div className="mx-auto flex max-w-[1600px] items-center justify-center gap-2">
         {!isLoading && showData?.length !== 0 ? (
-          <div className="grid grid-cols-3 gap-3 p-3 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 p-3 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {showData?.map((tv: ShowResult) => (
               <Card
                 key={tv.id}

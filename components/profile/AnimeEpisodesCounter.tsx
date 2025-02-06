@@ -8,7 +8,11 @@ export function AnimeEpisodesCounter({
   const [epProgress, setEpProgress] = useState(progress)
   const navigate = (direction: "increment" | "decrement") => {
     if (direction === "increment") {
-      if (progress < epiodes) {
+      if (epiodes) {
+        if (progress < epiodes) {
+          setEpProgress(epProgress + 1)
+        }
+      } else {
         setEpProgress(epProgress + 1)
       }
     } else {
