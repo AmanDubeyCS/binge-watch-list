@@ -4,8 +4,6 @@ import { Star } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { WatchlistRibbon } from "@/components/WatchlistRibbon"
-import { deleteDoc, doc } from "firebase/firestore"
-import { db } from "@/app/firebaseConfig"
 import { useSession } from "next-auth/react"
 import { formatNumber } from "@/util/formatNumber"
 import { ImageLoader } from "@/util/ImageLoader"
@@ -74,7 +72,7 @@ export default function Card({
   const { data: session } = useSession()
   const router = useRouter()
   const pathname = usePathname()
-  const { data, upsertItem, removeFromWatchlist } = useDataStore() as DataStore
+  const { data, upsertItem } = useDataStore() as DataStore
 
   const handleClick = () => {
     const routes: Record<string, string> = {
@@ -151,19 +149,6 @@ export default function Card({
           ? { ...details, platforms }
           : details
     )
-  }
-  const handleRemoveData = () => {
-    if (!session?.user?.id || !mediaType) return
-
-    const docRef = doc(db, "users", session.user.id, mediaType, id.toString())
-    deleteDoc(docRef)
-      .then(() => {
-        console.log(`Document with ID ${id} deleted successfully!`)
-        removeFromWatchlist(id, mediaType)
-      })
-      .catch((error) => {
-        console.error("Error removing data:", error)
-      })
   }
 
   return (

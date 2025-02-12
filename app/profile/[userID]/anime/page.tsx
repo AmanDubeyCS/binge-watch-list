@@ -6,6 +6,7 @@ export const revalidate = 300
 export default async function page({ params }: { params: { userID: string } }) {
   const userId = params.userID
   const anime = await fetchProfileList(userId, "anime")
+
   return (
     <ContentTab
       data={anime}

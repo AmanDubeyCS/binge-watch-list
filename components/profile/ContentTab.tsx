@@ -35,6 +35,8 @@ interface WatchListData {
   mangaUpdatesID: number | string
   latest_chapter?: number
   last_updated?: any
+  videos?: any
+  overview?: string
 }
 
 export default function ContentTab({
@@ -129,6 +131,8 @@ export default function ContentTab({
             chapters={data.latest_chapter}
             mangaProgress={data.mangaProgress}
             lastUpdated={data.last_updated?.as_string}
+            video={data.videos?.results}
+            overview={data.overview}
           />
         ))}
       </div>

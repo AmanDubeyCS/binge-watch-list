@@ -1,7 +1,7 @@
 "use client"
 import { DataStore, useDataStore } from "@/store/allDataStore"
 import { Plus } from "lucide-react"
-import React from "react"
+import React, { useState } from "react"
 import {
   handleAnimeStatusChange,
   handleGameStatusChange,
@@ -130,11 +130,34 @@ export default function BookmarkTag({
     )
   }
 
+  const [isScrolling, setIsScrolling] = useState(false)
+
+  const handleTouchStart = () => {
+    setIsScrolling(false)
+  }
+
+  const handleTouchMove = () => {
+    setIsScrolling(true)
+  }
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (isScrolling) {
+      e.preventDefault()
+    }
+  }
+
   return (
     <div className="relative flex gap-5">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <div className="w-full max-w-[480px] text-zinc-200 transition-colors duration-200 group-hover:text-white">
+          <div
+            role="button"
+            aria-label="Watchlist options"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            className="w-full max-w-[480px] text-zinc-200 transition-colors duration-200 group-hover:text-white"
+          >
             {status && statusKey ? (
               <div
                 className={cn(

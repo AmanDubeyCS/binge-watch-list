@@ -4,6 +4,7 @@ import { ReviewCard } from "@/components/mangaPage/ReviewCard"
 import { checkdata } from "@/util/fetchFromMangaUpdates"
 import { fetchFromMangaDex } from "@/util/fetchFromTMDB"
 import { ArrowDown, ArrowUp, Tag } from "lucide-react"
+import ReactMarkdown from "react-markdown"
 
 interface Avatar {
   id: number
@@ -87,6 +88,9 @@ interface MangaUpdatesData {
   bayesian_rating: number
   categories: { category: string }[]
   category_recommendations: { series_name: string; series_url: string }[]
+  latest_chapter: number
+  status: string
+  description: string
   rank: {
     position: { [key: string]: number }
     old_position: { [key: string]: number }
@@ -170,15 +174,6 @@ export default async function page({
     )
     review = (await responseReview.json()) as ReviewData
   }
-  console.log(MUData)
-
-  // if (!review) {
-  //   return
-  // }
-
-  // if (!MUData) {
-  //   return
-  // }
 
   const getRankChange = (current: number, previous: number) => {
     if (current < previous) return <ArrowUp className="text-green-500" />
@@ -221,6 +216,7 @@ export default async function page({
         type="manga"
         contentType="manga"
         muID={String(ID)}
+        chapters={MUData?.latest_chapter}
         numbers={statistics.statistics[mangaId].follows}
       />
 
@@ -236,6 +232,15 @@ export default async function page({
             <div className="flex w-full flex-col gap-4">
               <div className="p-4">
                 <div className="flex flex-col gap-10">
+                  <div className="rounded-lg border p-4 shadow-lg">
+                    <h3 className="mb-4 text-xl font-semibold">Status</h3>
+                    <ReactMarkdown>{MUData.status}</ReactMarkdown>
+                  </div>
+                  <div className="rounded-lg border p-4 shadow-lg">
+                    <h3 className="mb-4 text-xl font-semibold">Description</h3>
+                    <ReactMarkdown>{MUData.description}</ReactMarkdown>
+                  </div>
+
                   <div className="space-y-8">
                     <div className="rounded-lg border p-4 shadow-lg">
                       <h3 className="mb-4 text-xl font-semibold">Tags</h3>

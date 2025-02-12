@@ -11,11 +11,11 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Binge Watch List",
-    default: "Binge Watch List - Track, Discover, and Share Your Watchlists",
+    template: "%s | My Binge List",
+    default: "My Binge List - Track, Discover, and Share Your Watchlists",
   },
   description:
-    "Binge Watch List - Your Ultimate Platform for Tracking, Discovering, and Sharing Movies, Anime, TV Shows, and Games. Create Personalized Watchlists, Track Progress, and Explore Ratings from Multiple Sources like TMDB, IMDb, and Trakt.",
+    "My Binge List - Your Ultimate Platform for Tracking, Discovering, and Sharing Movies, Anime, TV Shows, and Games. Create Personalized Watchlists, Track Progress, and Explore Ratings from Multiple Sources like TMDB, IMDb, and Trakt.",
   keywords: [
     "Movies",
     "TV Shows",
@@ -29,8 +29,8 @@ export const metadata: Metadata = {
     "IMDb Alternative",
     "Trakt Alternative",
   ],
-  applicationName: "Binge Watch List",
-  metadataBase: new URL("https://binge-watch-list-snowy.vercel.app/"),
+  applicationName: "My Binge List",
+  metadataBase: new URL("https://mybingelist.fun/"),
   alternates: {
     canonical: "/",
     languages: {
@@ -45,27 +45,27 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   openGraph: {
-    title: "Binge Watch List - Track, Discover, and Share Your Watchlists",
-    url: "https://binge-watch-list-snowy.vercel.app/",
-    siteName: "Binge Watch List",
+    title: "My Binge List - Track, Discover, and Share Your Watchlists",
+    url: "https://mybingelist.fun",
+    siteName: "My Binge List",
     description:
-      "Binge Watch List - Your Ultimate Platform for Tracking, Discovering, and Sharing Movies, Anime, TV Shows, and Games. Create Personalized Watchlists, Track Progress, and Explore Ratings from Multiple Sources like TMDB, IMDb, and Trakt.",
+      "My Binge List - Your Ultimate Platform for Tracking, Discovering, and Sharing Movies, Anime, TV Shows, and Games. Create Personalized Watchlists, Track Progress, and Explore Ratings from Multiple Sources like TMDB, IMDb, and Trakt.",
     images: {
-      url: "https://res.cloudinary.com/djjm6uvso/image/upload/v1738600618/BWL_logo_yr3gt2.png",
-      alt: "Binge Watch List Logo",
+      url: "https://res.cloudinary.com/djjm6uvso/image/upload/v1739367059/MBL-Logo_tatvnk.png",
+      alt: "My Binge List Logo",
     },
     locale: "ko_KR",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Binge Watch List - Track, Discover, and Share Your Watchlists",
+    title: "My Binge List - Track, Discover, and Share Your Watchlists",
     description:
-      "Binge Watch List - Your Ultimate Platform for Tracking, Discovering, and Sharing Movies, Anime, TV Shows, and Games. Create Personalized Watchlists, Track Progress, and Explore Ratings from Multiple Sources like TMDB, IMDb, and Trakt.",
+      "My Binge List - Your Ultimate Platform for Tracking, Discovering, and Sharing Movies, Anime, TV Shows, and Games. Create Personalized Watchlists, Track Progress, and Explore Ratings from Multiple Sources like TMDB, IMDb, and Trakt.",
     creator: "@BingeWatchList",
     images: {
-      url: "https://res.cloudinary.com/djjm6uvso/image/upload/v1738600618/BWL_logo_yr3gt2.png",
-      alt: "Binge Watch List Logo",
+      url: "https://res.cloudinary.com/djjm6uvso/image/upload/v1739367059/MBL-Logo_tatvnk.png",
+      alt: "My Binge List Logo",
     },
   },
   category: "Entertainment",

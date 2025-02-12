@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
-import { Pencil, Star } from "lucide-react"
+import { FilePenLine, Minus, NotepadText, Play, Plus, Star } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { SeasonEpisodeCounter } from "./SeasonEpisodeCounter"
 
@@ -49,6 +49,8 @@ interface TVShowCardProps {
   mangaProgress?: any
   chapters?: number
   lastUpdated?: string
+  video?: any
+  overview?: string
 }
 
 export function ProfileCard({
@@ -71,6 +73,8 @@ export function ProfileCard({
   mangaProgress,
   chapters,
   lastUpdated,
+  overview,
+  video,
 }: TVShowCardProps) {
   const { data: session } = useSession()
   const [isEditing, setIsEditing] = useState(false)
@@ -81,6 +85,10 @@ export function ProfileCard({
   const [barProgress, setBarProgress] = useState(0)
   const [currentStatus, setCurrentStatus] = useState(status)
   const [isDeleted, setIsDeleted] = useState(false)
+  const [toWatch, setToWatch] = useState(0)
+  const [showtrailer, setShowTrailer] = useState(false)
+  const [showRemark, setShowRemark] = useState(false)
+  const trailers = video?.filter((t: any) => t.type === "Trailer")
   const params = useParams()
   const router = useRouter()
   const accoutUser = session?.user.id === params.userID
@@ -218,8 +226,21 @@ export function ProfileCard({
     }
 
     // Calculate percentage
+    setToWatch(totalEpisodes - watchedEpisodes)
     const progressPercentage = (watchedEpisodes / totalEpisodes) * 100
     setBarProgress(progressPercentage)
+  }
+
+  const handleSingleUpdates = (e: React.MouseEvent, data: any) => {
+    e.stopPropagation()
+
+    if (mediaType === "tv") {
+      settvProgress(data)
+    } else if (mediaType === "anime") {
+      setAniProgress(data)
+    } else if (mediaType === "manga") {
+      setManProgress(data)
+    }
   }
 
   useEffect(() => {
@@ -236,7 +257,7 @@ export function ProfileCard({
 
   useEffect(() => {
     handleStatusChange()
-  }, [currentStatus])
+  }, [currentStatus, tvProgress, aniProgress, manProgress])
 
   const handleRemoveData = () => {
     if (!session?.user?.id || !mediaType) return
@@ -264,6 +285,45 @@ export function ProfileCard({
 
     router.push(routes[mediaType] || `${mediaType}/${id}`, { scroll: false })
   }
+
+  const parseEpisode = (episodeStr: string) => {
+    const match = episodeStr.match(/S(\d+) E(\d+)/)
+    if (!match) return { season: 1, episode: 1 }
+    return { season: parseInt(match[1]), episode: parseInt(match[2]) }
+  }
+
+  const getNextEpisode = () => {
+    const { season, episode } = parseEpisode(tvProgress)
+    const currentSeason = seasons.find(
+      (s: { season_number: number }) => s.season_number === season
+    )
+    const nextEpisode =
+      episode < (currentSeason?.episode_count ?? 1) ? episode + 1 : 1
+    const nextSeason = nextEpisode === 1 ? season + 1 : season
+
+    const nextSeasonData = seasons.find(
+      (s: { season_number: number }) => s.season_number === nextSeason
+    )
+    if (!nextSeasonData) return tvProgress
+
+    return `S${String(nextSeason).padStart(2, "0")} E${String(nextEpisode).padStart(2, "0")}`
+  }
+
+  const getPreviousEpisode = () => {
+    const { season, episode } = parseEpisode(tvProgress)
+    if (episode > 1) {
+      return `S${String(season).padStart(2, "0")} E${String(episode - 1).padStart(2, "0")}`
+    }
+
+    const prevSeason = seasons.find(
+      (s: { season_number: number }) => s.season_number === season - 1
+    )
+    if (!prevSeason) return tvProgress
+
+    return `S${String(prevSeason.season_number).padStart(2, "0")} E${String(prevSeason.episode_count).padStart(2, "0")}`
+  }
+
+  console.log(trailers)
   return (
     <div
       className={cn(
@@ -273,11 +333,11 @@ export function ProfileCard({
     >
       <div
         onClick={() => {
-          if (!isEditing) {
+          if (!isEditing && !showtrailer && !showRemark) {
             handleClick()
           }
         }}
-        className={`flex size-full min-h-[150px] min-w-[320px] shrink-0 cursor-pointer items-center justify-start overflow-hidden rounded-md bg-white shadow-md`}
+        className={`flex size-full min-h-[150px] min-w-[320px] shrink-0 cursor-pointer flex-col items-center justify-start overflow-hidden rounded-md bg-white shadow-md`}
       >
         <div className="group flex size-full gap-2">
           <div
@@ -376,69 +436,89 @@ export function ProfileCard({
                   </p>
                 )}
               </div>
-              <p className="text-xs italic">
-                {" "}
-                status:
-                <span className="w-fit rounded-lg text-sm not-italic">
+              {mediaType !== "movie" && (
+                <p className="text-xs italic">
                   {" "}
-                  {currentStatus}
-                </span>
-              </p>
+                  status:
+                  <span className="w-fit rounded-lg text-sm not-italic">
+                    {" "}
+                    {currentStatus}
+                  </span>
+                </p>
+              )}
+              {mediaType === "movie" && (
+                <p className="mt-2 line-clamp-3 text-sm">{overview}</p>
+              )}
             </div>
 
             <div>
               {(mediaType === "tv" ||
                 mediaType === "anime" ||
-                mediaType === "manga") && (
+                mediaType === "manga" ||
+                mediaType === "movie") && (
                 <div className="mx-auto mt-2 w-full max-w-md overflow-hidden bg-white">
                   <div className="">
-                    <div className="w-full">
-                      <div className="w-full rounded-full bg-gray-200">
-                        <div
-                          className="h-2 rounded-full bg-orange-400 transition-all duration-300 ease-in-out"
-                          style={{ width: `${barProgress}%` }}
-                        />
-                      </div>
-                    </div>
-                    <div className="flex justify-between">
+                    <div className="flex items-center gap-2">
                       <div className="z-10 text-sm font-bold text-gray-800 lg:text-base">
                         {mediaType === "tv"
                           ? tvProgress
                           : mediaType === "manga"
                             ? `${manProgress.toString().length < 2 ? `0${manProgress}` : manProgress}${chapters === undefined ? "" : `/${chapters}+`}`
-                            : `E-${aniProgress?.toString().length < 2 ? `0${aniProgress}` : aniProgress}/${episodes}`}
+                            : mediaType === "anime"
+                              ? `E-${aniProgress?.toString().length < 2 ? `0${aniProgress}` : aniProgress}/${episodes}`
+                              : ""}
                       </div>
-                      <p className="text-sm font-bold text-gray-800">
-                        {Math.round(barProgress)}%
-                      </p>
-                    </div>
 
-                    <div className="mt-3 flex items-center justify-between">
-                      {accoutUser ? (
-                        <div className="rounded-lg">
-                          <p className="line-clamp-2 text-xs font-medium">
-                            {remarks || "Add memo to remember"}
-                          </p>
-                        </div>
-                      ) : (
-                        remarks !== "" && (
-                          <span className="line-clamp-2 text-xs font-medium">
-                            {remarks}
-                          </span>
-                        )
+                      {mediaType === "tv" && (
+                        <>
+                          <div className="size-[5px] rounded-full bg-slate-500"></div>
+                          {toWatch !== 0 ? (
+                            <p className="text-sm font-medium text-gray-600">
+                              {toWatch} ep. left to watch
+                            </p>
+                          ) : (
+                            <p className="text-sm font-medium text-gray-600">
+                              Watched all Aired Ep.
+                            </p>
+                          )}
+                        </>
                       )}
-                      {accoutUser && (
-                        <button
-                          className="flex items-center justify-center gap-1 rounded-md p-1 text-sm text-gray-600 transition-colors hover:bg-gray-200 hover:text-gray-800"
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            setIsEditing(true)
-                          }}
-                        >
-                          <Pencil className="size-3" /> Edit
-                        </button>
+                      {mediaType === "anime" && episodes && (
+                        <>
+                          <div className="size-[5px] rounded-full bg-slate-500"></div>
+                          {episodes - aniProgress !== 0 ? (
+                            <p className="text-sm font-medium text-gray-600">
+                              {episodes - aniProgress} ep. left to watch
+                            </p>
+                          ) : (
+                            <p className="text-sm font-medium text-gray-600">
+                              Watched all Aired Ep.
+                            </p>
+                          )}
+                        </>
+                      )}
+                      {mediaType === "manga" && chapters && (
+                        <>
+                          <div className="size-[5px] rounded-full bg-slate-500"></div>
+                          <p className="text-sm font-medium text-gray-600">
+                            {chapters - manProgress} ch. left to read
+                          </p>
+                        </>
                       )}
                     </div>
+                    {mediaType !== "movie" && (
+                      <div className="flex w-full items-center gap-2">
+                        <div className="h-2 w-full rounded-full bg-gray-200">
+                          <div
+                            className="h-2 rounded-full bg-orange-400 transition-all duration-300 ease-in-out"
+                            style={{ width: `${barProgress}%` }}
+                          />
+                        </div>
+                        <p className="text-sm font-bold text-gray-800">
+                          {Math.round(barProgress)}%
+                        </p>
+                      </div>
+                    )}
                   </div>
                   {isEditing && (
                     <Dialog
@@ -467,6 +547,9 @@ export function ProfileCard({
                                   }
                                 />
                               )}
+                              {/* {mediaType === "movie" && (
+
+                              )} */}
                               {mediaType === "manga" && (
                                 <div className="flex w-full flex-col justify-center gap-2">
                                   <label htmlFor="chapterInput">
@@ -477,7 +560,7 @@ export function ProfileCard({
                                     type="number"
                                     name=""
                                     value={manProgress}
-                                    className="w-full border bg-white"
+                                    className="w-full border bg-white p-1"
                                     onChange={(e) =>
                                       setManProgress(e.target.value)
                                     }
@@ -496,7 +579,7 @@ export function ProfileCard({
                                 id="remarks"
                                 value={remarks}
                                 onChange={(e) => setRemarks(e.target.value)}
-                                className="w-full rounded-md border"
+                                className="w-full rounded-md border p-1"
                               />
                             </div>
                             <div className="flex justify-end space-x-2">
@@ -517,147 +600,144 @@ export function ProfileCard({
             </div>
           </div>
         </div>
-      </div>
-      {/* <Card
-        key={id}
-        id={id}
-        name={name}
-        coverImage={coverImage}
-        tag={tag}
-        voteAverage={voteAverage}
-        voteCount={voteCount}
-        genre={genre}
-        numbers={numbers}
-        mediaType={mediaType}
-        status={
-          mediaType === "manga"
-            ? bookStatuses
-            : mediaType === "game"
-              ? gameStatuses
-              : mediaType === "movie"
-                ? movieStatuses
-                : tvStatuses
-        }
-        platforms={platforms}
-        profileCardStatus={status}
-        userId={accoutUser}
-      /> */}
-      {/* {(mediaType === "tv" ||
-        mediaType === "anime" ||
-        mediaType === "manga") && (
-        <div className="mx-auto w-full max-w-md overflow-hidden rounded-xl bg-white shadow-md">
-          <div className="p-1">
-            <div className="relative h-10 overflow-hidden rounded-lg bg-gray-200 lg:h-16">
-              <div
-                className="absolute left-0 top-0 h-full bg-blue-500 bg-opacity-30 transition-all duration-300 ease-in-out"
-                style={{ width: `${barProgress}%` }}
-              />
-              <div className="absolute left-0 top-0 flex size-full items-center justify-between px-1 sm:px-4">
-                <div className="z-10 text-base font-bold text-gray-800 lg:text-xl">
-                  {mediaType === "tv"
-                    ? tvProgress
-                    : mediaType === "manga"
-                      ? `${manProgress.toString().length < 2 ? `0${manProgress}` : manProgress}${chapters === undefined ? "" : `/${chapters}+`}`
-                      : `E-${aniProgress?.toString().length < 2 ? `0${aniProgress}` : aniProgress}/${episodes}`}
-                </div>
-                <div className="flex items-center gap-1">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button className="text-gray-600 transition-colors hover:text-gray-800">
-                          <Info className="size-5" />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent className="mr-36 max-w-[300px] bg-white">
-                        <p>{remark || "Add memo to remember"}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                  {accoutUser && (
-                    <button
-                      className="flex size-8 items-center justify-center rounded-md text-gray-600 transition-colors hover:bg-white hover:text-gray-800"
-                      onClick={() => setIsEditing(true)}
-                    >
-                      <Pencil className="size-5" />
-                    </button>
-                  )}
+        {(mediaType === "tv" ||
+          mediaType === "anime" ||
+          mediaType === "manga" ||
+          mediaType === "movie") && (
+          <div className="flex w-full items-center justify-between p-1">
+            {mediaType === "manga" && (
+              <div className="mr-2 flex flex-1 gap-2">
+                {manProgress > 0 && (
+                  <div
+                    onClick={(e) =>
+                      handleSingleUpdates(e, Number(manProgress) - 1)
+                    }
+                    className="flex w-full max-w-[120px] items-center justify-center gap-1 rounded-lg border p-1 text-[12px] font-semibold"
+                  >
+                    <Minus size={12} /> Ch. {Number(manProgress) - 1}
+                  </div>
+                )}
+                <div
+                  onClick={(e) =>
+                    handleSingleUpdates(e, Number(manProgress) + 1)
+                  }
+                  className="flex w-full max-w-[150px] items-center justify-center gap-1 text-nowrap rounded-lg border p-1 text-[12px] font-semibold"
+                >
+                  <Plus size={12} /> Mark ch. {Number(manProgress) + 1}
                 </div>
               </div>
+            )}
+            {mediaType === "anime" && (
+              <div className="mr-2 flex flex-1 gap-2">
+                {aniProgress > 0 && (
+                  <div
+                    onClick={(e) =>
+                      handleSingleUpdates(e, Number(aniProgress) - 1)
+                    }
+                    className="flex w-full max-w-[120px] items-center justify-center gap-1 rounded-lg border p-1 text-[12px] font-semibold"
+                  >
+                    <Minus size={12} /> Ep. {Number(aniProgress) - 1}
+                  </div>
+                )}
+                {episodes !== aniProgress && (
+                  <div
+                    onClick={(e) =>
+                      handleSingleUpdates(e, Number(aniProgress) + 1)
+                    }
+                    className="flex w-full max-w-[150px] items-center justify-center gap-1 text-nowrap rounded-lg border p-1 text-[12px] font-semibold"
+                  >
+                    <Plus size={12} /> Mark ep. {Number(aniProgress) + 1}
+                  </div>
+                )}
+              </div>
+            )}
+            {mediaType === "tv" && (
+              <div className="mr-2 flex flex-1 gap-2">
+                {tvProgress !== "S01 E01" && (
+                  <div
+                    onClick={(e) =>
+                      handleSingleUpdates(e, getPreviousEpisode())
+                    }
+                    className="flex w-full max-w-[120px] items-center justify-center gap-1 rounded-lg border p-1 text-[12px] font-semibold"
+                  >
+                    <Minus size={12} /> {getPreviousEpisode()}
+                  </div>
+                )}
+
+                {toWatch !== 0 && (
+                  <div
+                    onClick={(e) => handleSingleUpdates(e, getNextEpisode())}
+                    className="flex w-full max-w-[150px] items-center justify-center gap-1 text-nowrap rounded-lg border p-1 text-[12px] font-semibold"
+                  >
+                    <Plus size={12} /> Mark {getNextEpisode()}
+                  </div>
+                )}
+              </div>
+            )}
+            {mediaType === "movie" && (
+              <p className="flex w-full max-w-[150px] items-center justify-center gap-1 text-nowrap rounded-lg border p-1 text-[12px] font-semibold">
+                {status}
+              </p>
+            )}
+
+            <div className="ml-auto flex items-center gap-1">
+              {mediaType !== "manga" && video && (
+                <Dialog
+                  open={showtrailer}
+                  onOpenChange={() => setShowTrailer(false)}
+                >
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setShowTrailer(true)
+                    }}
+                  >
+                    <Play />
+                  </button>
+                  <DialogContent className="aspect-video bg-white p-0 sm:max-w-[1200px]">
+                    <iframe
+                      src={`https://www.youtube.com/embed/${trailers.length > 0 ? trailers[0].key : video[0].key}`}
+                      allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="aspect-video size-full rounded-lg"
+                    ></iframe>
+                  </DialogContent>
+                </Dialog>
+              )}
+              <Dialog
+                open={showRemark}
+                onOpenChange={() => setShowRemark(false)}
+              >
+                <button
+                  disabled={remarks === ""}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setShowRemark(true)
+                  }}
+                  className="text-gray-600 disabled:text-gray-400"
+                >
+                  <NotepadText />
+                </button>
+                <DialogContent className="bg-white p-3">
+                  <p className="text-xl text-gray-600">MEMO</p>
+                  <p className="rounded-lg border p-2">{remarks}</p>
+                </DialogContent>
+              </Dialog>
+              {accoutUser && (
+                <button
+                  className="flex items-center justify-center gap-1 rounded-md p-1 text-sm text-gray-600 transition-colors hover:bg-gray-200 hover:text-gray-800"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setIsEditing(true)
+                  }}
+                >
+                  <FilePenLine />
+                </button>
+              )}
             </div>
           </div>
-          {isEditing && (
-            <Dialog open={isEditing} onOpenChange={() => clearProgress()}>
-              <DialogContent className="w-fit max-w-[1200px] bg-white text-black p-0">
-                <div className="border-t bg-gray-50 p-4 w-[300px] lg:w-[360px]">
-                  <div className="space-y-4">
-                    <div className="flex space-x-4">
-                      {mediaType === "tv" && (
-                        <SeasonEpisodeCounter
-                          seasons={seasons}
-                          initialValue={String(tvProgress)}
-                          setProgress={(progress: string) =>
-                            settvProgress(progress)
-                          }
-                        />
-                      )}
-                      {mediaType === "anime" && (
-                        <AnimeEpisodesCounter
-                          progress={aniProgress}
-                          epiodes={episodes}
-                          setAniProgress={(data: number) =>
-                            setAniProgress(data)
-                          }
-                        />
-                      )}
-                      {mediaType === "manga" && (
-                        <div className="flex w-full flex-col justify-center gap-2">
-                          <label htmlFor="chapterInput">Enter Chpters</label>
-                          <input
-                            id="chapterInput"
-                            type="number"
-                            name=""
-                            value={manProgress}
-                            className="w-full border bg-white"
-                            onChange={(e) => setManProgress(e.target.value)}
-                          />
-                        </div>
-                      )}
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="remarks"
-                        className="text-md mb-1 block font-bold text-gray-700"
-                      >
-                        Remarks
-                      </label>
-                      <textarea
-                        id="remarks"
-                        value={remark}
-                        onChange={(e) => setRemarks(e.target.value)}
-                        className="w-full rounded-md border"
-                      />
-                    </div>
-                    <div className="flex justify-end space-x-2">
-                      <button
-                        onClick={() => toggleEditMode()}
-                        className="rounded-lg bg-blue-400 px-5 py-2 font-bold text-white shadow-md transition-all duration-200 hover:scale-105"
-                      >
-                        SAVE
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </DialogContent>
-            </Dialog>
-          )}
-        </div>
-      )} */}
-      {/* {mediaType === "manga" && lastUpdated && (
-        <p className="rounded-md bg-blue-100 px-2 text-sm">
-          Last Updated:{" "}
-          {lastUpdated.match(/^[A-Za-z]+\s\d{1,2}[a-z]{2},\s\d{4}/)}
-        </p>
-      )} */}
+        )}
+      </div>
     </div>
   )
 }

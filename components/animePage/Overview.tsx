@@ -1,6 +1,7 @@
 import { Anime } from "@/types/anime/singleAnime"
-import { Calendar, Clock, Heart, Link, Users } from "lucide-react"
+import { Calendar, Clock, Heart, Users } from "lucide-react"
 import React from "react"
+import Link from "next/link"
 
 export default function Overview({ animeInfo }: { animeInfo: Anime }) {
   return (
@@ -83,22 +84,31 @@ export default function Overview({ animeInfo }: { animeInfo: Anime }) {
       </section>
 
       <section className="rounded-lg bg-white p-6 shadow-md">
-        <h2 className="mb-4 text-2xl font-bold">Related Anime & Manga</h2>
+        <h2 className="mb-4 text-2xl font-bold">Related Anime</h2>
         {animeInfo.relations.map((relation, index) => (
           <div key={index} className="mb-4">
-            <h3 className="text-lg font-semibold">{relation.relation}</h3>
-            {relation.entry.map((entry, entryIndex) => (
-              <div key={entryIndex} className="mt-1 flex items-center">
-                <Link className="mr-2 size-4 shrink-0 text-blue-500" />
-                <a
-                  href={entry.url}
-                  className="line-clamp-1 text-blue-500 hover:underline"
-                >
-                  {entry.name}
-                </a>
-                <span className="ml-2 text-gray-600">({entry.type})</span>
-              </div>
-            ))}
+            {relation.relation !== "Adaptation" && (
+              <h3 className="text-lg font-semibold">{relation.relation}</h3>
+            )}
+            {relation.entry.map((entry, entryIndex) => {
+              const url = entry.url
+              const match = url.match(/anime\/(\d+)\//)
+              if (!match) {
+                return
+              }
+              return (
+                <div key={entryIndex} className="mt-1 flex items-center">
+                  {/* <Link className="mr-2 size-4 shrink-0 text-blue-500" /> */}
+                  <Link
+                    href={`${match[1]}`}
+                    className="line-clamp-1 text-blue-500 hover:underline"
+                  >
+                    {entry.name}
+                  </Link>
+                  <span className="ml-2 text-gray-600">({entry.type})</span>
+                </div>
+              )
+            })}
           </div>
         ))}
       </section>

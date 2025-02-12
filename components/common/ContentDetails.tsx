@@ -7,6 +7,7 @@ import Link from "next/link"
 import { Icon } from "../icons"
 import BookmarkTag from "./BookmarkTag"
 import { ImageLoader } from "@/util/ImageLoader"
+import { OverviewText } from "./OverviewText"
 
 interface ContentDetailsProps {
   id: number | string
@@ -38,6 +39,7 @@ interface ContentDetailsProps {
   numbers?: number
   platforms?: any
   muID?: string
+  chapters?: number
 }
 
 function formatAmount(num: number) {
@@ -102,6 +104,7 @@ export function ContentDetails({
   numbers,
   platforms,
   muID,
+  chapters,
 }: ContentDetailsProps) {
   const ratings = [
     {
@@ -194,13 +197,6 @@ export function ContentDetails({
                 }
                 className="size-auto max-w-[300px] rounded-lg md:h-full md:min-w-[300px]"
               />
-              {/* <Image
-                src={poster}
-                alt="image"
-                width={600}
-                height={500}
-                className="size-auto max-w-[300px] rounded-lg md:h-full md:min-w-[300px]"
-              /> */}
             </div>
             <div className="flex flex-col gap-4 overflow-y-auto px-4">
               <div className="flex flex-col gap-2">
@@ -252,6 +248,12 @@ export function ContentDetails({
                     <>
                       <span>•</span>
                       <span>Revenue {formatAmount(revenue || 0)}</span>
+                    </>
+                  )}
+                  {chapters && (
+                    <>
+                      <span>•</span>
+                      <span>Chapters {chapters}</span>
                     </>
                   )}
                 </div>
@@ -333,7 +335,7 @@ export function ContentDetails({
                 </div>
               )}
 
-              <p className="line-clamp-4 text-gray-300">{overview}</p>
+              <OverviewText overview={overview} classname="text-base" />
               <div className="hidden grid-cols-1 gap-4 md:grid">
                 {imdbData?.Director && imdbData?.Director !== "N/A" && (
                   <div className="flex gap-2">
@@ -475,13 +477,6 @@ export function ContentDetails({
             }
             className="mx-auto mb-6 h-auto w-full max-w-[150px] rounded-lg object-cover shadow-lg"
           />
-          {/* <Image
-            src={poster}
-            alt={`${title} poster`}
-            width={300}
-            height={450}
-            className="mx-auto mb-6 h-auto w-full max-w-[150px] rounded-lg object-cover shadow-lg"
-          /> */}
           <div className="mx-auto flex max-w-[450px] flex-col items-center justify-center gap-4">
             <div className="flex flex-col items-center justify-center gap-1">
               <h1 className="mb-2 text-center text-3xl font-bold md:text-4xl">
@@ -627,9 +622,8 @@ export function ContentDetails({
               </div>
             </div>
 
-            <div className="mt-4 w-[-webkit-fill-available]">
-              {/* <p className="mb-2 text-lg font-bold text-white">Overview</p> */}
-              <p className="line-clamp-4 text-sm text-gray-300">{overview}</p>
+            <div className="mt-4">
+              {contentType !== "manga" && <OverviewText overview={overview} />}
             </div>
           </div>
         </div>

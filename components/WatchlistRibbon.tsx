@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -38,6 +38,22 @@ export const WatchlistRibbon: React.FC<WatchlistRibbonProps> = ({
     onStatusChange(status)
   }
 
+  const [isScrolling, setIsScrolling] = useState(false)
+
+  const handleTouchStart = () => {
+    setIsScrolling(false)
+  }
+
+  const handleTouchMove = () => {
+    setIsScrolling(true)
+  }
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (isScrolling) {
+      e.preventDefault()
+    }
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -45,6 +61,9 @@ export const WatchlistRibbon: React.FC<WatchlistRibbonProps> = ({
           className="group absolute left-0 top-0 h-[34px] w-6 cursor-pointer"
           role="button"
           aria-label="Watchlist options"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
         >
           <svg
             width="24"
@@ -89,29 +108,37 @@ export const WatchlistRibbon: React.FC<WatchlistRibbonProps> = ({
         align="start"
         className="z-50 grid w-[165px] gap-2 bg-white p-2 text-black md:w-[340px] md:grid-cols-2"
       >
-        {Object.entries(statuses).map(([key, { label, icon }]) => (
-          <DropdownMenuItem
-            key={key}
-            onSelect={() => handleStatusChange(key)}
-            className={cn(
-              "flex cursor-pointer items-center rounded-md p-3 transition-colors duration-200 hover:opacity-80",
-              label === "Watching" || label === "Playing" || label === "Reading"
-                ? "bg-blue-100 text-blue-600"
-                : label === "Plan to Watch" ||
-                    label === "Want to play" ||
-                    label === "Plan to Read"
-                  ? "bg-yellow-100 text-yellow-600"
-                  : label === "Completed" || label === "I've seen this"
-                    ? "bg-green-100 text-green-600"
-                    : label === "On Hold"
-                      ? "bg-orange-100 text-orange-600"
-                      : "bg-red-100 text-red-600"
-            )}
-          >
-            {icon}
-            <span className="font-medium">{label}</span>
-          </DropdownMenuItem>
-        ))}
+        {Object.entries(statuses).map(([key, { label, icon }]) => {
+          if (key === currentStatus) {
+            return
+          } else {
+            return (
+              <DropdownMenuItem
+                key={key}
+                onSelect={() => handleStatusChange(key)}
+                className={cn(
+                  "flex cursor-pointer items-center rounded-md p-3 transition-colors duration-200 hover:opacity-80",
+                  label === "Watching" ||
+                    label === "Playing" ||
+                    label === "Reading"
+                    ? "bg-blue-100 text-blue-600"
+                    : label === "Plan to Watch" ||
+                        label === "Want to play" ||
+                        label === "Plan to Read"
+                      ? "bg-yellow-100 text-yellow-600"
+                      : label === "Completed" || label === "I've seen this"
+                        ? "bg-green-100 text-green-600"
+                        : label === "On Hold"
+                          ? "bg-orange-100 text-orange-600"
+                          : "bg-red-100 text-red-600"
+                )}
+              >
+                {icon}
+                <span className="font-medium">{label}</span>
+              </DropdownMenuItem>
+            )
+          }
+        })}
         {onRemoveData && (
           <DropdownMenuItem
             onSelect={onRemoveData}

@@ -45,10 +45,12 @@ export default async function page({
             />
             <div className="absolute inset-0 flex items-end bg-black bg-opacity-60">
               <div className="p-6">
-                <h1 className="mb-2 text-4xl font-bold text-white">
+                <h1 className="mb-2 text-xl font-bold text-white lg:text-4xl">
                   {data.name}
                 </h1>
-                <p className="text-xl text-gray-200">{data.overview}</p>
+                <p className="line-clamp-4 text-base text-gray-200 md:line-clamp-none lg:text-xl">
+                  {data.overview}
+                </p>
               </div>
             </div>
           </div>
@@ -64,17 +66,12 @@ export default async function page({
                   src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                   alt={`${movie.title} Poster`}
                   fallback={
-                    <div className="flex aspect-[2/3] size-full items-center justify-center bg-[rgba(181,181,181,0.3)]">
+                    <div className="flex aspect-[2/3] size-full w-full items-center justify-center bg-[rgba(181,181,181,0.3)] md:max-w-48">
                       <Icon.noPreview />
                     </div>
                   }
-                  className="h-72 w-full object-cover md:w-48"
+                  className="w-full object-cover md:w-48"
                 />
-                {/* <img
-                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                  alt={`${movie.title} Poster`}
-                  className="h-72 w-full object-cover md:w-48"
-                /> */}
                 <div className="flex grow flex-col justify-between p-4">
                   <div>
                     <h2 className="mb-2 text-xl font-semibold">
