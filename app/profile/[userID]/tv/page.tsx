@@ -15,14 +15,14 @@ export default async function page({ params }: { params: { userID: string } }) {
     fetchFromTMDB(configTMDB.getSingleTvProfile(Number(data.id)))
   )
   const results = await Promise.all(promises)
-
+// console.log(results)
   const mergedData = mergeData(tv, results)
   return (
     <ContentTab
       data={mergedData}
       title="MY TV SHOWS"
       mediaType="tv"
-      filters={["watching", "planning", "on hold", "dropped", "completed"]}
+      filters={["watching", "planning", "hold", "dropped", "completed"]}
     />
   )
 }

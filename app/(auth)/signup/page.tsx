@@ -201,11 +201,11 @@ export default function RegisterPage() {
                   <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
                     <h4 className="mb-2 font-medium">Is it free to use?</h4>
                     <p className="text-sm text-gray-600">
-                      Yes, BingeList is completely free to use with all core
+                      Yes, My Binge List is completely free to use with all core
                       features included.
                     </p>
                   </div>
-                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+                  {/* <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
                     <h4 className="mb-2 font-medium">
                       Can I import my existing lists?
                     </h4>
@@ -213,7 +213,7 @@ export default function RegisterPage() {
                       Yes, you can import your lists from other popular tracking
                       platforms.
                     </p>
-                  </div>
+                  </div> */}
                   <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
                     <h4 className="mb-2 font-medium">
                       How do I track my progress?

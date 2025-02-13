@@ -192,14 +192,13 @@ export function ProfileCard({
       const progress = (aniProgress / episodes) * 100
       setBarProgress(progress)
       return
-    } else if (mediaType === "manga" && chapters) {
+    } else if (mediaType === "manga" && chapters && manProgress <= chapters) {
       const progress = (manProgress / chapters) * 100
       setBarProgress(progress)
       return
     }
 
     if (!showProgress || !seasons) return
-
     // Parse the progress string (e.g., "S01 E10")
     const match = String(tvProgress).match(/S(\d{2})\s*E(\d{2})/)
     if (!match) return
@@ -323,7 +322,6 @@ export function ProfileCard({
     return `S${String(prevSeason.season_number).padStart(2, "0")} E${String(prevSeason.episode_count).padStart(2, "0")}`
   }
 
-  console.log(trailers)
   return (
     <div
       className={cn(
@@ -497,7 +495,7 @@ export function ProfileCard({
                           )}
                         </>
                       )}
-                      {mediaType === "manga" && chapters && (
+                      {mediaType === "manga" && chapters && manProgress <= chapters && (
                         <>
                           <div className="size-[5px] rounded-full bg-slate-500"></div>
                           <p className="text-sm font-medium text-gray-600">
@@ -681,7 +679,7 @@ export function ProfileCard({
             )}
 
             <div className="ml-auto flex items-center gap-1">
-              {mediaType !== "manga" && video && (
+              {mediaType !== "manga" && video && video.length > 0 && (
                 <Dialog
                   open={showtrailer}
                   onOpenChange={() => setShowTrailer(false)}

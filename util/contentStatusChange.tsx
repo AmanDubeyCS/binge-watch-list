@@ -59,7 +59,7 @@ export const handleTvShowStatusChange = async (
   const data = {
     id,
     ...tvDetails,
-    tvProgress: tvDetails.tvProgress || "S01-E01",
+    tvProgress: tvDetails.tvProgress || "S01 E01",
     remarks: remarks || "",
     watchStatus: selectedStatus,
   }

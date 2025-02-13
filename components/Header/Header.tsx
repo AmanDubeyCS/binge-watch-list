@@ -69,7 +69,7 @@ export default function Header() {
             className="h-[30px] w-auto md:h-[50px]"
           />
         </Link>
-        <div className="fixed bottom-0 left-0 z-50 flex w-full bg-white p-2 md:relative md:flex md:max-w-[600px] md:bg-transparent">
+        <div className="fixed bottom-0 left-0 z-50 flex w-full bg-white p-2 md:relative md:flex md:max-w-[500px] md:bg-transparent">
           {links.map((link) => (
             <Link
               key={link.name}
@@ -106,7 +106,7 @@ export default function Header() {
             href={"/search"}
             onClick={() => setActiveLink("/search")}
             className={cn(
-              "text-neutrals-800 flex flex-col items-center justify-center gap-2 px-3 text-[15px] font-medium leading-[normal] hover:text-orange-400",
+              "text-neutrals-800 flex flex-col items-center justify-center gap-2 text-[15px] font-medium leading-[normal] hover:text-orange-400",
               activeLink === `/search` && "text-orange-400"
             )}
           >
@@ -119,7 +119,7 @@ export default function Header() {
             }
             onClick={() => setActiveLink(`/profile/${session?.user?.id}`)}
             className={cn(
-              "text-neutrals-800 hidden flex-col items-center justify-center gap-2 px-3 text-[15px] font-medium leading-[normal] hover:text-orange-400 md:flex",
+              "text-neutrals-800 hidden flex-col items-center justify-center gap-2 text-[15px] font-medium leading-[normal] hover:text-orange-400 md:flex",
               activeLink === `/profile/${session?.user?.id}` &&
                 "text-orange-400"
             )}
