@@ -11,15 +11,19 @@ interface SeasonEpisodeCounterProps {
   seasons: Season[]
   initialValue?: string
   setProgress: (_progress: string) => void
+  lastToAir: string
 }
 
 export function SeasonEpisodeCounter({
   seasons,
   initialValue = "S01 E01",
   setProgress,
+  lastToAir,
 }: SeasonEpisodeCounterProps) {
   const [season, setSeason] = useState(1)
   const [episode, setEpisode] = useState(1)
+  const [lastAirseason, setLastAirSeason] = useState(1)
+  const [lastAirepisode, setLastAirEpisode] = useState(1)
 
   const filteredSeasons = seasons.filter((s) => s.season_number !== 0)
 
@@ -30,15 +34,25 @@ export function SeasonEpisodeCounter({
     () => filteredSeasons.find((s) => s.season_number === season),
     [filteredSeasons, season]
   )
-  const currentSeasonEpisodes = currentSeasonData?.episode_count || 0
+  const currentSeasonEpisodes =
+    lastAirseason === season
+      ? lastAirepisode
+      : currentSeasonData?.episode_count || 0
 
   useEffect(() => {
     const match = initialValue.match(/S(\d{2})\s*E(\d{2})/)
+    const lastAirMAtch = lastToAir.match(/S(\d{2})\s*E(\d{2})/)
     if (match) {
       const initialSeason = parseInt(match[1], 10)
       const initialEpisode = parseInt(match[2], 10)
       setSeason(initialSeason)
       setEpisode(initialEpisode)
+    }
+    if (lastAirMAtch) {
+      const initialSeason = parseInt(lastAirMAtch[1], 10)
+      const initialEpisode = parseInt(lastAirMAtch[2], 10)
+      setLastAirSeason(initialSeason)
+      setLastAirEpisode(initialEpisode)
     }
   }, [])
 

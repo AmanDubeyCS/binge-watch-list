@@ -6,6 +6,7 @@ import { signInWithEmailAndPassword } from "firebase/auth"
 import { auth } from "@/app/firebaseConfig"
 import { GoogleSignIn } from "@/components/auth/GoogleSignIn"
 import Link from "next/link"
+import { toast } from "sonner"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -37,15 +38,16 @@ export default function LoginPage() {
           console.log("error")
         }
       }
-      console.log("Email Login Successful:", user)
+      toast.success("Welcome", { description: "Login sucsessfully" })
     } catch (error) {
-      console.error("Login Error:", error)
+      toast.error("Error:", {
+        description: "failed to login, please try again",
+      })
     }
   }
 
   return (
     <>
-      {isLoading && <div className="size-full">please wait...</div>}
       <div className="flex h-[calc(100vh-89px)] items-center justify-center bg-gray-100">
         <div className="w-full max-w-sm rounded-lg bg-white p-8 shadow-md">
           <h2 className="mb-6 text-center text-2xl font-bold text-gray-800">
@@ -93,9 +95,10 @@ export default function LoginPage() {
               {/* Register Button */}
               <button
                 type="submit"
+                disabled={isLoading}
                 className="hover:bg-primary-700 w-full rounded-lg bg-blue-600 px-6 py-3 text-white transition-colors"
               >
-                Login
+                {isLoading ? "Please wait" : "Login"}
               </button>
             </form>
 

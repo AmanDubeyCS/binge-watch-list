@@ -6,6 +6,7 @@ import { AppLayout, Providers, SessionProvider } from "@/components/Providers"
 import Header from "@/components/Header/Header"
 import { getServerSession } from "next-auth"
 import { authOptions } from "./api/auth/[...nextauth]/options"
+import { Toaster } from "sonner"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -96,6 +97,14 @@ export default async function RootLayout({
             <AppLayout>
               <Header />
               {children}
+              <Toaster
+                toastOptions={{
+                  classNames: {
+                    error: "bg-red-100 text-red-400",
+                    success: "text-green-500 bg-green-50",
+                  },
+                }}
+              />
             </AppLayout>
           </Providers>
         </SessionProvider>

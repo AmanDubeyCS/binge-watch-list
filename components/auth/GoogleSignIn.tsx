@@ -4,6 +4,7 @@ import { saveUserData } from "@/util/auth"
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 export function GoogleSignIn() {
   const router = useRouter()
@@ -28,9 +29,11 @@ export function GoogleSignIn() {
           console.log("error")
         }
       }
-      console.log("Google Sign-In Successful:", user)
+      toast.success("Welcome", { description: "Sign-In sucsessfully" })
     } catch (error) {
-      console.error("Google Sign-In Error:", error)
+      toast.error("Error:", {
+        description: "failed to Sign-In, please try again",
+      })
     }
   }
   return (

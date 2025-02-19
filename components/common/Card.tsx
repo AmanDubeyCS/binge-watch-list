@@ -1,5 +1,5 @@
 "use client"
-import React, { useMemo } from "react"
+import React, { useMemo, useState } from "react"
 import { Star } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
@@ -17,6 +17,8 @@ import {
 } from "@/util/contentStatusChange"
 import { DataStore, useDataStore } from "@/store/allDataStore"
 import { checkdata } from "@/util/fetchFromMangaUpdates"
+import { fetchFromJikan } from "@/util/fetchFromJikan"
+import { config } from "@/apiConfig"
 
 const platformLogos = {
   pc: <Icon.windowsIcon className="size-4" />,
@@ -98,6 +100,99 @@ export default function Card({
   }, [data])
 
   // console.log(data)
+  // const handleStatusChange = async (selectedStatus: string) => {
+  //   if (!session?.user?.id || !mediaType) return
+  //   const details = {
+  //     name,
+  //     coverImage,
+  //     tag,
+  //     voteAverage,
+  //     voteCount,
+  //     numbers,
+  //     genre,
+  //   }
+
+  //   if (mediaType === "manga") {
+  //     upsertItem({ id, readStatus: selectedStatus, ...details })
+  //   } else if (mediaType === "game") {
+  //     upsertItem({ id, gameStatus: selectedStatus, ...details })
+  //   } else {
+  //     upsertItem({ id, watchStatus: selectedStatus, ...details })
+  //   }
+
+  //   const handlers: Record<string, Function> = {
+  //     movie: handleMovieStatusChange,
+  //     tv: handleTvShowStatusChange,
+  //     anime: async () => {
+  //       if (episodes === null) {
+  //         const animeData = await fetchFromJikan(
+  //           config.getAnimeEpisodes(Number(id)),
+  //           0
+  //         )
+  //         const episodes = await animeData
+  //         if (episodes && episodes.pagination.has_next_page) {
+  //           const episodedata = await fetchFromJikan(
+  //             config.getAnimeEpisodes(
+  //               Number(id),
+  //               episodes.pagination.last_visible_page
+  //             ),
+  //             0
+  //           )
+  //           console.log(episodedata.data[episodedata.data.length - 1].mal_id)
+  //           return handleAnimeStatusChange(
+  //             session.user.id,
+  //             Number(id),
+  //             selectedStatus,
+  //             details,
+  //             episodedata.data[episodedata.data.length - 1].mal_id
+  //           )
+  //         } else {
+  //           console.log(episodes)
+  //           return handleAnimeStatusChange(
+  //             session.user.id,
+  //             Number(id),
+  //             selectedStatus,
+  //             details,
+  //             episodes.data.length
+  //           )
+  //         }
+  //       } else {
+  //         return handleAnimeStatusChange(
+  //           session.user.id,
+  //           Number(id),
+  //           selectedStatus,
+  //           details,
+  //           episodes
+  //         )
+  //       }
+  //     },
+  //     game: handleGameStatusChange,
+  //     manga: async () => {
+  //       const muId = await checkdata(String(id))
+  //       const muID = typeof muId === "number" ? muId.toString() : undefined
+  //       upsertItem({ ...details, id, selectedStatus, muID })
+  //       return handleMangaStatusChange(
+  //         session.user.id,
+  //         id,
+  //         selectedStatus,
+  //         details,
+  //         undefined,
+  //         muID
+  //       )
+  //     },
+  //   }
+
+  //   await handlers[mediaType]?.(
+  //     session.user.id,
+  //     mediaType === "manga" ? id : Number(id),
+  //     selectedStatus,
+  //     {
+  //       ...details,
+  //       // ...(mediaType === "anime" && { episodes: episode ??  findEpisode()}),
+  //       ...(mediaType === "game" && { platforms }),
+  //     }
+  //   )
+  // }
   const handleStatusChange = async (selectedStatus: string) => {
     if (!session?.user?.id || !mediaType) return
 
@@ -119,20 +214,52 @@ export default function Card({
       upsertItem({ id, watchStatus: selectedStatus, ...details })
     }
 
+    const fetchEpisodes = async (): Promise<number> => {
+      const animeData = await fetchFromJikan(
+        config.getAnimeEpisodes(Number(id)),
+        0
+      )
+      if (!animeData?.data) return 0
+
+      const { pagination, data } = animeData
+      if (pagination?.has_next_page) {
+        const lastPageData = await fetchFromJikan(
+          config.getAnimeEpisodes(Number(id), pagination.last_visible_page),
+          0
+        )
+        return (
+          lastPageData?.data?.[lastPageData.data.length - 1]?.mal_id ??
+          data.length
+        )
+      }
+      return data.length
+    }
+
     const handlers: Record<string, Function> = {
       movie: handleMovieStatusChange,
       tv: handleTvShowStatusChange,
-      anime: handleAnimeStatusChange,
+      anime: async () => {
+        const episodeCount = episodes ?? (await fetchEpisodes())
+        return handleAnimeStatusChange(
+          session.user.id,
+          Number(id),
+          selectedStatus,
+          {
+            ...details,
+            episodes: episodeCount,
+            aniProgress: selectedStatus === "completed" ? episodeCount : "",
+          }
+        )
+      },
       game: handleGameStatusChange,
       manga: async () => {
         const muId = await checkdata(String(id))
         const muID = typeof muId === "number" ? muId.toString() : undefined
-        upsertItem({ ...details, id, selectedStatus, muID })
         return handleMangaStatusChange(
           session.user.id,
           id,
           selectedStatus,
-          details,
+          { ...details },
           undefined,
           muID
         )
@@ -143,11 +270,10 @@ export default function Card({
       session.user.id,
       mediaType === "manga" ? id : Number(id),
       selectedStatus,
-      mediaType === "anime"
-        ? { ...details, episodes }
-        : mediaType === "game"
-          ? { ...details, platforms }
-          : details
+      {
+        ...details,
+        ...(mediaType === "game" && { platforms }),
+      }
     )
   }
 

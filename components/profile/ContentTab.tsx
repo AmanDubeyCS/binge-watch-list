@@ -37,6 +37,8 @@ interface WatchListData {
   last_updated?: any
   videos?: any
   overview?: string
+  last_episode_to_air?: any
+  next_episode_to_air?: any
 }
 
 export default function ContentTab({
@@ -134,6 +136,8 @@ export default function ContentTab({
             lastUpdated={data.last_updated?.as_string}
             video={data.videos?.results}
             overview={data.overview}
+            lastToAir={`S${String(data?.last_episode_to_air?.season_number).padStart(2, "0")} E${String(data?.last_episode_to_air?.episode_number).padStart(2, "0")}`}
+            nextToAir={String(data.next_episode_to_air?.episode_number).padStart(2, "0")}
           />
         ))}
       </div>

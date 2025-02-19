@@ -1,8 +1,6 @@
 import { db } from "@/app/firebaseConfig"
 import { doc, setDoc } from "firebase/firestore"
-import { fetchFromMangaDex } from "./fetchFromTMDB"
-import { checkdata, fetchCanonicalAndEncode } from "./fetchFromMangaUpdates"
-import { config } from "@/apiConfig"
+import { toast } from "sonner"
 
 const updateMediaDetails = async (
   userId: string,
@@ -13,8 +11,9 @@ const updateMediaDetails = async (
   try {
     const docRef = doc(db, "users", userId, mediaType, id.toString())
     await setDoc(docRef, data, { merge: true })
-    console.log(`${mediaType} details updated successfully!`)
+    toast.success("Sucsess", {description: "content added/updated sucsessfuly"})
   } catch (error) {
+    toast.error("Error", {description: "Failed to add/update content please try again later"})
     console.error(`Error updating ${mediaType} details:`, error)
   }
 }
@@ -77,7 +76,7 @@ export const handleAnimeStatusChange = async (
     genre: string[]
     voteAverage: number
     voteCount: number
-    episodes?: number
+    episodes: number
     aniProgress?: number
   },
   remarks?: string

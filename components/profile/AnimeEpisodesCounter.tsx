@@ -21,7 +21,7 @@ export function AnimeEpisodesCounter({
       }
     }
   }
-
+console.log(epiodes)
   useEffect(() => {
     setAniProgress(epProgress)
   }, [epProgress, setAniProgress])

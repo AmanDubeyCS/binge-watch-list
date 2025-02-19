@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils"
 import { useSession } from "next-auth/react"
 import { doc, updateDoc } from "firebase/firestore"
 import { db } from "@/app/firebaseConfig"
+import { toast } from "sonner"
 
 interface MediaItem {
   aspect_ratio: number
@@ -32,10 +33,11 @@ export function Pictures({ data }: { data: any }) {
       await updateDoc(userDocRef, {
         bannerImage: bannerURL,
       })
-      console.log("sucesss")
+      console.log("sucsess")
+      toast.success("Sucsess", { description: "Profile banner is updated" })
     } catch (error) {
       console.error("Error updating profile:", error)
-      alert("Failed to update profile.")
+      toast("Failed")
     }
   }
 
@@ -72,16 +74,18 @@ export function Pictures({ data }: { data: any }) {
               alt={`Media item`}
               className="size-full"
             />
-            <div
-              onClick={() =>
-                handleBannerUpdate(
-                  `https://image.tmdb.org/t/p/original${openDialog}`
-                )
-              }
-              className="cursor-pointer bg-blue-400 px-2 py-1 text-center font-medium text-white"
-            >
-              set as profile banner
-            </div>
+            {session?.user?.id && (
+              <div
+                onClick={() =>
+                  handleBannerUpdate(
+                    `https://image.tmdb.org/t/p/original${openDialog}`
+                  )
+                }
+                className="cursor-pointer bg-blue-400 px-2 py-1 text-center font-medium text-white"
+              >
+                set as profile banner
+              </div>
+            )}
           </DialogContent>
         </Dialog>
       </>

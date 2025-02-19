@@ -39,8 +39,8 @@ export const config = {
     `${BASE_URL_ANIME}/anime/${animeID}/full`,
   getSearchedAnime: (title: string) =>
     `${BASE_URL_ANIME}/anime?q=${title}&limit=16`,
-  getAnimeEpisodes: (animeID: number) =>
-    `${BASE_URL_ANIME}/anime/${animeID}/episodes`,
+  getAnimeEpisodes: (animeID: number, page?: number) =>
+    `${BASE_URL_ANIME}/anime/${animeID}/episodes${page !== undefined ? `?page=${page}` : ''}`,
   getAnimeEpisodeVideo: (animeID: number) =>
     `https://api.jikan.moe/v4/anime/${animeID}/videos/episodes`,
   getCharactersDetail: (animeID: number) =>
