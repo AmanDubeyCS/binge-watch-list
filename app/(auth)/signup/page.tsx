@@ -10,7 +10,6 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
 
-
 export default function RegisterPage() {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")

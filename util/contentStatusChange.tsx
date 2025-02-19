@@ -11,9 +11,13 @@ const updateMediaDetails = async (
   try {
     const docRef = doc(db, "users", userId, mediaType, id.toString())
     await setDoc(docRef, data, { merge: true })
-    toast.success("Sucsess", {description: "content added/updated sucsessfuly"})
+    toast.success("Sucsess", {
+      description: "content added/updated sucsessfuly",
+    })
   } catch (error) {
-    toast.error("Error", {description: "Failed to add/update content please try again later"})
+    toast.error("Error", {
+      description: "Failed to add/update content please try again later",
+    })
     console.error(`Error updating ${mediaType} details:`, error)
   }
 }

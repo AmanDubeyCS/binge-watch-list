@@ -70,7 +70,6 @@ export default function ContentTab({
     }
   }
 
-
   return (
     <div>
       <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row">
@@ -137,7 +136,9 @@ export default function ContentTab({
             video={data.videos?.results}
             overview={data.overview}
             lastToAir={`S${String(data?.last_episode_to_air?.season_number).padStart(2, "0")} E${String(data?.last_episode_to_air?.episode_number).padStart(2, "0")}`}
-            nextToAir={String(data.next_episode_to_air?.episode_number).padStart(2, "0")}
+            nextToAir={String(
+              data.next_episode_to_air?.episode_number
+            ).padStart(2, "0")}
           />
         ))}
       </div>

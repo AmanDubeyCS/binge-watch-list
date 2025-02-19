@@ -15,7 +15,7 @@ export default async function page({ params }: { params: { userID: string } }) {
     fetchFromTMDB(configTMDB.getSingleTvProfile(Number(data.id)))
   )
   const results = await Promise.all(promises)
-// console.log(results)
+  // console.log(results)
   const mergedData = mergeData(tv, results)
 
   // console.log(mergedData)

@@ -1,5 +1,5 @@
 "use client"
-import React, { useMemo, useState } from "react"
+import React, { useMemo } from "react"
 import { Star } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
