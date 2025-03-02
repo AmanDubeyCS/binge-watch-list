@@ -134,11 +134,6 @@ export function AnimeDiscoverPage({ animeGenres }: any) {
     [searchParams]
   )
 
-  const genresList = animeGenres.slice(0, 18)
-  // const explicitGenres = animeGenres.slice(18, 21)
-  // const theame = animeGenres.slice(21, -5)
-  const demographicsList = animeGenres.slice(-5)
-
   const updateStateFromObject = (params: Record<string, string>) => {
     Object.entries(params).forEach(([key, value]) => {
       switch (key) {
@@ -270,19 +265,20 @@ export function AnimeDiscoverPage({ animeGenres }: any) {
           <div className="flex flex-wrap justify-center gap-4 rounded-md">
             <DropdownMultiSelect
               title="Genres"
-              items={genresList}
+              items={animeGenres}
               placeholder="Any"
               selectedItems={genres.map(
                 (genre) =>
-                  genresList.find((g: { mal_id: number }) => g.mal_id === genre)
-                    ?.name
+                  animeGenres.find(
+                    (g: { mal_id: number }) => g.mal_id === genre
+                  )?.name
               )}
               onSelect={(item: number) => {
                 handleMultiSelect(item, genres, setGenres)
               }}
             />
 
-            <DropdownMultiSelect
+            {/* <DropdownMultiSelect
               title="demographics"
               items={demographicsList}
               placeholder="Any"
@@ -295,7 +291,7 @@ export function AnimeDiscoverPage({ animeGenres }: any) {
               onSelect={(item: number) => {
                 handleMultiSelect(item, demographics, setDemographics)
               }}
-            />
+            /> */}
 
             <DropdownMultiSelect
               title="Year"
@@ -343,7 +339,7 @@ export function AnimeDiscoverPage({ animeGenres }: any) {
           </div>
 
           {hasActiveFilters && (
-            <div className="bg-secondary mt-4 rounded-lg p-4">
+            <div className="mt-4 rounded-lg bg-secondary p-4">
               <div className="flex flex-wrap gap-2">
                 {sortBy && (
                   <div className="flex items-center gap-1 rounded-md bg-[#3DB4F2] px-2 py-1 text-xs font-semibold text-white">

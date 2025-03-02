@@ -78,6 +78,12 @@ export async function fetchTopManhwa({
   return fetchMangaWithRatings(config.getTopManhwa({ limit, offset }))
 }
 
+export async function fetchbanner() {
+  return fetchMangaWithRatings(
+    "https://api.mangadex.org/manga?limit=10&includedTagsMode=AND&excludedTagsMode=OR&originalLanguage[]=ko&availableTranslatedLanguage[]=en&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&order[createdAt]=desc&includes[]=cover_art"
+  )
+}
+
 export async function fetchTopManhua() {
   return fetchMangaWithRatings(config.getTopManhua)
 }

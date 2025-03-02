@@ -1,4 +1,5 @@
 import { configRAWG } from "@/apiConfig"
+import { EmblaCarousel } from "@/components/common/Crousal"
 import { ListCards } from "@/components/common/ListContent"
 import { GameGenresList } from "@/components/gamePage/GameGenresList"
 import GamingPlatforms from "@/components/gamePage/GamingPlatforms"
@@ -93,16 +94,18 @@ export interface Game {
 export default async function page() {
   const response = await fetch(configRAWG.getGamesList)
   const gamesList = await response.json()
-
   return (
-    <main className="mx-auto flex max-w-[1600px] flex-col gap-5 pb-10 text-black">
-      <ListCards
-        gameData={gamesList.results}
-        title="Popular Games"
-        titleIcon={<Tv className="mr-2" />}
-      />
-      <GamingPlatforms />
-      <GameGenresList />
-    </main>
+    <>
+      <EmblaCarousel slides={gamesList.results} type="game" />
+      <main className="mx-auto flex max-w-[1600px] flex-col gap-5 pb-10 text-black">
+        <ListCards
+          gameData={gamesList.results}
+          title="Popular"
+          titleIcon={<Tv className="mr-2" />}
+        />
+        <GamingPlatforms />
+        <GameGenresList />
+      </main>
+    </>
   )
 }

@@ -31,6 +31,7 @@ export interface WatchListData {
   episodes: number
   mangaProgress: number
   mangaUpdatesID: number | string
+  BWLstatus: string
   // latest_chapter: number
 }
 

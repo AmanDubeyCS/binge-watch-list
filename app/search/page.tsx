@@ -32,7 +32,7 @@ export default function SearchPage() {
   }, [query, searchType, router])
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-100 to-white">
+    <div className="min-h-screen">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="py-8">
           <form className="space-y-6">

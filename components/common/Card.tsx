@@ -91,12 +91,7 @@ export default function Card({
   const watchStatus = useMemo(() => {
     if (profileCardStatus) return profileCardStatus
     const status = data?.find((item: { id: number | string }) => item.id === id)
-    // console.log(status)
-    return mediaType === "manga"
-      ? status?.readStatus
-      : mediaType === "game"
-        ? status?.gameStatus
-        : status?.watchStatus || null
+    return status?.BWLstatus
   }, [data])
 
   // console.log(data)
@@ -205,14 +200,7 @@ export default function Card({
       numbers,
       genre,
     }
-
-    if (mediaType === "manga") {
-      upsertItem({ id, readStatus: selectedStatus, ...details })
-    } else if (mediaType === "game") {
-      upsertItem({ id, gameStatus: selectedStatus, ...details })
-    } else {
-      upsertItem({ id, watchStatus: selectedStatus, ...details })
-    }
+    upsertItem({ id, BWLstatus: selectedStatus, ...details })
 
     const fetchEpisodes = async (): Promise<number> => {
       const animeData = await fetchFromJikan(
@@ -247,7 +235,7 @@ export default function Card({
           {
             ...details,
             episodes: episodeCount,
-            aniProgress: selectedStatus === "completed" ? episodeCount : "",
+            progress: selectedStatus === "completed" ? episodeCount : "",
           }
         )
       },

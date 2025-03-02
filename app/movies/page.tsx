@@ -1,12 +1,12 @@
 import React from "react"
 
 import { configTMDB } from "@/apiConfig"
-// import { TvProviders } from "@/components/tvPage/tvHomePage/TvProviders"
 import { TvGenresList } from "@/components/tvPage/tvHomePage/TvGenresList"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
 import { Tv } from "lucide-react"
 import { ListCards } from "@/components/common/ListContent"
-// import { Banner } from "@/components/common/Banner"
+import { EmblaCarousel } from "@/components/common/Crousal"
+import { mergeData } from "@/util/mergeApiData"
 
 export default async function MoviesPage() {
   const [trendingMovies, popularMovies, movieProviders, movieGenres] =
@@ -39,34 +39,46 @@ export default async function MoviesPage() {
     37: "https://image.tmdb.org/t/p/w500/nPJAo1NDfETSwoYl8CYE2DUBUk3.jpg",
   }
 
+  const trending = trendingMovies.results.map((data: { id: number }) =>
+    fetchFromTMDB(`https://api.themoviedb.org/3/movie/${data.id}/images`)
+  )
+  const results = await Promise.all(trending)
+  const mergedData = mergeData(trendingMovies.results, results)
+
   return (
-    <main className="mx-auto flex max-w-[1600px] flex-col gap-10 pb-10">
-      {/* <div className="hide-scrollbar flex gap-5 overflow-x-scroll">
-        {trendingMovies.results.map((trendingMovies) => (
-          <Banner movie={trendingMovies} />
-        ))}
-      </div> */}
-      {trendingMovies && (
-        <ListCards
-          movieData={trendingMovies.results}
-          title="Currently Trending"
-          titleIcon={<Tv className="mr-2" />}
+    <>
+      {mergedData && (
+        <EmblaCarousel
+          slides={mergedData.filter(
+            (slide: { genre_ids: number[] }) => !slide.genre_ids.includes(16)
+          )}
         />
       )}
-      {popularMovies && (
-        <ListCards
-          movieData={popularMovies.results}
-          title="Popular on Movie"
-          titleIcon={<Tv className="mr-2" />}
-        />
-      )}
-      {/* {movieProviders && <TvProviders TvProviders={movieProviders.results} />} */}
-      {movieGenres && (
-        <TvGenresList
-          categorys={movieGenres.genres}
-          genraImage={movieGenraImage}
-        />
-      )}
-    </main>
+      <main className="mx-auto flex max-w-[1600px] flex-col gap-10 pb-10">
+        {trendingMovies && (
+          <>
+            <ListCards
+              movieData={trendingMovies.results}
+              title="Trending"
+              titleIcon={<Tv className="mr-2" />}
+            />
+          </>
+        )}
+        {popularMovies && (
+          <ListCards
+            movieData={popularMovies.results}
+            title="Popular"
+            titleIcon={<Tv className="mr-2" />}
+          />
+        )}
+        {/* {movieProviders && <TvProviders TvProviders={movieProviders.results} />} */}
+        {movieGenres && (
+          <TvGenresList
+            categorys={movieGenres.genres}
+            genraImage={movieGenraImage}
+          />
+        )}
+      </main>
+    </>
   )
 }

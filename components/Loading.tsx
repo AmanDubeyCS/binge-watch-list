@@ -4,9 +4,8 @@ import loading from "@/assets/amongUs-loading.json"
 
 const Loading = () => {
   return (
-    <div className="flex size-full flex-col items-center justify-center">
+    <div className="flex size-full flex-col items-center justify-center bg-gray-50">
       <Lottie animationData={loading} />
-      <p className="text-bold text-xl">LOADING...</p>
     </div>
   )
 }

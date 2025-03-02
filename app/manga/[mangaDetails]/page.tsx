@@ -244,7 +244,7 @@ export default async function page({
                   <div className="space-y-8">
                     <div className="rounded-lg border p-4 shadow-lg">
                       <h3 className="mb-4 text-xl font-semibold">Tags</h3>
-                      <div className="flex h-[90px] flex-wrap gap-2 overflow-hidden">
+                      <div className="flex max-h-[90px] flex-wrap gap-2 overflow-hidden">
                         {MUData.categories.map((category) => (
                           <div
                             key={category.category}

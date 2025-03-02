@@ -59,12 +59,10 @@ export default function BookmarkTag({
   const { data: session } = useSession()
 
   const status = data.find(
-    (data: { id: string | number; status?: string }) =>
-      String(data.id) === String(id)
+    (data: { id: string | number }) => String(data.id) === String(id)
   )
 
-  const statusKey =
-    status?.watchStatus || status?.readStatus || status?.gameStatus
+  const statusKey = status?.BWLstatus
 
   const statuses =
     contentType === "manga"
@@ -92,13 +90,7 @@ export default function BookmarkTag({
       genre,
     }
 
-    if (contentType === "manga") {
-      upsertItem({ id: String(id), readStatus: selectedStatus, ...details })
-    } else if (contentType === "game") {
-      upsertItem({ id: Number(id), gameStatus: selectedStatus, ...details })
-    } else {
-      upsertItem({ id: Number(id), watchStatus: selectedStatus, ...details })
-    }
+    upsertItem({ id: String(id), BWLstatus: selectedStatus, ...details })
 
     const handlers: Record<string, Function> = {
       movie: handleMovieStatusChange,

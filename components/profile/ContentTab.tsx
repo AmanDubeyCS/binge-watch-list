@@ -10,28 +10,22 @@ interface WatchListData {
   genre: string[]
   numbers: number
   status: string
-  watchStatus?: string
-  readStatus?: string
   gameStatus?: string
   tag: string
   voteAverage: number
   voteCount: number
   remarks: string
-  progress: string
+  progress: string | number
   episodeCount: number
-  showStatus: string
-  WatchStatus: any
+  BWLstatus: string
   poster_path: string
   vote_average: number
   vote_count: number
   genres: string[]
   popularity: number
-  tvProgress: string
   seasons: any
   platforms: any
-  animeProgress: number
   episodes: number
-  mangaProgress: number
   mangaUpdatesID: number | string
   latest_chapter?: number
   last_updated?: any
@@ -61,10 +55,7 @@ export default function ContentTab({
       setFilteredData(data)
     } else {
       const filteredData = data.filter(
-        (item: WatchListData) =>
-          item.watchStatus === filter ||
-          item.readStatus === filter ||
-          item.gameStatus === filter
+        (item: WatchListData) => item.status === filter
       )
       setFilteredData(filteredData)
     }
@@ -121,17 +112,12 @@ export default function ContentTab({
             }
             numbers={data.popularity || data.numbers}
             mediaType={mediaType}
-            status={
-              data.watchStatus || data.readStatus || data.gameStatus || ""
-            }
+            status={data.BWLstatus}
             remark={data.remarks}
-            showProgress={data.tvProgress}
             seasons={data.seasons}
             platforms={data.platforms}
-            animeprogress={data.animeProgress}
             episodes={data.episodes}
             chapters={data.latest_chapter}
-            mangaProgress={data.mangaProgress}
             lastUpdated={data.last_updated?.as_string}
             video={data.videos?.results}
             overview={data.overview}
@@ -139,6 +125,7 @@ export default function ContentTab({
             nextToAir={String(
               data.next_episode_to_air?.episode_number
             ).padStart(2, "0")}
+            progress={data.progress}
           />
         ))}
       </div>

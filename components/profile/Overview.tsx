@@ -93,7 +93,7 @@ export function Overview({
                       genre={data.genre}
                       numbers={data.numbers}
                       mediaType="anime"
-                      profileCardStatus={data.watchStatus}
+                      profileCardStatus={data.status}
                       status={tvStatuses}
                     />
                   ))}
@@ -135,7 +135,7 @@ export function Overview({
                       genre={data.genre}
                       numbers={data.numbers}
                       mediaType="tv"
-                      profileCardStatus={data.watchStatus}
+                      profileCardStatus={data.status}
                       status={tvStatuses}
                     />
                   ))}
