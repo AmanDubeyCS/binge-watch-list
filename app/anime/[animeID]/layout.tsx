@@ -6,6 +6,67 @@ import { fetchFromJikan } from "@/util/fetchFromJikan"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
 import { getIMDBData } from "@/util/fetchIMDBdata"
 import React, { ReactElement } from "react"
+import { Metadata } from "next"
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { animeID: number }
+}): Promise<Metadata> {
+  try {
+    const { animeID } = params
+    const animeData = await fetchFromJikan(config.getSingleAnime(animeID), 0)
+
+    if (!animeData?.data) {
+      return {
+        title: "Anime Not Found",
+        description: "The anime details could not be retrieved.",
+      }
+    }
+
+    const animeInfo = animeData.data
+
+    return {
+      title: `${animeInfo.title_english || animeInfo.title} (${animeInfo.year})`,
+      description: animeInfo.synopsis,
+      openGraph: {
+        title: `${animeInfo.title_english || animeInfo.title} (${animeInfo.year})`,
+        description: animeInfo.synopsis,
+        images: [
+          {
+            url: animeInfo.images.webp.large_image_url,
+            width: 800,
+            height: 1200,
+            alt: `${animeInfo.title} Poster`,
+          },
+        ],
+        type: "video.tv_show",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: `${animeInfo.title_english || animeInfo.title} (${animeInfo.year})`,
+        description: animeInfo.synopsis,
+        images: [animeInfo.images.webp.large_image_url],
+      },
+      robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          "max-video-preview": -1,
+          "max-image-preview": "large",
+          "max-snippet": 200,
+        },
+      },
+    }
+  } catch (error) {
+    return {
+      title: "My Binge List",
+      description: "My Binge List - Track, Discover, and Share Your Watchlists",
+    }
+  }
+}
 
 function extractAnimeName(animeName: string, type: string) {
   if (type === "Movie") {

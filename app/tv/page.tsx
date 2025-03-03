@@ -5,12 +5,23 @@ import { TvGenresList } from "@/components/tvPage/tvHomePage/TvGenresList"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
 import { Tv } from "lucide-react"
 import { ListCards } from "@/components/common/ListContent"
+import { mergeData } from "@/util/mergeApiData"
+import { EmblaCarousel } from "@/components/common/Crousal"
 
 export default async function MoviesPage() {
-  const [trendingTv, PopularTV, tvProviders, tvGenres] = await Promise.all([
+  const currentDate = new Date()
+  const fortyDaysAfter = new Date()
+  fortyDaysAfter.setDate(fortyDaysAfter.getDate() + 7)
+  const [trendingTv, PopularTV, topTV, tvOnAir, tvGenres] = await Promise.all([
     fetchFromTMDB(configTMDB.getTvList),
     fetchFromTMDB(configTMDB.getTvPopular),
-    fetchFromTMDB(configTMDB.getTvProviders),
+    fetchFromTMDB(configTMDB.getTopTv),
+    fetchFromTMDB(
+      configTMDB.getOnAir(
+        currentDate.toISOString().split("T")[0],
+        fortyDaysAfter.toISOString().split("T")[0]
+      )
+    ),
     fetchFromTMDB(configTMDB.getTvGenres),
   ])
 
@@ -33,26 +44,49 @@ export default async function MoviesPage() {
     37: "https://image.tmdb.org/t/p/w500/vOYfRZ0NpUK5hG2CB2dJFnYJlGe.jpg",
   }
 
+  const trending = trendingTv.results.map((data: { id: number }) =>
+    fetchFromTMDB(`https://api.themoviedb.org/3/tv/${data.id}/images`)
+  )
+  const results = await Promise.all(trending)
+  const mergedData = mergeData(trendingTv.results, results)
+  // console.log(tvOnAir.results)
   return (
-    <main className="mx-auto flex max-w-[1600px] flex-col gap-10 pb-10">
-      {trendingTv && (
-        <ListCards
-          tvData={trendingTv.results}
-          title="Currently Trending"
-          titleIcon={<Tv className="mr-2" />}
+    <>
+      {mergedData && (
+        <EmblaCarousel
+          slides={mergedData.filter(
+            (slide: { genre_ids: number[] }) => !slide.genre_ids.includes(16)
+          )}
         />
       )}
-      {PopularTV && (
-        <ListCards
-          tvData={PopularTV.results}
-          title="Popular on TV"
-          titleIcon={<Tv className="mr-2" />}
-        />
-      )}
-      {/* {tvProviders && <TvProviders TvProviders={tvProviders.results} />} */}
-      {tvGenres && (
-        <TvGenresList categorys={tvGenres.genres} genraImage={tvGenraList} />
-      )}
-    </main>
+
+      <main className="mx-auto flex max-w-[1600px] flex-col gap-10 pb-10">
+        {tvOnAir && (
+          <ListCards
+            tvData={tvOnAir.results}
+            title="On Air"
+            titleIcon={<Tv className="mr-2" />}
+          />
+        )}
+        {PopularTV && (
+          <ListCards
+            tvData={PopularTV.results}
+            title="Popular"
+            titleIcon={<Tv className="mr-2" />}
+          />
+        )}
+        {topTV && (
+          <ListCards
+            tvData={topTV.results}
+            title="Top Rated"
+            titleIcon={<Tv className="mr-2" />}
+          />
+        )}
+        {/* {tvProviders && <TvProviders TvProviders={tvProviders.results} />} */}
+        {tvGenres && (
+          <TvGenresList categorys={tvGenres.genres} genraImage={tvGenraList} />
+        )}
+      </main>
+    </>
   )
 }

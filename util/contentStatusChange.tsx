@@ -39,7 +39,7 @@ export const handleMovieStatusChange = async (
     id,
     ...movieDetails,
     remarks: remarks || "",
-    watchStatus: selectedStatus,
+    BWLstatus: selectedStatus,
   }
 
   await updateMediaDetails(userId, "movie", id, data)
@@ -55,16 +55,16 @@ export const handleTvShowStatusChange = async (
     genre: string[]
     voteAverage: number
     voteCount: number
-    tvProgress?: string
+    progress?: string
   },
   remarks?: string
 ) => {
   const data = {
     id,
     ...tvDetails,
-    tvProgress: tvDetails.tvProgress || "S01 E01",
+    progress: tvDetails.progress || "S01 E01",
     remarks: remarks || "",
-    watchStatus: selectedStatus,
+    BWLstatus: selectedStatus,
   }
 
   await updateMediaDetails(userId, "tv", id, data)
@@ -81,16 +81,16 @@ export const handleAnimeStatusChange = async (
     voteAverage: number
     voteCount: number
     episodes: number
-    aniProgress?: number
+    progress?: number
   },
   remarks?: string
 ) => {
   const data = {
     id,
     ...animeDetails,
-    animeProgress: animeDetails.aniProgress || 1,
+    progress: animeDetails.progress || 1,
     remarks: remarks || "",
-    watchStatus: selectedStatus,
+    BWLstatus: selectedStatus,
   }
 
   await updateMediaDetails(userId, "anime", id, data)
@@ -114,7 +114,7 @@ export const handleGameStatusChange = async (
     id,
     ...gameDetails,
     remarks: remarks || "",
-    gameStatus: selectedStatus,
+    BWLstatus: selectedStatus,
   }
 
   await updateMediaDetails(userId, "game", id, data)
@@ -130,7 +130,7 @@ export const handleMangaStatusChange = async (
     genre: string[]
     voteAverage: number
     voteCount: number
-    mgProgress?: number
+    progress?: number
     mangaUpdatesID?: number | string
   },
   remarks?: string,
@@ -139,9 +139,9 @@ export const handleMangaStatusChange = async (
   const data = {
     id,
     ...mangaDetails,
-    mangaProgress: mangaDetails.mgProgress || 1,
+    progress: mangaDetails.progress || 1,
     remarks: remarks || "",
-    readStatus: selectedStatus,
+    BWLstatus: selectedStatus,
   }
 
   if (muID !== undefined) {

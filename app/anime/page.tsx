@@ -1,11 +1,15 @@
 import React from "react"
 
-import { config } from "@/apiConfig"
+import { config, configTMDB } from "@/apiConfig"
 import { AnimeVideos } from "@/components/animePage/animeHomePage/AnimeVideos"
 import { fetchFromJikan } from "@/util/fetchFromJikan"
 import { Tv } from "lucide-react"
 import { ListCards } from "@/components/common/ListContent"
 import { TvGenresList } from "@/components/tvPage/tvHomePage/TvGenresList"
+import { fetchFromTMDB } from "@/util/fetchFromTMDB"
+import { mergeAnimeData } from "@/util/mergeApiData"
+import { EmblaCarousel } from "@/components/common/Crousal"
+import { AnimeData } from "@/types/anime/animeTypes"
 
 const genresList = [
   {
@@ -82,6 +86,40 @@ const genresList = [
   },
 ]
 
+function extractAnimeName(animeName: string, type: string) {
+  if (type === "Movie") {
+    return animeName
+  } else {
+    return animeName
+      .replace(/ -Season\s*\d+/i, "")
+      .replace(/\s*Season\s*\d+/i, "")
+      .replace(/-.*/, "")
+      .trim()
+  }
+}
+
+async function dataTMDB(name: string, type: string, malId: number) {
+  if (type === "Movie") {
+    const tmdbData = await fetchFromTMDB(configTMDB.searchMovie(name))
+    if (tmdbData?.results[0]?.id) {
+      const animeInfoTMDB = await fetchFromTMDB(
+        `https://api.themoviedb.org/3/tv/${tmdbData?.results[0]?.id}/images`
+      )
+      return { ...animeInfoTMDB, mal_id: malId }
+    }
+  } else {
+    const tmdbData = await fetchFromTMDB(configTMDB.searchTvShow(name))
+    if (tmdbData?.results[0]?.id) {
+      const animeInfoTMDB = await fetchFromTMDB(
+        `https://api.themoviedb.org/3/tv/${tmdbData?.results[0]?.id}/images`
+      )
+      return { ...animeInfoTMDB, mal_id: malId }
+    }
+  }
+
+  return null
+}
+
 const genresImage = {
   1: "https://image.tmdb.org/t/p/original/A6tMQAo6t6eRFCPhsrShmxZLqFB.jpg",
   2: "https://image.tmdb.org/t/p/original/96RT2A47UdzWlUfvIERFyBsLhL2.jpg",
@@ -104,32 +142,75 @@ const genresImage = {
 }
 
 export default async function Page() {
-  const [trendingAnime, latestPromo, upcomingRes] = await Promise.all([
-    fetchFromJikan(config.getAnimeList, 0),
-    fetchFromJikan(config.getLatestpromos, 350),
-    fetchFromJikan(config.getUpcomongAnimes, 700),
-  ])
+  const [trendingAnime, bannerAnime, latestPromo, upcomingRes] =
+    await Promise.all([
+      fetchFromJikan(config.getAnimeList, 0),
+      fetchFromJikan(config.getBannerAnime, 100),
+      fetchFromJikan(config.getLatestpromos, 350),
+      fetchFromJikan(config.getUpcomongAnimes, 700),
+    ])
+
+  let animeDataFromTMDB
+
+  if (bannerAnime.data.length > 0) {
+    const names = bannerAnime.data.map((animeData: AnimeData) => ({
+      name: extractAnimeName(
+        animeData.title_english || animeData.title,
+        animeData.type
+      ),
+      type: animeData.type,
+      mal_id: animeData.mal_id,
+    }))
+    const uniqueData = names
+      ?.filter(
+        (item: AnimeData, index: number, self: any) =>
+          index ===
+          self.findIndex((t: { mal_id: number }) => t.mal_id === item.mal_id)
+      )
+      .filter(
+        (item: { mal_id: number }) =>
+          item.mal_id !== 21 && item.mal_id !== 60108 && item.mal_id !== 235
+      )
+    if (uniqueData) {
+      const Tmdbdata = uniqueData
+        .splice(0, 10)
+        .map((data: { name: string; type: string; mal_id: number }) =>
+          dataTMDB(data.name, data.type, data.mal_id)
+        )
+
+      const results = await Promise.all(Tmdbdata)
+
+      animeDataFromTMDB = mergeAnimeData(bannerAnime.data, results)
+    }
+  }
 
   return (
-    <main className="mx-auto flex max-w-[1600px] flex-col gap-10 pb-10">
-      {trendingAnime?.data?.length > 0 && (
-        <ListCards
-          animeData={trendingAnime.data}
-          title="Currently Airing"
-          titleIcon={<Tv className="mr-2" />}
+    <>
+      {animeDataFromTMDB && (
+        <EmblaCarousel
+          slides={animeDataFromTMDB.filter((data) => data.backdrops)}
         />
       )}
-      {latestPromo?.data?.length > 0 && (
-        <AnimeVideos animeVideos={latestPromo.data} />
-      )}
-      {upcomingRes?.data?.length > 0 && (
-        <ListCards
-          animeData={upcomingRes.data}
-          title="Upcoming"
-          titleIcon={<Tv className="mr-2" />}
-        />
-      )}
-      <TvGenresList categorys={genresList} genraImage={genresImage} />
-    </main>
+      <main className="mx-auto flex max-w-[1600px] flex-col gap-10 pb-10">
+        {trendingAnime?.data?.length > 0 && (
+          <ListCards
+            animeData={trendingAnime.data}
+            title="Currently Airing"
+            titleIcon={<Tv className="mr-2" />}
+          />
+        )}
+        {latestPromo?.data?.length > 0 && (
+          <AnimeVideos animeVideos={latestPromo.data} />
+        )}
+        {upcomingRes?.data?.length > 0 && (
+          <ListCards
+            animeData={upcomingRes.data}
+            title="Upcoming"
+            titleIcon={<Tv className="mr-2" />}
+          />
+        )}
+        <TvGenresList categorys={genresList} genraImage={genresImage} />
+      </main>
+    </>
   )
 }

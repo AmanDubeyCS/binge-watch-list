@@ -35,7 +35,7 @@ export default function VideoList({ videos }: { videos: Video[] }) {
             src={`https://www.youtube.com/embed/${currentVideo.key}`}
             allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
-            className="aspect-video size-full rounded-lg"
+            className="aspect-[16/9] size-full rounded-lg"
           ></iframe>
 
           {videos.length > 1 && (

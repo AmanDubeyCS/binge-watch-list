@@ -11,8 +11,8 @@ export default async function page({
   const movieID = params.movieID
   const data = await fetchFromTMDB(configTMDB.getMovieImages(movieID))
   return (
-    <div>
+    <>
       <Pictures data={data} />
-    </div>
+    </>
   )
 }

@@ -24,7 +24,7 @@ export default function LoginPage() {
       const user = result.user
       if (user) {
         const result = await signIn("emailSignIn", {
-          callbackUrl: "/",
+          callbackUrl: "/home",
           redirect: false,
           uuid: user.uid,
           email: user.email,

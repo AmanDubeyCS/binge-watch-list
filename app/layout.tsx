@@ -96,7 +96,7 @@ export default async function RootLayout({
           <Providers>
             <AppLayout>
               <Header />
-              {children}
+              <div className="bg-gray-50">{children}</div>
               <Toaster
                 toastOptions={{
                   classNames: {

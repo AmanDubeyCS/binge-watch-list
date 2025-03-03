@@ -27,7 +27,7 @@ export function Overview({
     <div className="flex flex-wrap justify-center gap-10 pb-20">
       <h2 className="mb-6 text-2xl font-bold">OVERVIEW</h2>
 
-      {movieData.length > 1 && (
+      {movieData.length > 0 && (
         <div className="flex w-full flex-wrap gap-3">
           <div className="w-full rounded-lg border border-gray-200 bg-white">
             <div className="bg-gray-100 p-4">
@@ -35,7 +35,7 @@ export function Overview({
                 {collectionMap["movies" as keyof typeof collectionMap]} Movies
               </h3>
             </div>
-            <ul className="hide-scrollbar grid w-full grid-cols-2 gap-3 divide-y divide-gray-200 overflow-scroll p-2 sm:grid-cols-3 md:p-6 lg:flex lg:flex-wrap">
+            <ul className="hide-scrollbar grid w-full grid-cols-2 gap-1 divide-y divide-gray-200 overflow-scroll p-2 sm:grid-cols-3 lg:flex lg:flex-wrap lg:justify-between">
               {movieData &&
                 movieData
                   .slice(-4)
@@ -69,7 +69,7 @@ export function Overview({
         </div>
       )}
 
-      {animeData.length > 1 && (
+      {animeData.length > 0 && (
         <div className="flex w-full flex-wrap gap-3">
           <div className="w-full rounded-lg border border-gray-200 bg-white">
             <div className="bg-gray-100 p-4">
@@ -77,7 +77,7 @@ export function Overview({
                 {collectionMap["movies" as keyof typeof collectionMap]} Anime
               </h3>
             </div>
-            <ul className="hide-scrollbar grid w-full grid-cols-2 gap-3 divide-y divide-gray-200 overflow-scroll p-2 sm:grid-cols-3 md:p-6 lg:flex lg:flex-wrap">
+            <ul className="hide-scrollbar grid w-full grid-cols-2 gap-1 divide-y divide-gray-200 overflow-scroll p-2 sm:grid-cols-3 lg:flex lg:flex-wrap lg:justify-between">
               {animeData &&
                 animeData
                   .slice(0, 4)
@@ -93,7 +93,7 @@ export function Overview({
                       genre={data.genre}
                       numbers={data.numbers}
                       mediaType="anime"
-                      profileCardStatus={data.watchStatus}
+                      profileCardStatus={data.status}
                       status={tvStatuses}
                     />
                   ))}
@@ -111,7 +111,7 @@ export function Overview({
         </div>
       )}
 
-      {tvData.length > 1 && (
+      {tvData.length > 0 && (
         <div className="flex w-full flex-wrap gap-3">
           <div className="w-full rounded-lg border border-gray-200 bg-white">
             <div className="bg-gray-100 p-4">
@@ -119,7 +119,7 @@ export function Overview({
                 {collectionMap["movies" as keyof typeof collectionMap]} Tv Shows
               </h3>
             </div>
-            <ul className="hide-scrollbar grid w-full grid-cols-2 gap-3 divide-y divide-gray-200 overflow-scroll p-2 sm:grid-cols-3 md:p-6 lg:flex lg:flex-wrap">
+            <ul className="hide-scrollbar grid w-full grid-cols-2 gap-1 divide-y divide-gray-200 overflow-scroll p-2 sm:grid-cols-3 lg:flex lg:flex-wrap lg:justify-between">
               {tvData &&
                 tvData
                   .slice(0, 4)
@@ -135,7 +135,7 @@ export function Overview({
                       genre={data.genre}
                       numbers={data.numbers}
                       mediaType="tv"
-                      profileCardStatus={data.watchStatus}
+                      profileCardStatus={data.status}
                       status={tvStatuses}
                     />
                   ))}
@@ -153,7 +153,7 @@ export function Overview({
         </div>
       )}
 
-      {mangaData.length > 1 && (
+      {mangaData.length > 0 && (
         <div className="flex w-full flex-wrap gap-3">
           <div className="w-full rounded-lg border border-gray-200 bg-white">
             <div className="bg-gray-100 p-4">
@@ -161,7 +161,7 @@ export function Overview({
                 {collectionMap["movies" as keyof typeof collectionMap]} Manga
               </h3>
             </div>
-            <ul className="hide-scrollbar grid w-full grid-cols-2 gap-3 divide-y divide-gray-200 overflow-scroll p-2 sm:grid-cols-3 md:p-6 lg:flex lg:flex-wrap">
+            <ul className="hide-scrollbar grid w-full grid-cols-2 gap-1 divide-y divide-gray-200 overflow-scroll p-2 sm:grid-cols-3 lg:flex lg:flex-wrap lg:justify-between">
               {mangaData &&
                 mangaData
                   .slice(0, 4)

@@ -91,108 +91,9 @@ export default function Card({
   const watchStatus = useMemo(() => {
     if (profileCardStatus) return profileCardStatus
     const status = data?.find((item: { id: number | string }) => item.id === id)
-    // console.log(status)
-    return mediaType === "manga"
-      ? status?.readStatus
-      : mediaType === "game"
-        ? status?.gameStatus
-        : status?.watchStatus || null
+    return status?.BWLstatus
   }, [data])
 
-  // console.log(data)
-  // const handleStatusChange = async (selectedStatus: string) => {
-  //   if (!session?.user?.id || !mediaType) return
-  //   const details = {
-  //     name,
-  //     coverImage,
-  //     tag,
-  //     voteAverage,
-  //     voteCount,
-  //     numbers,
-  //     genre,
-  //   }
-
-  //   if (mediaType === "manga") {
-  //     upsertItem({ id, readStatus: selectedStatus, ...details })
-  //   } else if (mediaType === "game") {
-  //     upsertItem({ id, gameStatus: selectedStatus, ...details })
-  //   } else {
-  //     upsertItem({ id, watchStatus: selectedStatus, ...details })
-  //   }
-
-  //   const handlers: Record<string, Function> = {
-  //     movie: handleMovieStatusChange,
-  //     tv: handleTvShowStatusChange,
-  //     anime: async () => {
-  //       if (episodes === null) {
-  //         const animeData = await fetchFromJikan(
-  //           config.getAnimeEpisodes(Number(id)),
-  //           0
-  //         )
-  //         const episodes = await animeData
-  //         if (episodes && episodes.pagination.has_next_page) {
-  //           const episodedata = await fetchFromJikan(
-  //             config.getAnimeEpisodes(
-  //               Number(id),
-  //               episodes.pagination.last_visible_page
-  //             ),
-  //             0
-  //           )
-  //           console.log(episodedata.data[episodedata.data.length - 1].mal_id)
-  //           return handleAnimeStatusChange(
-  //             session.user.id,
-  //             Number(id),
-  //             selectedStatus,
-  //             details,
-  //             episodedata.data[episodedata.data.length - 1].mal_id
-  //           )
-  //         } else {
-  //           console.log(episodes)
-  //           return handleAnimeStatusChange(
-  //             session.user.id,
-  //             Number(id),
-  //             selectedStatus,
-  //             details,
-  //             episodes.data.length
-  //           )
-  //         }
-  //       } else {
-  //         return handleAnimeStatusChange(
-  //           session.user.id,
-  //           Number(id),
-  //           selectedStatus,
-  //           details,
-  //           episodes
-  //         )
-  //       }
-  //     },
-  //     game: handleGameStatusChange,
-  //     manga: async () => {
-  //       const muId = await checkdata(String(id))
-  //       const muID = typeof muId === "number" ? muId.toString() : undefined
-  //       upsertItem({ ...details, id, selectedStatus, muID })
-  //       return handleMangaStatusChange(
-  //         session.user.id,
-  //         id,
-  //         selectedStatus,
-  //         details,
-  //         undefined,
-  //         muID
-  //       )
-  //     },
-  //   }
-
-  //   await handlers[mediaType]?.(
-  //     session.user.id,
-  //     mediaType === "manga" ? id : Number(id),
-  //     selectedStatus,
-  //     {
-  //       ...details,
-  //       // ...(mediaType === "anime" && { episodes: episode ??  findEpisode()}),
-  //       ...(mediaType === "game" && { platforms }),
-  //     }
-  //   )
-  // }
   const handleStatusChange = async (selectedStatus: string) => {
     if (!session?.user?.id || !mediaType) return
 
@@ -205,14 +106,7 @@ export default function Card({
       numbers,
       genre,
     }
-
-    if (mediaType === "manga") {
-      upsertItem({ id, readStatus: selectedStatus, ...details })
-    } else if (mediaType === "game") {
-      upsertItem({ id, gameStatus: selectedStatus, ...details })
-    } else {
-      upsertItem({ id, watchStatus: selectedStatus, ...details })
-    }
+    upsertItem({ id, BWLstatus: selectedStatus, ...details })
 
     const fetchEpisodes = async (): Promise<number> => {
       const animeData = await fetchFromJikan(
@@ -247,7 +141,7 @@ export default function Card({
           {
             ...details,
             episodes: episodeCount,
-            aniProgress: selectedStatus === "completed" ? episodeCount : "",
+            progress: selectedStatus === "completed" ? episodeCount : "",
           }
         )
       },

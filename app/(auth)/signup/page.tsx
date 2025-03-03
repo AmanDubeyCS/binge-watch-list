@@ -28,7 +28,7 @@ export default function RegisterPage() {
       saveUserData(user, name)
       if (user) {
         const result = await signIn("emailSignIn", {
-          callbackUrl: "/",
+          callbackUrl: "/home",
           redirect: false,
           uuid: user.uid,
           email: user.email,

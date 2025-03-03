@@ -31,7 +31,7 @@ export function TvGenresList({
         <div className="hide-scrollbar overflow-x-scroll px-4">
           <div
             style={{ width: `${Math.round(categorys.length / 2) * 270}px` }}
-            className="flex flex-wrap gap-5"
+            className="flex flex-wrap gap-5 py-2"
           >
             {categorys.map((genre) => (
               <div

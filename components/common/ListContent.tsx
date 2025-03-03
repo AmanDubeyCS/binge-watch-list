@@ -89,9 +89,7 @@ export function ListCards({
   title: string
   titleIcon: any
 }) {
-  const tvDataFilter = tvData?.filter(
-    (tv) => tv.vote_average !== 0 && !tv.genre_ids.includes(16)
-  )
+  const tvDataFilter = tvData?.filter((tv) => tv.vote_average !== 0)
 
   const uniqueData = animeData?.filter(
     (item, index, self) =>
@@ -100,8 +98,8 @@ export function ListCards({
 
   return (
     <section>
-      <h2 className="mb-4 flex items-center px-4 text-2xl font-semibold">
-        {titleIcon}
+      <h2 className="mb-4 flex items-center bg-gradient-to-r from-primary to-accent bg-clip-text px-4 text-2xl font-semibold text-transparent">
+        <span className="text-primary">{titleIcon}</span>
         {title}
       </h2>
       <div className="hide-scrollbar w-full overflow-x-scroll whitespace-nowrap px-4">
