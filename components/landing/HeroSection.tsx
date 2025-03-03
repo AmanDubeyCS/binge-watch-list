@@ -35,7 +35,7 @@ export const HeroSection = () => {
 
           <div className="mt-6 flex flex-col gap-4 sm:flex-row">
             <a
-              href="#content"
+              href="/home"
               className="inline-flex h-12 min-w-36 items-center justify-center rounded-full bg-gradient-to-r from-primary to-accent px-6 py-3 text-sm font-medium text-white shadow-lg shadow-primary/20 transition-transform duration-300 hover:scale-105 hover:from-primary/90 hover:to-accent/90 dark:shadow-accent/20"
             >
               Browse Content

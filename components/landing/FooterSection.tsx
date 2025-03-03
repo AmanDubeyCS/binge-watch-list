@@ -36,7 +36,7 @@ export const FooterSection = () => {
             <ul className="space-y-2">
               <li>
                 <a
-                  href="#content"
+                  href="/movies"
                   className="text-muted-foreground transition-colors hover:text-primary"
                 >
                   Movies
@@ -44,7 +44,7 @@ export const FooterSection = () => {
               </li>
               <li>
                 <a
-                  href="#content"
+                  href="/tv"
                   className="text-muted-foreground transition-colors hover:text-primary"
                 >
                   TV Shows
@@ -52,7 +52,7 @@ export const FooterSection = () => {
               </li>
               <li>
                 <a
-                  href="#content"
+                  href="/anime"
                   className="text-muted-foreground transition-colors hover:text-primary"
                 >
                   Anime
@@ -60,7 +60,7 @@ export const FooterSection = () => {
               </li>
               <li>
                 <a
-                  href="#content"
+                  href="/manga"
                   className="text-muted-foreground transition-colors hover:text-primary"
                 >
                   Manga
@@ -68,7 +68,7 @@ export const FooterSection = () => {
               </li>
               <li>
                 <a
-                  href="#content"
+                  href="/games"
                   className="text-muted-foreground transition-colors hover:text-primary"
                 >
                   Video Games
@@ -128,44 +128,44 @@ export const FooterSection = () => {
             <ul className="space-y-2">
               <li>
                 <a
-                  href="#"
+                  href="/anime/discover"
                   className="text-muted-foreground transition-colors hover:text-primary"
                 >
-                  Home
+                  Anime Discover
                 </a>
               </li>
               <li>
                 <a
-                  href="#features"
+                  href="/game/discover"
                   className="text-muted-foreground transition-colors hover:text-primary"
                 >
-                  Features
+                  game Descover
                 </a>
               </li>
               <li>
                 <a
-                  href="#content"
+                  href="/tv/discover"
                   className="text-muted-foreground transition-colors hover:text-primary"
                 >
-                  Content
+                  Tv Show Discover
                 </a>
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/movie/descover"
                   className="text-muted-foreground transition-colors hover:text-primary"
                 >
-                  About
+                  movie Descover
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a
                   href="#"
                   className="text-muted-foreground transition-colors hover:text-primary"
                 >
                   Contact
                 </a>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>

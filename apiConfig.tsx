@@ -28,7 +28,7 @@ export const config = {
   getMangaArt: (mangaId: string) =>
     `${BASE_URL_MANGADEX}/cover?order[volume]=asc&manga[]=${mangaId}&limit=15&offset=0`,
 
-  getBannerAnime: `${BASE_URL_ANIME}/anime?status=airing&order_by=score&sort=desc&start_date=2024-01-01&limit=6`,
+  getBannerAnime: `${BASE_URL_ANIME}/anime?status=airing&order_by=score&sort=desc&start_date=2025-01-01&limit=6`,
   getAnimeList: `${BASE_URL_ANIME}/top/anime?type=tv&filter=airing&limit=15`,
   getLatestpromos: `${BASE_URL_ANIME}/watch/promos`,
   getUpcomongAnimes: `${BASE_URL_ANIME}/seasons/upcoming?limit=15`,
@@ -58,6 +58,8 @@ export const config = {
 export const configTMDB = {
   getMoviesList: `${BASE_URL_TMDB}/trending/movie/week?language=en-US`,
   getPopularMovie: `${BASE_URL_TMDB}/discover/movie?air_date.lte=2025-04-07&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=IN&with_runtime.gte=0&with_runtime.lte=400&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&without_keywords=210024`,
+  getNowPlayingMovies: (min_date: string, max_date: string) =>
+    `${BASE_URL_TMDB}/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&region=IN&release_date.gte=${min_date}&release_date.lte=${max_date}&sort_by=popularity.desc&with_release_type=2%7C3&without_keywords=210024`,
   getMovieProviders: `${BASE_URL_TMDB}/watch/providers/movie?language=en-US&watch_region=IN`,
   getMovieGenres: `${BASE_URL_TMDB}/genre/movie/list`,
   getMovieLanguagesList: `${BASE_URL_TMDB}/configuration/languages`,
@@ -88,6 +90,9 @@ export const configTMDB = {
   getTvPopular: `${BASE_URL_TMDB}/discover/tv?air_date.lte=2025-04-07&include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=0&vote_average.lte=10&vote_count.gte=0&watch_region=IN&with_runtime.gte=0&with_runtime.lte=400&with_watch_monetization_types=flatrate%7Cfree%7Cads%7Crent%7Cbuy&without_keywords=210024`,
   getTvProviders: `${BASE_URL_TMDB}/watch/providers/tv?language=en-US&watch_region=IN`,
   getTvGenres: `${BASE_URL_TMDB}/genre/tv/list`,
+  getTopTv: `${BASE_URL_TMDB}/discover/tv?include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=vote_average.desc&vote_count.gte=200&without_keywords=210024`,
+  getOnAir: (min_date: string, max_date: string) =>
+    `${BASE_URL_TMDB}/discover/tv?include_adult=false&language=en-US&page=1&sort_by=popularity.desc&air_date.lte=${max_date}&air_date.gte=${min_date}&without_genres=10767%2C10763%2C10766%2C10764&without_keywords=210024`,
   getTvcertificationsList: `${BASE_URL_TMDB}/certification/tv/list`,
 
   getTvVideos: (tvId: number) => `${BASE_URL_TMDB}/tv/${tvId}/videos`,

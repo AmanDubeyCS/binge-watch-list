@@ -142,16 +142,18 @@ const genresImage = {
 }
 
 export default async function Page() {
-  const [trendingAnime, latestPromo, upcomingRes] = await Promise.all([
-    fetchFromJikan(config.getAnimeList, 0),
-    fetchFromJikan(config.getLatestpromos, 350),
-    fetchFromJikan(config.getUpcomongAnimes, 700),
-  ])
+  const [trendingAnime, bannerAnime, latestPromo, upcomingRes] =
+    await Promise.all([
+      fetchFromJikan(config.getAnimeList, 0),
+      fetchFromJikan(config.getBannerAnime, 100),
+      fetchFromJikan(config.getLatestpromos, 350),
+      fetchFromJikan(config.getUpcomongAnimes, 700),
+    ])
 
   let animeDataFromTMDB
 
-  if (trendingAnime.data.length > 0) {
-    const names = trendingAnime.data.map((animeData: AnimeData) => ({
+  if (bannerAnime.data.length > 0) {
+    const names = bannerAnime.data.map((animeData: AnimeData) => ({
       name: extractAnimeName(
         animeData.title_english || animeData.title,
         animeData.type
@@ -178,7 +180,7 @@ export default async function Page() {
 
       const results = await Promise.all(Tmdbdata)
 
-      animeDataFromTMDB = mergeAnimeData(trendingAnime.data, results)
+      animeDataFromTMDB = mergeAnimeData(bannerAnime.data, results)
     }
   }
 

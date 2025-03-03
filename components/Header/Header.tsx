@@ -56,7 +56,7 @@ export default function Header() {
   return (
     <div
       className={cn(
-        "bg-gray-50 p-2 text-black md:px-10",
+        "bg-gray-50 p-2 text-black md:px-10 md:py-0",
         pathname === "/" && " "
       )}
     >

@@ -33,6 +33,7 @@ interface WatchListData {
   overview?: string
   last_episode_to_air?: any
   next_episode_to_air?: any
+  contentStatus?: string
 }
 
 export default function ContentTab({
@@ -55,7 +56,7 @@ export default function ContentTab({
       setFilteredData(data)
     } else {
       const filteredData = data.filter(
-        (item: WatchListData) => item.status === filter
+        (item: WatchListData) => item.BWLstatus === filter
       )
       setFilteredData(filteredData)
     }
@@ -89,7 +90,7 @@ export default function ContentTab({
           ))}
         </div>
       </div>
-      <div className="mx-auto grid w-fit grid-cols-1 gap-1 pb-20 sm:grid-cols-2 sm:gap-3 lg:grid-cols-3 2xl:grid-cols-4">
+      <div className="mx-auto grid grid-cols-1 gap-1 pb-20 sm:grid-cols-2 sm:gap-3 lg:grid-cols-3 2xl:grid-cols-4">
         {filteredData.map((data) => (
           <ProfileCard
             key={data.id}
@@ -126,6 +127,7 @@ export default function ContentTab({
               data.next_episode_to_air?.episode_number
             ).padStart(2, "0")}
             progress={data.progress}
+            contentStatus={data.contentStatus}
           />
         ))}
       </div>

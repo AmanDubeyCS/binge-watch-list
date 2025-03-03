@@ -9,11 +9,29 @@ import { EmblaCarousel } from "@/components/common/Crousal"
 import { mergeData } from "@/util/mergeApiData"
 
 export default async function MoviesPage() {
-  const [trendingMovies, popularMovies, movieProviders, movieGenres] =
+  const currentDate = new Date()
+  const fortyDaysBefore = new Date()
+  fortyDaysBefore.setDate(fortyDaysBefore.getDate() - 40)
+
+  const fortyDaysAfter = new Date()
+  fortyDaysAfter.setDate(fortyDaysAfter.getDate() + 40)
+
+  const [trendingMovies, popularMovies, nowPlaying, upcoming, movieGenres] =
     await Promise.all([
       fetchFromTMDB(configTMDB.getMoviesList),
       fetchFromTMDB(configTMDB.getPopularMovie),
-      fetchFromTMDB(configTMDB.getMovieProviders),
+      fetchFromTMDB(
+        configTMDB.getNowPlayingMovies(
+          fortyDaysBefore.toISOString().split("T")[0],
+          currentDate.toISOString().split("T")[0]
+        )
+      ),
+      fetchFromTMDB(
+        configTMDB.getNowPlayingMovies(
+          currentDate.toISOString().split("T")[0],
+          fortyDaysAfter.toISOString().split("T")[0]
+        )
+      ),
       fetchFromTMDB(configTMDB.getMovieGenres),
     ])
 
@@ -39,12 +57,14 @@ export default async function MoviesPage() {
     37: "https://image.tmdb.org/t/p/w500/nPJAo1NDfETSwoYl8CYE2DUBUk3.jpg",
   }
 
-  const trending = trendingMovies.results.map((data: { id: number }) =>
-    fetchFromTMDB(`https://api.themoviedb.org/3/movie/${data.id}/images`)
-  )
+  const trending = trendingMovies.results
+    .slice(0, 10)
+    .map((data: { id: number }) =>
+      fetchFromTMDB(`https://api.themoviedb.org/3/movie/${data.id}/images`)
+    )
   const results = await Promise.all(trending)
-  const mergedData = mergeData(trendingMovies.results, results)
-
+  const mergedData = mergeData(trendingMovies.results.slice(0, 10), results)
+  // console.log(upcoming.results)
   return (
     <>
       {mergedData && (
@@ -58,8 +78,8 @@ export default async function MoviesPage() {
         {trendingMovies && (
           <>
             <ListCards
-              movieData={trendingMovies.results}
-              title="Trending"
+              movieData={nowPlaying.results}
+              title="In Theaters"
               titleIcon={<Tv className="mr-2" />}
             />
           </>
@@ -68,6 +88,13 @@ export default async function MoviesPage() {
           <ListCards
             movieData={popularMovies.results}
             title="Popular"
+            titleIcon={<Tv className="mr-2" />}
+          />
+        )}
+        {upcoming && (
+          <ListCards
+            movieData={upcoming.results}
+            title="Upcoming"
             titleIcon={<Tv className="mr-2" />}
           />
         )}

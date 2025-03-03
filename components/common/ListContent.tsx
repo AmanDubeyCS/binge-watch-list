@@ -89,9 +89,7 @@ export function ListCards({
   title: string
   titleIcon: any
 }) {
-  const tvDataFilter = tvData?.filter(
-    (tv) => tv.vote_average !== 0 && !tv.genre_ids.includes(16)
-  )
+  const tvDataFilter = tvData?.filter((tv) => tv.vote_average !== 0)
 
   const uniqueData = animeData?.filter(
     (item, index, self) =>

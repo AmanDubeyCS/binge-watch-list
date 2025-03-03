@@ -9,10 +9,19 @@ import { mergeData } from "@/util/mergeApiData"
 import { EmblaCarousel } from "@/components/common/Crousal"
 
 export default async function MoviesPage() {
-  const [trendingTv, PopularTV, tvProviders, tvGenres] = await Promise.all([
+  const currentDate = new Date()
+  const fortyDaysAfter = new Date()
+  fortyDaysAfter.setDate(fortyDaysAfter.getDate() + 7)
+  const [trendingTv, PopularTV, topTV, tvOnAir, tvGenres] = await Promise.all([
     fetchFromTMDB(configTMDB.getTvList),
     fetchFromTMDB(configTMDB.getTvPopular),
-    fetchFromTMDB(configTMDB.getTvProviders),
+    fetchFromTMDB(configTMDB.getTopTv),
+    fetchFromTMDB(
+      configTMDB.getOnAir(
+        currentDate.toISOString().split("T")[0],
+        fortyDaysAfter.toISOString().split("T")[0]
+      )
+    ),
     fetchFromTMDB(configTMDB.getTvGenres),
   ])
 
@@ -40,7 +49,7 @@ export default async function MoviesPage() {
   )
   const results = await Promise.all(trending)
   const mergedData = mergeData(trendingTv.results, results)
-
+  // console.log(tvOnAir.results)
   return (
     <>
       {mergedData && (
@@ -52,10 +61,10 @@ export default async function MoviesPage() {
       )}
 
       <main className="mx-auto flex max-w-[1600px] flex-col gap-10 pb-10">
-        {trendingTv && (
+        {tvOnAir && (
           <ListCards
-            tvData={trendingTv.results}
-            title="Trending"
+            tvData={tvOnAir.results}
+            title="On Air"
             titleIcon={<Tv className="mr-2" />}
           />
         )}
@@ -63,6 +72,13 @@ export default async function MoviesPage() {
           <ListCards
             tvData={PopularTV.results}
             title="Popular"
+            titleIcon={<Tv className="mr-2" />}
+          />
+        )}
+        {topTV && (
+          <ListCards
+            tvData={topTV.results}
+            title="Top Rated"
             titleIcon={<Tv className="mr-2" />}
           />
         )}

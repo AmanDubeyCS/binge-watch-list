@@ -7,6 +7,73 @@ import { ScrollToTop } from "@/components/ScorllTop"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
 import { getIMDBData } from "@/util/fetchIMDBdata"
 import React, { ReactElement } from "react"
+import { Metadata } from "next"
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { movieID: number }
+}): Promise<Metadata> {
+  try {
+    const { movieID } = params
+    const movieInfo = await fetchFromTMDB(
+      configTMDB.getSingleMovieProfile(movieID)
+    )
+
+    if (!movieInfo) {
+      return {
+        title: "Movie Not Found",
+        description: "The movie details could not be retrieved.",
+      }
+    }
+
+    const keywords = movieInfo.keywords?.keywords?.map(
+      (keyword: { name: string }) => keyword.name
+    )
+
+    return {
+      title: `${movieInfo.title} (${new Date(movieInfo.release_date).getFullYear()})`,
+      description: movieInfo.overview,
+      keywords: keywords,
+      openGraph: {
+        title: `${movieInfo.title} (${new Date(movieInfo.release_date).getFullYear()})`,
+        description: movieInfo.overview,
+        images: [
+          {
+            url: `https://image.tmdb.org/t/p/w1280${movieInfo.backdrop_path}`,
+            width: 1280,
+            height: 720,
+            alt: `${movieInfo.title} Backdrop`,
+          },
+        ],
+        type: "video.movie",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: `${movieInfo.title} (${new Date(movieInfo.release_date).getFullYear()})`,
+        description: movieInfo.overview,
+        images: [`https://image.tmdb.org/t/p/w500${movieInfo.poster_path}`],
+      },
+      category: "Entertainment",
+      robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+          index: true,
+          follow: true,
+          "max-video-preview": -1,
+          "max-image-preview": "large",
+          "max-snippet": 200,
+        },
+      },
+    }
+  } catch (error) {
+    return {
+      title: "My Binge List",
+      description: "My Binge List - Track, Discover, and Share Your Watchlists",
+    }
+  }
+}
 
 const links = [
   {

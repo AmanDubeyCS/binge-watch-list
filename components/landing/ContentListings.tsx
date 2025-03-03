@@ -2,6 +2,7 @@
 import { useState } from "react"
 import { Film, Tv, Book, Gamepad } from "lucide-react"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import Link from "next/link"
 
 // Mock data for popular content
 const popularMovies = [
@@ -10,42 +11,42 @@ const popularMovies = [
     title: "The Batman",
     year: 2022,
     rating: 8.1,
-    image: "https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg",
+    image: "https://image.tmdb.org/t/p/w300//q0bCG4NX32iIEsRFZqRtuvzNCyZ.jpg",
   },
   {
     id: 2,
     title: "Top Gun: Maverick",
     year: 2022,
     rating: 8.4,
-    image: "https://image.tmdb.org/t/p/w500/62HCnUTziyWcpDaBO2i1DX17ljH.jpg",
+    image: "https://image.tmdb.org/t/p/w300//pzIddUEMWhWzfvLI3TwxUG2wGoi.jpg",
   },
   {
     id: 3,
     title: "Everything Everywhere All at Once",
     year: 2022,
     rating: 8.8,
-    image: "https://image.tmdb.org/t/p/w500/w3LxiVYdWWRvEVdn5RYq6jIqkb1.jpg",
+    image: "https://image.tmdb.org/t/p/w300//m5x8D0bZ3eKqIVWZ5y7TnZ2oTVg.jpg",
   },
   {
     id: 4,
     title: "Dune",
     year: 2021,
     rating: 8.0,
-    image: "https://image.tmdb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg",
+    image: "https://image.tmdb.org/t/p/w300//skPPVeHoTTVVSJlb0Ib5vrqiuA4.jpg",
   },
   {
     id: 5,
     title: "No Time to Die",
     year: 2021,
     rating: 7.3,
-    image: "https://image.tmdb.org/t/p/w500/iUgygt3fscRoKWCV1d0C7FbM9TP.jpg",
+    image: "https://image.tmdb.org/t/p/w300//h0tunBO4tMjvKVVG7fXqHgwOr5C.jpg",
   },
   {
     id: 6,
     title: "Dune",
     year: 2021,
     rating: 8.0,
-    image: "https://image.tmdb.org/t/p/w500/d5NXSklXo0qyIYkgV94XAgMIckC.jpg",
+    image: "https://image.tmdb.org/t/p/w300//vP7Yd6couiAaw9jgMd5cjMRj3hQ.jpg",
   },
 ]
 
@@ -85,6 +86,14 @@ const popularShows = [
     rating: 8.8,
     image: "https://image.tmdb.org/t/p/w500/eU1i6eHXlzMOlEq0ku1Rzq7Y4wA.jpg",
   },
+  {
+    id: 6,
+    title: "The Mandalorian",
+    year: 2019,
+    rating: 8.8,
+    image: "https://image.tmdb.org/t/p/w300//31GlRQMiDunO8cl3NxTz34U64rf.jpg",
+  },
+  
 ]
 
 const popularAnime = [
@@ -93,21 +102,21 @@ const popularAnime = [
     title: "Attack on Titan",
     year: 2013,
     rating: 9.2,
-    image: "https://image.tmdb.org/t/p/w500/aiy35Evcofzl7hNzFdvEeV5zjAz.jpg",
+    image: "https://image.tmdb.org/t/p/w500/hTP1DtLGFamjfu8WqjnuQdP1n4i.jpg",
   },
   {
     id: 2,
     title: "Demon Slayer",
     year: 2019,
     rating: 8.9,
-    image: "https://image.tmdb.org/t/p/w500/h2OhJV8zgIYw5P9pz0Q70niCYk.jpg",
+    image: "https://image.tmdb.org/t/p/w500/2EewmxXe72ogD0EaWM8gqa0ccIw.jpg",
   },
   {
     id: 3,
     title: "Jujutsu Kaisen",
     year: 2020,
     rating: 8.7,
-    image: "https://image.tmdb.org/t/p/w500/fHpKWq9aGRy5ysz5JYfXuE7pbHn.jpg",
+    image: "https://image.tmdb.org/t/p/w500/fHpKWq9ayzSk8nSwqRuaAUemRKh.jpg",
   },
   {
     id: 4,
@@ -121,7 +130,14 @@ const popularAnime = [
     title: "My Hero Academia",
     year: 2016,
     rating: 8.5,
-    image: "https://image.tmdb.org/t/p/w500/ivOLM47yJt90P19RH1ZcLyEfhzn.jpg",
+    image: "https://image.tmdb.org/t/p/w500/geCRueV3ElhRTr0xtJuEWJt6dJ1.jpg",
+  },
+  {
+    id: 6,
+    title: "My Hero Academia",
+    year: 2016,
+    rating: 8.5,
+    image: "https://image.tmdb.org/t/p/w500/aCGdpgNkgz66R1winFkTFsMAhlC.jpg",
   },
 ]
 
@@ -161,6 +177,13 @@ const popularManga = [
     rating: 9.0,
     image: "https://cdn.myanimelist.net/images/manga/2/188925.jpg",
   },
+  {
+    id: 6,
+    title: "Vinland Saga",
+    year: 2005,
+    rating: 9.0,
+    image: "/api/mangaImage/32d76d19-8a05-4db0-9fc2-e0b0648fe9d0/e90bdc47-c8b9-4df7-b2c0-17641b645ee1.jpg",
+  },
 ]
 
 const popularGames = [
@@ -170,7 +193,7 @@ const popularGames = [
     year: 2023,
     rating: 9.5,
     image:
-      "https://media.rawg.io/media/games/12e/12ea6b35b65df38258e25d0acde81b0f.jpg",
+      "https://media.rawg.io/media/games/20a/20aa03a10cda45239fe22d035c0ebe64.jpg",
   },
   {
     id: 2,
@@ -186,7 +209,7 @@ const popularGames = [
     year: 2023,
     rating: 9.6,
     image:
-      "https://media.rawg.io/media/games/699/69907ecec35f74bd3ca8d50d98f86150.jpg",
+      "https://media.rawg.io/media/games/618/618c2031a07bbff6b4f611f10b6bcdbc.jpg",
   },
   {
     id: 4,
@@ -194,7 +217,7 @@ const popularGames = [
     year: 2022,
     rating: 9.2,
     image:
-      "https://media.rawg.io/media/games/1c3/1c31a9d30e2a62acf37a0a5e8600cc87.jpg",
+      "https://media.rawg.io/media/games/bc0/bc06a29ceac58652b684deefe7d56099.jpg",
   },
   {
     id: 5,
@@ -203,6 +226,14 @@ const popularGames = [
     rating: 9.7,
     image:
       "https://media.rawg.io/media/games/511/5118aff5091cb3efec399c808f8c598f.jpg",
+  },
+  {
+    id: 6,
+    title: "Red Dead Redemption 2",
+    year: 2018,
+    rating: 9.7,
+    image:
+      "https://media.rawg.io/media/games/4be/4be6a6ad0364751a96229c56bf69be59.jpg",
   },
 ]
 
@@ -234,7 +265,7 @@ export const ContentListings = () => {
               <Film className="size-4" />
               <span className="hidden sm:inline">Movies</span>
             </TabsTrigger>
-            <TabsTrigger value="shows" className="flex items-center gap-2">
+            <TabsTrigger value="tv" className="flex items-center gap-2">
               <Tv className="size-4" />
               <span className="hidden sm:inline">TV Shows</span>
             </TabsTrigger>
@@ -256,7 +287,7 @@ export const ContentListings = () => {
             <ContentGrid items={popularMovies} type="movies" />
           </TabsContent>
 
-          <TabsContent value="shows" className="pt-4">
+          <TabsContent value="tv" className="pt-4">
             <ContentGrid items={popularShows} type="shows" />
           </TabsContent>
 
@@ -274,12 +305,12 @@ export const ContentListings = () => {
         </Tabs>
 
         <div className="mt-12 flex justify-center">
-          <a
-            href="#"
+          <Link
+            href={`/${activeTab}`}
             className="inline-flex h-12 items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
             Browse All {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
-          </a>
+          </Link>
         </div>
       </div>
     </section>

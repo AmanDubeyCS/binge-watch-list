@@ -51,6 +51,7 @@ interface TVShowCardProps {
   overview?: string
   lastToAir?: string
   nextToAir?: string
+  contentStatus?: string
 }
 
 export function ProfileCard({
@@ -75,6 +76,7 @@ export function ProfileCard({
   video,
   lastToAir,
   nextToAir,
+  contentStatus,
 }: TVShowCardProps) {
   // State variables
   const { data: session } = useSession()
@@ -162,6 +164,12 @@ export function ProfileCard({
     if (isEditing && tempValue !== undefined) {
       if (mediaType === "tv") {
         setContentProgress(String(tempValue))
+      } else if (
+        mediaType === "manga" &&
+        contentStatus === "completed" &&
+        Number(tempValue) > Number(chapters)
+      ) {
+        setContentProgress(Number(chapters))
       } else {
         setContentProgress(tempValue)
       }
@@ -329,7 +337,7 @@ export function ProfileCard({
 
     return `S${String(prevSeason.season_number).padStart(2, "0")} E${String(prevSeason.episode_count).padStart(2, "0")}`
   }
-
+  // console.log(contentStatus !== "completed" || Number(contentProgress) !== chapters)
   return (
     <div
       className={cn(
@@ -448,7 +456,7 @@ export function ProfileCard({
                   status:
                   <span className="w-fit rounded-lg text-sm not-italic">
                     {" "}
-                    {currentStatus}
+                    {contentStatus || currentStatus}
                   </span>
                 </p>
               )}
@@ -469,7 +477,7 @@ export function ProfileCard({
                         {mediaType === "tv"
                           ? contentProgress
                           : mediaType === "manga"
-                            ? `${contentProgress.toString().length < 2 ? `0${contentProgress}` : contentProgress}${chapters === undefined ? "" : `/${chapters}+`}`
+                            ? `${contentProgress.toString().length < 2 ? `0${contentProgress}` : contentProgress}${chapters === undefined ? "" : `/${chapters}`}`
                             : mediaType === "anime"
                               ? `E-${contentProgress?.toString().length < 2 ? `0${contentProgress}` : contentProgress}/${episodes}`
                               : ""}
@@ -509,10 +517,17 @@ export function ProfileCard({
                         Number(contentProgress) <= chapters && (
                           <>
                             <div className="size-[5px] rounded-full bg-slate-500"></div>
-                            <p className="text-sm font-medium text-gray-600">
-                              {chapters - Number(contentProgress)} ch. left to
-                              read
-                            </p>
+                            {contentStatus !== "completed" ||
+                            Number(contentProgress) !== chapters ? (
+                              <p className="text-sm font-medium text-gray-600">
+                                {chapters - Number(contentProgress)} ch. left to
+                                read
+                              </p>
+                            ) : (
+                              <p className="text-sm font-medium text-gray-600">
+                                Completed
+                              </p>
+                            )}
                           </>
                         )}
                     </div>
@@ -639,14 +654,17 @@ export function ProfileCard({
                     <Minus size={12} /> Ch. {Number(contentProgress) - 1}
                   </div>
                 )}
-                <div
-                  onClick={(e) =>
-                    handleSingleUpdates(e, Number(contentProgress) + 1)
-                  }
-                  className="flex w-full max-w-[150px] items-center justify-center gap-1 text-nowrap rounded-lg border p-1 text-[12px] font-semibold"
-                >
-                  <Plus size={12} /> Mark ch. {Number(contentProgress) + 1}
-                </div>
+                {(contentStatus !== "completed" ||
+                  Number(contentProgress) !== chapters) && (
+                  <div
+                    onClick={(e) =>
+                      handleSingleUpdates(e, Number(contentProgress) + 1)
+                    }
+                    className="flex w-full max-w-[150px] items-center justify-center gap-1 text-nowrap rounded-lg border p-1 text-[12px] font-semibold"
+                  >
+                    <Plus size={12} /> Mark ch. {Number(contentProgress) + 1}
+                  </div>
+                )}
               </div>
             )}
             {mediaType === "anime" && (

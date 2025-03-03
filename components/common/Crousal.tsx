@@ -12,6 +12,7 @@ import { usePathname } from "next/navigation"
 import Image from "next/image"
 import { Badge } from "../ui/badge"
 import { cn } from "@/lib/utils"
+import { genreMap } from "./ListContent"
 
 type UsePrevNextButtonsType = {
   prevBtnDisabled: boolean
@@ -123,7 +124,7 @@ export const EmblaCarousel: React.FC<PropType> = (props) => {
                   <div className="embla__slide" key={index}>
                     <Link
                       href={`${pathname}/${manga.id}`}
-                      className="relative flex h-[350px] xs:h-[500px] md:h-[650px]"
+                      className="relative flex h-[350px] xs:h-[500px] md:h-[600px]"
                     >
                       <img
                         src={`/api/mangaImage/${manga.id}/${image[0].attributes.fileName}`}
@@ -242,10 +243,40 @@ export const EmblaCarousel: React.FC<PropType> = (props) => {
                                 {slide.title || slide.name}
                               </h2>
                             )}
+                            <p className="flex max-w-md items-center justify-center gap-2 rounded-lg bg-black px-2 py-1 text-center text-sm text-white md:text-base">
+                              <Star className="mr-1 size-5 fill-current text-yellow-500" />
+                              {slide.vote_average || slide.score} (
+                              {slide.vote_count || slide.scored_by})
+                            </p>
 
                             <p className="line-clamp-2 max-w-md text-center text-sm text-white/90 md:text-base">
                               {slide.overview || slide.synopsis}
                             </p>
+                            <div className="flex flex-wrap items-center justify-center gap-2">
+                              {slide.genre_ids ? (
+                                <>
+                                  {slide.genre_ids.map((genres: number) => (
+                                    <p className="flex max-w-md items-center justify-center gap-2 rounded-lg bg-black p-1 text-center text-sm uppercase text-white md:text-base">
+                                      {
+                                        genreMap[
+                                          genres as keyof typeof genreMap
+                                        ]
+                                      }
+                                    </p>
+                                  ))}
+                                </>
+                              ) : (
+                                <>
+                                  {slide.genres.map(
+                                    (genre: { name: string }) => (
+                                      <p className="flex max-w-md items-center justify-center gap-2 rounded-lg bg-black p-1 text-center text-sm uppercase text-white md:text-base">
+                                        {genre.name}
+                                      </p>
+                                    )
+                                  )}
+                                </>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </div>
