@@ -2,6 +2,7 @@ import React from "react"
 import { fetchFromTMDB } from "@/util/fetchFromTMDB"
 import { configTMDB } from "@/apiConfig"
 import { PersonCard } from "@/components/PersonCard"
+import { PageTracker } from "@/components/PageTracker"
 
 interface KnownFor {
   title: string
@@ -22,6 +23,7 @@ export default async function PersoneData({}) {
   const personList = await fetchFromTMDB(configTMDB.getPopularPersons)
   return (
     <div>
+      <PageTracker title="Person Page - Viewed"/>
       {personList && (
         <div className="min-h-screen bg-gray-100 px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-[1600px]">

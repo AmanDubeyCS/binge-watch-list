@@ -7,6 +7,7 @@ import { Tv } from "lucide-react"
 import { ListCards } from "@/components/common/ListContent"
 import { EmblaCarousel } from "@/components/common/Crousal"
 import { mergeData } from "@/util/mergeApiData"
+import { PageTracker } from "@/components/PageTracker"
 
 export default async function MoviesPage() {
   const currentDate = new Date()
@@ -67,6 +68,7 @@ export default async function MoviesPage() {
   // console.log(upcoming.results)
   return (
     <>
+    <PageTracker title="Movie Page - Viewed"/>
       {mergedData && (
         <EmblaCarousel
           slides={mergedData.filter(

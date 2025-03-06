@@ -1,3 +1,4 @@
+import { PageTracker } from "@/components/PageTracker"
 import { ProfileImage } from "@/components/profile/ProfileImage"
 import { ProfileNav } from "@/components/profile/ProfileNav"
 import { ProfileSettings } from "@/components/ProfileSettings"
@@ -57,6 +58,7 @@ export default async function Layout({
 
   return (
     <div>
+      <PageTracker title="Profile Page - Viewed"/>
       <header className="relative h-[400px] overflow-hidden bg-gray-100 md:h-[500px]">
         <Image
           src={userData.bannerImage}

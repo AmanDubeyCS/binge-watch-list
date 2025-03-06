@@ -5,9 +5,11 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import { useSendEvent } from "../useSendEvents"
 
 export function GoogleSignIn() {
   const router = useRouter()
+  const { trackEvent } = useSendEvent()
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider()
     try {
@@ -24,8 +26,24 @@ export function GoogleSignIn() {
           profile_pic_url: user.photoURL,
         })
         if (result && result.status === 200) {
+          trackEvent({
+            title: "Google sign-up/login - Completed",
+            properties: {
+              user_id: user.uid,
+              user_email: user.email,
+              user_name: user.displayName,
+            },
+          })
           router.replace("/home")
         } else if (result && result.status === 401) {
+          trackEvent({
+            title: "Google sign-up/login - Failed",
+            properties: {
+              user_id: user.uid,
+              user_email: user.email,
+              user_name: user.displayName,
+            },
+          })
           console.log("error")
         }
       }
@@ -38,7 +56,12 @@ export function GoogleSignIn() {
   }
   return (
     <button
-      onClick={signInWithGoogle}
+      onClick={() => {
+        signInWithGoogle(),
+          trackEvent({
+            title: "Google Sign-up/login - clicked",
+          })
+      }}
       className="flex w-full items-center justify-center rounded-lg border border-gray-300 py-2 transition hover:bg-gray-50"
     >
       <img

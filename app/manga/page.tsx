@@ -9,6 +9,7 @@ import {
 import { BookOpen } from "lucide-react"
 import { ListCards } from "@/components/common/ListContent"
 import { EmblaCarousel } from "@/components/common/Crousal"
+import { PageTracker } from "@/components/PageTracker"
 
 export default async function Page() {
   const [mangaList, topManhwa, topManhua, popularManga, banneData] =
@@ -22,6 +23,7 @@ export default async function Page() {
 
   return (
     <>
+    <PageTracker title="Manga Page - Viewed"/>
       {banneData && <EmblaCarousel slides={banneData} type="manga" />}
 
       <main className="mx-auto flex max-w-[1600px] flex-col gap-10 pb-10">

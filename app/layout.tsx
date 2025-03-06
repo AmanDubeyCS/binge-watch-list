@@ -7,6 +7,7 @@ import Header from "@/components/Header/Header"
 import { getServerSession } from "next-auth"
 import { authOptions } from "./api/auth/[...nextauth]/options"
 import { Toaster } from "sonner"
+import { GoogleAnalytics } from "@/components/GoogleAnalytics "
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -108,6 +109,7 @@ export default async function RootLayout({
             </AppLayout>
           </Providers>
         </SessionProvider>
+        <GoogleAnalytics />
       </body>
     </html>
   )

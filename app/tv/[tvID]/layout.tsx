@@ -7,6 +7,7 @@ import { fetchFromTMDB } from "@/util/fetchFromTMDB"
 import { getIMDBData } from "@/util/fetchIMDBdata"
 import React, { ReactElement } from "react"
 import { Metadata } from "next"
+import { PageTracker } from "@/components/PageTracker"
 
 export async function generateMetadata({
   params,
@@ -15,54 +16,54 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   try {
     const { tvID } = params
-  const tvInfo = await fetchFromTMDB(configTMDB.getSingleTvProfile(tvID))
+    const tvInfo = await fetchFromTMDB(configTMDB.getSingleTvProfile(tvID))
 
-  if (!tvInfo) {
-    return {
-      title: "TV Show Not Found",
-      description: "The TV show details could not be retrieved.",
+    if (!tvInfo) {
+      return {
+        title: "TV Show Not Found",
+        description: "The TV show details could not be retrieved.",
+      }
     }
-  }
 
-  const keywords = tvInfo.keywords?.results?.map(
-    (keyword: { name: string }) => keyword.name
-  )
+    const keywords = tvInfo.keywords?.results?.map(
+      (keyword: { name: string }) => keyword.name
+    )
 
-  return {
-    title: `${tvInfo.name} (${new Date(tvInfo.first_air_date).getFullYear()})`,
-    description: tvInfo.overview,
-    keywords: keywords,
-    openGraph: {
+    return {
       title: `${tvInfo.name} (${new Date(tvInfo.first_air_date).getFullYear()})`,
       description: tvInfo.overview,
-      images: [
-        {
-          url: `https://image.tmdb.org/t/p/w1280${tvInfo.backdrop_path}`,
-          width: 1280,
-          height: 720,
-          alt: `${tvInfo.name} Backdrop`,
-        },
-      ],
-      type: "video.tv_show",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `${tvInfo.name} (${new Date(tvInfo.first_air_date).getFullYear()})`,
-      description: tvInfo.overview,
-      images: [`https://image.tmdb.org/t/p/w500${tvInfo.poster_path}`],
-    },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
+      keywords: keywords,
+      openGraph: {
+        title: `${tvInfo.name} (${new Date(tvInfo.first_air_date).getFullYear()})`,
+        description: tvInfo.overview,
+        images: [
+          {
+            url: `https://image.tmdb.org/t/p/w1280${tvInfo.backdrop_path}`,
+            width: 1280,
+            height: 720,
+            alt: `${tvInfo.name} Backdrop`,
+          },
+        ],
+        type: "video.tv_show",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: `${tvInfo.name} (${new Date(tvInfo.first_air_date).getFullYear()})`,
+        description: tvInfo.overview,
+        images: [`https://image.tmdb.org/t/p/w500${tvInfo.poster_path}`],
+      },
+      robots: {
         index: true,
         follow: true,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": 200,
+        googleBot: {
+          index: true,
+          follow: true,
+          "max-video-preview": -1,
+          "max-image-preview": "large",
+          "max-snippet": 200,
+        },
       },
-    },
-  }
+    }
   } catch (error) {
     return {
       title: "My Binge List",
@@ -118,6 +119,7 @@ export default async function layout({
 
   return (
     <section>
+      <PageTracker title={`Tv Show ${tvInfo.name}  - Viewed`} />
       <ScrollToTop />
       <ContentDetails
         id={tvID}

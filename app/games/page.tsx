@@ -3,6 +3,7 @@ import { EmblaCarousel } from "@/components/common/Crousal"
 import { ListCards } from "@/components/common/ListContent"
 import { GameGenresList } from "@/components/gamePage/GameGenresList"
 import GamingPlatforms from "@/components/gamePage/GamingPlatforms"
+import { PageTracker } from "@/components/PageTracker"
 import { Tv } from "lucide-react"
 import React from "react"
 
@@ -96,6 +97,7 @@ export default async function page() {
   const gamesList = await response.json()
   return (
     <>
+    <PageTracker title="Games Page - Viewed"/>
       <EmblaCarousel slides={gamesList.results} type="game" />
       <main className="mx-auto flex max-w-[1600px] flex-col gap-5 pb-10 text-black">
         <ListCards

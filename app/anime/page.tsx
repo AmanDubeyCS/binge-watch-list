@@ -10,6 +10,7 @@ import { fetchFromTMDB } from "@/util/fetchFromTMDB"
 import { mergeAnimeData } from "@/util/mergeApiData"
 import { EmblaCarousel } from "@/components/common/Crousal"
 import { AnimeData } from "@/types/anime/animeTypes"
+import { PageTracker } from "@/components/PageTracker"
 
 const genresList = [
   {
@@ -186,6 +187,7 @@ export default async function Page() {
 
   return (
     <>
+    <PageTracker title="Anime Page - Viewed"/>
       {animeDataFromTMDB && (
         <EmblaCarousel
           slides={animeDataFromTMDB.filter((data) => data.backdrops)}

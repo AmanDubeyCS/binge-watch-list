@@ -7,6 +7,7 @@ import { fetchFromTMDB } from "@/util/fetchFromTMDB"
 import { getIMDBData } from "@/util/fetchIMDBdata"
 import React, { ReactElement } from "react"
 import { Metadata } from "next"
+import { PageTracker } from "@/components/PageTracker"
 
 export async function generateMetadata({
   params,
@@ -164,6 +165,7 @@ export default async function layout({
   return (
     <>
       <section>
+      <PageTracker title={`Anime ${animeInfo.title_english || animeInfo.title}  - Viewed`} />
         <ScrollToTop />
         <ContentDetails
           id={animeID}

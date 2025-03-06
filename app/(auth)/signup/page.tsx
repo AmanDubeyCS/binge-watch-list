@@ -1,6 +1,7 @@
 "use client"
 import { auth } from "@/app/firebaseConfig"
 import { GoogleSignIn } from "@/components/auth/GoogleSignIn"
+import { PageTracker } from "@/components/PageTracker"
 import { saveUserData } from "@/util/auth"
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import { RefreshCw, Rocket, Shield } from "lucide-react"
@@ -52,6 +53,7 @@ export default function RegisterPage() {
 
   return (
     <section className="bg-white py-20">
+      <PageTracker title="Sign-up Page - Viewed"/>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
         <div className="mb-16 text-center">
           <h2 className="font-heading mb-4 text-3xl font-bold lg:text-4xl">

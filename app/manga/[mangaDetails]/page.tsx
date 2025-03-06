@@ -1,6 +1,7 @@
 import { config } from "@/apiConfig"
 import { ContentDetails } from "@/components/common/ContentDetails"
 import { ReviewCard } from "@/components/mangaPage/ReviewCard"
+import { PageTracker } from "@/components/PageTracker"
 import { checkdata } from "@/util/fetchFromMangaUpdates"
 import { fetchFromMangaDex } from "@/util/fetchFromTMDB"
 import { ArrowDown, ArrowUp, Tag } from "lucide-react"
@@ -182,6 +183,7 @@ export default async function page({
   }
   return (
     <main>
+      <PageTracker title={`Manga ${mangaInfo.attributes.title.en}  - Viewed`} />
       <ContentDetails
         id={mangaID}
         backdropPoster={`/api/mangaImage/${mangaID}/${image[0].attributes.fileName}`}

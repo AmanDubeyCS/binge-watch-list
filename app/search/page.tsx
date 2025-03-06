@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import SearchType from "@/components/common/SearchType"
+import { PageTracker } from "@/components/PageTracker"
 
 const searchOptions = [
   { value: "show", label: "Show" },
@@ -33,6 +34,7 @@ export default function SearchPage() {
 
   return (
     <div className="min-h-screen">
+      <PageTracker title="Search Page - Viewed"/>
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="py-8">
           <form className="space-y-6">

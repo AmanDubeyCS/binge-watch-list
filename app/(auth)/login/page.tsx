@@ -7,6 +7,8 @@ import { auth } from "@/app/firebaseConfig"
 import { GoogleSignIn } from "@/components/auth/GoogleSignIn"
 import Link from "next/link"
 import { toast } from "sonner"
+import { PageTracker } from "@/components/PageTracker"
+import { useSendEvent } from "@/components/useSendEvents"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -14,6 +16,7 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+  const { trackEvent } = useSendEvent()
 
   const loginWithEmail = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -31,9 +34,25 @@ export default function LoginPage() {
           name: user.displayName,
         })
         if (result && result.status === 200) {
+          trackEvent({
+            title: "Email login Completed",
+            properties: {
+              user_id: user.uid,
+              user_email: user.email,
+              user_name: user.displayName,
+            },
+          })
           setIsLoading(false)
           router.replace("/home")
         } else if (result && result.status === 401) {
+          trackEvent({
+            title: "Email login Failed",
+            properties: {
+              user_id: user.uid,
+              user_email: user.email,
+              user_name: user.displayName,
+            },
+          })
           setIsLoading(false)
           console.log("error")
         }
@@ -48,6 +67,7 @@ export default function LoginPage() {
 
   return (
     <>
+      <PageTracker title="Login Page - Viewed" />
       <div className="flex h-[calc(100vh-89px)] items-center justify-center bg-gray-100">
         <div className="w-full max-w-sm rounded-lg bg-white p-8 shadow-md">
           <h2 className="mb-6 text-center text-2xl font-bold text-gray-800">

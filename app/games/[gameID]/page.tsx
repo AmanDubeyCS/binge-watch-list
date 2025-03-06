@@ -1,6 +1,7 @@
 import { configRAWG } from "@/apiConfig"
 import { ContentDetails } from "@/components/common/ContentDetails"
 import GameInfo from "@/components/gamePage/GameInfo"
+import { PageTracker } from "@/components/PageTracker"
 import { ScrollToTop } from "@/components/ScorllTop"
 import React from "react"
 
@@ -15,6 +16,7 @@ export default async function page({ params }: { params: Props }) {
 
   return (
     <main>
+      <PageTracker title={`Anime ${gameInfo.name}  - Viewed`} />
       <ScrollToTop />
       <ContentDetails
         id={gameId}
