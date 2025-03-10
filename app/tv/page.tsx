@@ -53,7 +53,7 @@ export default async function MoviesPage() {
   // console.log(tvOnAir.results)
   return (
     <>
-    <PageTracker title="Tv Show Page - Viewed"/>
+      <PageTracker title="Tv Show Page - Viewed" />
       {mergedData && (
         <EmblaCarousel
           slides={mergedData.filter(
@@ -63,10 +63,10 @@ export default async function MoviesPage() {
       )}
 
       <main className="mx-auto flex max-w-[1600px] flex-col gap-10 pb-10">
-        {tvOnAir && (
+        {topTV && (
           <ListCards
-            tvData={tvOnAir.results}
-            title="On Air"
+            tvData={topTV.results}
+            title="Top Rated"
             titleIcon={<Tv className="mr-2" />}
           />
         )}
@@ -77,10 +77,10 @@ export default async function MoviesPage() {
             titleIcon={<Tv className="mr-2" />}
           />
         )}
-        {topTV && (
+        {tvOnAir && (
           <ListCards
-            tvData={topTV.results}
-            title="Top Rated"
+            tvData={tvOnAir.results}
+            title="On Air"
             titleIcon={<Tv className="mr-2" />}
           />
         )}
