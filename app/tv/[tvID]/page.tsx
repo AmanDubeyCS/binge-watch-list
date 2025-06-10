@@ -28,7 +28,7 @@ export default async function SingleTvPage({
                     src={`https://image.tmdb.org/t/p/w500${tvInfo.last_episode_to_air.still_path}`}
                     alt="Last Episode Still"
                     fallback={
-                      <div className="flex items-center justify-center bg-[rgba(181,181,181,0.3)] xs:w-[320px]">
+                      <div className="flex items-center justify-center bg-[rgba(181,181,181,0.3)] xs:w-full">
                         <Icon.noPreview />
                       </div>
                     }
