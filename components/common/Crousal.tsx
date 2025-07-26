@@ -245,8 +245,8 @@ export const EmblaCarousel: React.FC<PropType> = (props) => {
                             )}
                             <p className="flex max-w-md items-center justify-center gap-2 rounded-lg bg-black px-2 py-1 text-center text-sm text-white md:text-base">
                               <Star className="mr-1 size-5 fill-current text-yellow-500" />
-                              {slide.vote_average.toFixed(1) || slide.score} (
-                              {slide.vote_count || slide.scored_by})
+                              {slide.vote_average?.toFixed(1) || slide.score?.toFixed(1) || slide.rating?.toFixed(1)} (
+                              {slide.vote_count || slide.scored_by || slide.ratings_count})
                             </p>
 
                             <p className="line-clamp-2 max-w-md text-center text-sm text-white/90 md:text-base">
