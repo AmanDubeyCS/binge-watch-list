@@ -40,6 +40,7 @@ interface ContentDetailsProps {
   platforms?: any
   muID?: string
   chapters?: number
+  tmdbID?: number
 }
 
 function formatAmount(num: number) {
@@ -105,6 +106,7 @@ export function ContentDetails({
   platforms,
   muID,
   chapters,
+  tmdbID,
 }: ContentDetailsProps) {
   const ratings = [
     {
@@ -411,6 +413,27 @@ export function ContentDetails({
                   muID={muID || ""}
                 />
 
+                {(contentType == "movie" || contentType == "tv") && (
+                  <Link
+                    href={
+                      contentType === "movie"
+                        ? `/watch/${contentType}/${id}`
+                        : `/watch/${contentType}/${id}/1/1`
+                    }
+                    className="flex w-[200px] items-center justify-center rounded-lg bg-blue-400 px-6 py-3 text-base text-white"
+                  >
+                    Watch Now
+                  </Link>
+                )}
+                {contentType == "anime" && tmdbID && (
+                  <Link
+                    href={`/watch/tv/${tmdbID}/1/1`}
+                    className="flex w-[200px] items-center justify-center rounded-lg bg-blue-400 px-6 py-3 text-base text-white"
+                  >
+                    Watch Now
+                  </Link>
+                )}
+
                 {/* {watchProvider && watchProvider["IN"] && (
                   <button className="flex h-fit w-[200px] items-center justify-start gap-2 rounded-lg bg-gray-800 p-1 pr-6">
                     <div className="min-w-[45px]">
@@ -603,7 +626,7 @@ export function ContentDetails({
               </div>
             )}
 
-            <div className="flex w-full flex-wrap gap-4">
+            <div className="flex w-full gap-4">
               <div className="w-full">
                 <BookmarkTag
                   id={id}
@@ -620,6 +643,26 @@ export function ContentDetails({
                   muID={muID || ""}
                 />
               </div>
+              {(contentType == "movie" || contentType == "tv") && (
+                <Link
+                  href={
+                    contentType === "movie"
+                      ? `/watch/${contentType}/${id}`
+                      : `/watch/${contentType}/${id}/1/1`
+                  }
+                  className="flex w-[200px] items-center justify-center rounded-lg bg-blue-400 px-6 py-3 text-base text-white"
+                >
+                  Watch Now
+                </Link>
+              )}
+              {contentType == "anime" && tmdbID && (
+                <Link
+                  href={`/watch/tv/${tmdbID}/1/1`}
+                  className="flex w-[200px] items-center justify-center rounded-lg bg-blue-400 px-6 py-3 text-base text-white"
+                >
+                  Watch Now
+                </Link>
+              )}
             </div>
 
             <div className="mt-4">

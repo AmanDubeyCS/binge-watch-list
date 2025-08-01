@@ -15,7 +15,7 @@ interface Video {
 
 export function Overview({ trailer }: { trailer: Video[] }) {
   const trailerData = trailer.filter((trailer) =>
-    trailer.name.includes("Trailer" || "Official")
+    trailer.name.includes("Trailer") || trailer.name.includes("Official")
   )
 
   return (

@@ -22,8 +22,8 @@ export default async function SingleTvPage({
           {tvInfo.last_episode_to_air && (
             <section>
               <h2 className="mb-4 text-2xl font-semibold">Last Episode</h2>
-              <div className="flex w-fit flex-col items-center rounded-lg bg-white shadow-md xs:flex-row">
-                <div className="h-full w-[200px] p-2">
+              <div className="flex w-full items-center rounded-lg bg-white shadow-md">
+                <div className="h-full w-[150px] p-2 sm:w-[200px] shrink-0">
                   <ImageLoader
                     src={`https://image.tmdb.org/t/p/w500${tvInfo.last_episode_to_air.still_path}`}
                     alt="Last Episode Still"
@@ -35,41 +35,31 @@ export default async function SingleTvPage({
                     className="size-full rounded-lg"
                   />
                 </div>
-                {/* <Image
-                  src={`https://image.tmdb.org/t/p/w500${tvInfo.last_episode_to_air.still_path}`}
-                  alt="Last Episode Still"
-                  width={500}
-                  height={281}
-                  className="h-auto object-cover xs:w-[150px]"
-                /> */}
-                <div className="flex flex-col justify-center p-2">
-                  <div className="flex items-center space-x-2 text-lg font-semibold text-blue-600">
-                    <span>AIRED ON: {tvInfo.last_episode_to_air.air_date}</span>
-                  </div>
-                  <h3 className="text-lg font-bold">
+                <div className="flex flex-col gap-2 justify-center p-2">
+                  <h3 className="font-bold sm:text-lg">
                     {tvInfo.last_episode_to_air.name}
                   </h3>
-                  <p className="text-gray-600">
-                    Season {tvInfo.last_episode_to_air.season_number}, Episode{" "}
-                    {tvInfo.last_episode_to_air.episode_number} (
-                    {tvInfo.last_episode_to_air.episode_type})
-                  </p>
-                  {/* <p className="my-2 hidden md:flex">
-                    {tvInfo.last_episode_to_air.overview}
-                  </p> */}
-
-                  {/* <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <Clock className="size-4" />
-                    <span>
-                      Runtime: {tvInfo.last_episode_to_air.runtime} minutes
-                    </span>
-                  </div> */}
-                  {/* <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <Star className="size-4 text-yellow-400" />
-                    <span>
-                      Rating: {tvInfo.last_episode_to_air.vote_average}/10
-                    </span>
-                  </div> */}
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm text-gray-600">
+                      S{tvInfo.last_episode_to_air.season_number} E{tvInfo.last_episode_to_air.episode_number}
+                    </p>
+                    <span className="size-1 rounded-full bg-gray-600"></span>
+                    <p className="flex items-center text-sm text-gray-600">
+                      {new Date(tvInfo.last_episode_to_air.air_date).toLocaleDateString(
+                        "en-GB",
+                        {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        }
+                      )}
+                    </p>
+                    <span className="size-1 rounded-full bg-gray-600"></span>
+                    <p className="text-sm text-gray-600">
+                      {tvInfo.last_episode_to_air.runtime}m
+                    </p>
+                  </div>
+                  <p className="text-sm sm:text-base text-gray-600 line-clamp-2">{tvInfo.last_episode_to_air.overview}</p>
                 </div>
               </div>
             </section>
@@ -92,13 +82,6 @@ export default async function SingleTvPage({
                         }
                         className="h-auto w-full"
                       />
-                      {/* <Image
-                        src={`https://image.tmdb.org/t/p/w300${season.poster_path}`}
-                        alt={`Season ${season.name} Poster`}
-                        width={300}
-                        height={450}
-                        className="h-auto w-full rounded-lg"
-                      /> */}
                       <div className="py-2">
                         <div className="flex justify-between gap-4">
                           <h3 className="text-sm font-semibold">

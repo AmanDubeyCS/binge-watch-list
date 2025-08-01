@@ -57,14 +57,14 @@ export default function Header() {
     <div
       className={cn(
         "bg-gray-50 p-2 text-black md:px-10 md:py-0",
-        pathname === "/" && " "
+        pathname === "/" && " ", pathname.includes("/watch") && "hidden"
       )}
     >
       <div className="mx-auto flex h-[40px] w-full max-w-[1600px] items-center justify-between md:h-[72px]">
         <Link href={"/"}>
           <Logo classname="h-10 text-[22px] md:h-12 md:text-[26px]" />
         </Link>
-        <div className="fixed bottom-0 left-0 z-50 flex w-full bg-white p-2 md:relative md:flex md:max-w-[500px] md:bg-transparent">
+        <div className={cn("fixed bottom-0 left-0 z-50 flex w-full bg-white p-2 md:relative md:flex md:max-w-[500px] md:bg-transparent", pathname.includes("/watch") && "hidden")}>
           {links.map((link) => (
             <Link
               key={link.name}

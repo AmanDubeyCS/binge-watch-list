@@ -199,6 +199,7 @@ export default async function layout({
           }
           contentType="anime"
           numbers={animeInfo.rank}
+          tmdbID={animeDataFromTMDB?.id}
         />
 
         {animeInfo.trailer.embed_url && (
