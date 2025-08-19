@@ -209,6 +209,9 @@ export const EmblaCarousel: React.FC<PropType> = (props) => {
             <>
               {slides.map((slide: any, index: number) => {
                 const logo = findLogo(slide.id)?.file_path
+                if(!slide.backdrop_path || !slide.backdrops?.[0].file_path){
+                  return
+                }
                 return (
                   <div className="embla__slide" key={index}>
                     <Link
@@ -218,7 +221,8 @@ export const EmblaCarousel: React.FC<PropType> = (props) => {
                       <img
                         src={
                           slide.background_image ||
-                          `https://image.tmdb.org/t/p/original${slide.backdrop_path || slide.backdrops?.[0].file_path}`
+                          `https://image.tmdb.org/t/p/original${slide.backdrop_path}` ||
+                          `https://image.tmdb.org/t/p/original${slide.backdrops?.[0].file_path}`
                         }
                         alt={`${slide.title} backdrop`}
                         className={cn(
@@ -245,8 +249,14 @@ export const EmblaCarousel: React.FC<PropType> = (props) => {
                             )}
                             <p className="flex max-w-md items-center justify-center gap-2 rounded-lg bg-black px-2 py-1 text-center text-sm text-white md:text-base">
                               <Star className="mr-1 size-5 fill-current text-yellow-500" />
-                              {slide.vote_average?.toFixed(1) || slide.score?.toFixed(1) || slide.rating?.toFixed(1)} (
-                              {slide.vote_count || slide.scored_by || slide.ratings_count})
+                              {slide.vote_average?.toFixed(1) ||
+                                slide.score?.toFixed(1) ||
+                                slide.rating?.toFixed(1)}{" "}
+                              (
+                              {slide.vote_count ||
+                                slide.scored_by ||
+                                slide.ratings_count}
+                              )
                             </p>
 
                             <p className="line-clamp-2 max-w-md text-center text-sm text-white/90 md:text-base">
