@@ -642,7 +642,7 @@ export function ProfileCard({
             onClick={(e) => e.stopPropagation()}
             className="flex w-full items-center justify-between p-1"
           >
-            {mediaType === "manga" && (
+            {isAccountUser && mediaType === "manga" && (
               <div className="mr-2 flex flex-1 gap-2">
                 {Number(contentProgress) > 0 && (
                   <div
@@ -667,7 +667,7 @@ export function ProfileCard({
                 )}
               </div>
             )}
-            {mediaType === "anime" && (
+            {isAccountUser && mediaType === "anime" && (
               <div className="mr-2 flex flex-1 gap-2">
                 {Number(contentProgress) > 0 && (
                   <div
@@ -691,7 +691,7 @@ export function ProfileCard({
                 )}
               </div>
             )}
-            {mediaType === "tv" && (
+            {isAccountUser && mediaType === "tv" && (
               <div className="mr-2 flex flex-1 gap-2">
                 {contentProgress !== "S01 E01" && (
                   <div
@@ -718,7 +718,7 @@ export function ProfileCard({
                 )}
               </div>
             )}
-            {mediaType === "movie" && (
+            {isAccountUser && mediaType === "movie" && (
               <p className="flex w-full max-w-[150px] items-center justify-center gap-1 text-nowrap rounded-lg border p-1 text-[12px] font-semibold">
                 {status}
               </p>
